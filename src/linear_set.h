@@ -7,6 +7,16 @@
 
 using namespace std;
 
+/**
+ * @brief Conjunto con inserción en tiempo constante
+ *
+ * @tparam T tipo paramétrico del conjunto
+ * Debe tener:
+ *  - operator==
+ *  - Constructor por copia
+ *
+ *  **se explica con** TAD Conjunto(T)
+ */
 template<typename T>
 class linear_set {
  public:

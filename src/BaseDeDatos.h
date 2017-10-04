@@ -21,6 +21,8 @@ using namespace std;
  * Permite saber si se puede agegar un registro a una tabla y luego agregarlo.
  * Permite realizar filtros del contenido de tablas mediante criterios de
  * búsqueda. Además mantiene estadísticas del uso de los criterios.
+ *
+ * **se explica con** TAD BaseDeDatos
  */
 class BaseDeDatos {
 

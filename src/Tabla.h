@@ -21,6 +21,8 @@ using namespace std;
  * La descripción también selecciona un subconjunto de los campos como \i
  * claves. Dada las claves, una tabla no puede tener dos registros con los
  * mismos valores para todos los campos claves.
+ *
+ * **se explica con** TAD Tabla
  */
 class Tabla {
 

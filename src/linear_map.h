@@ -8,6 +8,18 @@ using namespace std;
 
 /**
  * @brief Módulo diccionario con inserción en O(1)
+ *
+ * @tparam K tipo paramétrico para la clave
+ * @tparam S tipo paramétrico para el significado
+ *
+ * Se espera que K tenga:
+ * - operator==
+ * - Constructor por copia
+ *
+ * Se espera que S tenga:
+ * - Constructor por copoa
+ *
+ * **se explica con** TAD Diccionario(K, S)
  */
 template<class K, class S>
 class linear_map {

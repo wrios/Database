@@ -3,4 +3,6 @@
 
 * Para ver la documentación de las clases, ir a **Clases**
 
-* Para ver el enunciado, buscar el pdf en `docs/enunciado`
+* Para ver el enunciado, buscar el pdf `docs/tp2_enunciado.pdf`
+
+* Para ver la especificación, buscar el pdf `docs/tp2_especificacion.pdf`
