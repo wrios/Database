@@ -16,3 +16,6 @@
 * Aclaraciones complejidad y post en linear_set y linear_map
 * Actualización rep de linear_map para que refleje que no hay repetidos
 * Actualización descripción de insert en string_map
+* Correcciones menores de enunciado
+* Corrección de restricción de combinarRegistros
+* Corrección de CMakeLists.txt
