@@ -7,6 +7,8 @@
 #include "linear_set.h"
 #include "Dato.h"
 #include "Registro.h"
+#include <map>
+
 
 using namespace std;
 
@@ -159,10 +161,10 @@ private:
     //////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /** @{ */
-    linear_set<string> _claves;
-    linear_set<string> _campos;
-    linear_map<string, Dato> _tipos;
-    linear_set<Registro> _registros;
+    string_map<bool> _claves;
+    //string_map<bool> _campos;
+    string_map<Dato> _camposYtipos;
+    std::map<unsigned int, Registro> _registros;
     /** }@ */
 
 };

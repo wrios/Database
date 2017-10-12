@@ -6,6 +6,7 @@
 #include "Dato.h"
 #include "linear_set.h"
 #include "linear_map.h"
+#include "string_map.h"
 
 using namespace std;
 
@@ -71,11 +72,13 @@ private:
     //////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /** @{ */
-    linear_set<string> _campos;
-    linear_map<string, Dato> _datos;
+    string_map<Dato> _campoYdato;
     /** @} */
 
+
+
     friend ostream &operator<<(ostream &, const Registro &);
+
 };
 
 

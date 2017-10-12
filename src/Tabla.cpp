@@ -6,38 +6,48 @@ using namespace std;
 Tabla::Tabla(const linear_set<string> &claves, 
              const vector<string> &campos, 
              const vector<Dato> &tipos) 
-    : _claves(claves) {
+    :  {
+    //QUE ONDAAA??
+        for (auto it = claves.begin(); it != claves.end(); ++it) {
+            _claves.insert(make_pair(*it, true));
+        }
+
         for (int i = 0; i < campos.size(); i++) {
-            _tipos.fast_insert(make_pair(campos[i], tipos[i]));
-            _campos.fast_insert(campos[i]);
+            _camposYtipos.insert(make_pair(campos[i], tipos[i]));
         }
 }
 
+//QUE ONDAAAAAAaa??
 Tabla::const_iterador_registros Tabla::agregarRegistro(const Registro& r) {
     return Tabla::const_iterador_registros(
-        linear_set<Registro>::const_iterator(_registros.fast_insert(r)));
+        linear_set<Registro>::const_iterator(_registros.insert(make_pair(_registros.size()+1, r))));
 }
 
 const linear_set<string>& Tabla::campos() const {
-    return _campos;
+    return _camposYtipos.claves();
 }
 
 const linear_set<string>& Tabla::claves() const {
-    return _claves;
+    return _claves.claves();
 }
 
 const Dato& Tabla::tipoCampo(const string& campo) const {
-    return _tipos.at(campo);
+    return _camposYtipos.at(campo);
 }
 
 const linear_set<Registro> &Tabla::registros() const {
-  return _registros;
+    linear_set<Registro> res;
+    for (int i = 1; i < _registros.size()+1; ++i) {
+        res.insert(_registros[i]);
+    }
+    return res;
 }
-
+//QUE ONDAAAAAAAA???
 Tabla::const_iterador_registros Tabla::registros_begin() const {
   return Tabla::const_iterador_registros(_registros.begin());
 }
 
+//QUE ONDAAAAAAA??
 Tabla::const_iterador_registros Tabla::registros_end() const {
   return Tabla::const_iterador_registros(_registros.end());
 }
