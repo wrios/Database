@@ -162,6 +162,10 @@ public:
    */
   linear_set<Criterio> top_criterios() const;
 
+    void BaseDeDatos::crearIndice(const string &nombre, const string &campo);
+
+    join_iterator BaseDeDatos::join(const string &tabla1, const string &tabla2, const string &campo) const;
+
 private:
 	  ///////////////////////////////////////////////////////////////////////////////////////////////////
     /** \name Representación
@@ -190,6 +194,9 @@ private:
     linear_set<string> _nombres_tablas;
     linear_map<string, Tabla> _tablas;
     linear_map<Criterio, int> _uso_criterios;
+
+//    string_map<string_map<Indice>> _indices;
+    string_map<string_map<string_map>> _indices; //TODO reemplazar por Indice
     /** @} */
 
     /** @{ */

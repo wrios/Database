@@ -14,7 +14,15 @@ void string_map<T>::string_map(){
 
 //destructor de mapa
 template <typename T>
-void string_map<T>::~string_map(){}
+void string_map<T>::~string_map(){
+  this->cantElem = 0;
+  auto it = this->begin();
+  while (it != this->end()){
+    erase(it);
+    it++;
+  }
+  this->raiz = nullptr;
+}
 
 //constructor por copia
 template <typename T>
@@ -22,7 +30,14 @@ void string_map<T>::string_map(const string_map & other){}
 
 //operador de asignacion
 template <typename T>
-string_map& string_map<T>::operator=(const string_map &){}
+string_map& string_map<T>::operator=(const string_map & otro){
+  //invocar al destructor
+  this->cantElem = otro->cantElem;
+  this->raiz = otro->raiz;
+  for(auto it = otro.begin(); it!=otro.end(); ++it){
+    this->insert(*it);
+  }
+}
 
 template <typename T>
 bool string_map<T>::operator==(const string_map& otro) const{}
