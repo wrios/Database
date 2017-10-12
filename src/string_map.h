@@ -4,6 +4,8 @@
 #include <cassert>
 #include <string>
 #include <vector>
+//#include "Lista.h"
+//#include <ostream>
 
 using std::string;
 using std::vector;
@@ -25,9 +27,27 @@ public:
     typedef size_t size_type;
 
 
-    class iterator;
+    class iterator{
+    public:
+      typedef T value_type;
+      iterator(const iterator&);
+      iterator& operator=(const iterator &);
+      bool operator==(const iterator &)const;
+      bool operator!=(const iterator &)const;
+
+      iterator& operator++();
+      iterator operator++();
+
+      value_type& operator*();
+      value_type* operator->();
+
+    private:
+      iterator(Nodo* n) : nodo(n){};
+      Nodo* nodo;
+
+    }
     class const_iterator;
-    
+
 
     /** @brief Construye mapa vacio
      *
@@ -167,7 +187,35 @@ public:
 
 private:
 
-};
+
+    struct Nodo{
+      T* definicion;
+      Nodo** hijos;
+      Nodo* padre;
+      Nodo* der;
+      Nodo* izq;
+      Nodo* prim;
+      Nodo* ult;
+
+      Nodo(){
+        hijos = new Nodo*[256];
+        for(int i = 0; i < 256; i++){
+          hijos[i] = NULL;
+        }
+        definicion = NULL;
+      }
+      ~Nodo(){
+        delete definicion;
+        delete[] hijos;
+      }
+    };
+    size_t cantElem;
+    Nodo* raiz;
+
+    /** @brief Preguntar
+     *
+     **/
+    void swap(const string_map other&);
 
 
 #endif //STRING_MAP_STRING_MAP_H
