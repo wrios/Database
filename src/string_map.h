@@ -27,25 +27,33 @@ public:
     typedef size_t size_type;
 
 
-    class iterator{
+    class iterator {
     public:
-      typedef T value_type;
-      iterator(const iterator&);
-      iterator& operator=(const iterator &);
-      bool operator==(const iterator &)const;
-      bool operator!=(const iterator &)const;
+        typedef T value_type;
 
-      iterator& operator++();
-      iterator operator++();
+        iterator(const iterator &);
 
-      value_type& operator*();
-      value_type* operator->();
+        iterator& operator=(const iterator &);
+
+        bool operator==(const iterator &) const;
+
+        bool operator!=(const iterator &) const;
+
+        iterator &operator++();
+
+        iterator operator++();
+
+        value_type &operator*();
+
+        value_type *operator->();
 
     private:
-      iterator(Nodo* n) : nodo(n){};
-      Nodo* nodo;
+        friend class string_map;
+        iterator(Nodo *n) : nodo(n) {};
+        Nodo *nodo;
 
-    }
+    };
+
     class const_iterator;
 
 
@@ -71,14 +79,15 @@ public:
      *
      * \complexity{\O(sn * S)}
      */
-    string_map& operator=(const string_map &);
+    string_map &operator=(const string_map &);
 
     /** @brief Operadores de comparacion
      *
      * \complexity{\O(sn * S)}
      */
-    bool operator==(const string_map& otro) const;
-    bool operator!=(const string_map& otro) const {return !(*this == otro);}
+    bool operator==(const string_map &otro) const;
+
+    bool operator!=(const string_map &otro) const { return !(*this == otro); }
 
     /** @brief Cantidad de apariciones de la clave (0 o 1)
      *  @param key clave a buscar
@@ -108,15 +117,15 @@ public:
      *
      *  \complexity{\O(S)}
      */
-    mapped_type& at(const key_type& key);
+    mapped_type &at(const key_type &key);
 
     /** @brief Acceso a una clave sin modificar mapa
      *  @param key clave a acceder que debe existir previamente
      *  @returns una referencia const a la definicion.
      *
      *  \complexity{\O(S)}
-     */ 
-    const mapped_type& at(const key_type& key) const;
+     */
+    const mapped_type &at(const key_type &key) const;
 
     /** @brief Vacia el mapa */
     void clear();
@@ -128,19 +137,22 @@ public:
      *
      *  \complexity{\O(S)}
      */
-   iterator begin();
+    iterator begin();
 
     /*  @brief iterador al fin de la coleccion
      *
      *  \complexity{\O(S)}
      */
-   iterator end();
+    iterator end();
 
     /// Versiones const de begin/end
-   const_iterator begin() const;
-   const_iterator end() const;
-   const_iterator cbegin() const;
-   const_iterator cend() const;
+    const_iterator begin() const;
+
+    const_iterator end() const;
+
+    const_iterator cbegin() const;
+
+    const_iterator cend() const;
 
     /** @brief busca una clave
      *  @param key clave a buscar
@@ -148,7 +160,7 @@ public:
      *
      *  \complexity{\O(S)}
      */
-   iterator find(const key_type &key);
+    iterator find(const key_type &key);
 
     /** @brief busca una clave
      *  @param key clave a buscar
@@ -156,7 +168,7 @@ public:
      *
      *  \complexity{\O(S)}
      */
-   const_iterator find(const key_type &key) const;
+    const_iterator find(const key_type &key) const;
 
     /** @brief insercion
      *
@@ -167,7 +179,7 @@ public:
      * 
      * \complexity{\O(S + copy(value_type))}
      */
-    pair<iterator,bool> insert(const value_type &value);
+    pair<iterator, bool> insert(const value_type &value);
 
     /** @brief eliminar una clave
      *  @param key clave a eliminar
@@ -175,7 +187,7 @@ public:
      *
      *  \complexity{\O(S)}
      */
-    size_type erase(const key_type& key);
+    size_type erase(const key_type &key);
 
     /** @brief eliminar una clave mediante irerador
      *  @param pos iterador apuntando a clave a eliminar
@@ -188,34 +200,37 @@ public:
 private:
 
 
-    struct Nodo{
-      T* definicion;
-      Nodo** hijos;
-      Nodo* padre;
-      Nodo* der;
-      Nodo* izq;
-      Nodo* prim;
-      Nodo* ult;
+    struct Nodo {
+        T *definicion;
+        Nodo **hijos;
+        Nodo *padre;
+        Nodo *der;
+        Nodo *izq;
+        Nodo *prim;
+        Nodo *ult;
 
-      Nodo(){
-        hijos = new Nodo*[256];
-        for(int i = 0; i < 256; i++){
-          hijos[i] = NULL;
+        Nodo() {
+            hijos = new Nodo *[256];
+            for (int i = 0; i < 256; i++) {
+                hijos[i] = NULL;
+            }
+            definicion = NULL;
         }
-        definicion = NULL;
-      }
-      ~Nodo(){
-        delete definicion;
-        delete[] hijos;
-      }
+
+        ~Nodo() {
+            delete definicion;
+            delete[] hijos;
+        }
     };
+
     size_t cantElem;
-    Nodo* raiz;
+    Nodo *raiz;
 
     /** @brief Preguntar
      *
      **/
-    void swap(const string_map other&);
+    void swap(const string_map &other);
 
 
+};
 #endif //STRING_MAP_STRING_MAP_H

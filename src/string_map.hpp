@@ -1,5 +1,6 @@
 #include "string_map.h"
 #include <utility>
+#include <iostream>
 
 using namespace std;
 
@@ -32,8 +33,8 @@ void string_map<T>::string_map(const string_map & other){}
 template <typename T>
 string_map& string_map<T>::operator=(const string_map & otro){
   //invocar al destructor
-  this->cantElem = otro->cantElem;
-  this->raiz = otro->raiz;
+  this->cantElem = otro.cantElem;
+  this->raiz = otro.raiz;
   for(auto it = otro.begin(); it!=otro.end(); ++it){
     this->insert(*it);
   }
@@ -44,7 +45,8 @@ bool string_map<T>::operator==(const string_map& otro) const{}
 
 //operador de comparacion
 template <typename T>
-bool string_map<T>::operator!=(const string_map& otro) const{}
+bool string_map<T>::operator!=(const string_map& otro) const{ return !(*this == otro);
+}
 
 //cantidad de apariciones de la clave
 template <typename T>
@@ -59,24 +61,24 @@ size_type string_map<T>::count(const key_type &key) const{
 
 //cantidad de claves definidas
 template <typename T>
-size_t string_map<T>::size(){return cantElem;}
+size_t string_map<T>::size() const{return cantElem;}
 
 //devuelve true si size() == 0
 template <typename T>
-bool string_map<T>::empty(){return cantElem == 0;}
+bool string_map<T>::empty() const {return cantElem == 0;}
 
 //acceso a la definicion, si no esta define por constructor por defecto
 template <typename T>
-mapped_type& string_map<T>operator[](const key_type &key){
+mapped_type& string_map<T>::operator[](const key_type &key){
   Nodo* sekeer = raiz;
   for(u_int i = 0; i < key.size(); i++){
     if((sekeer->hijos)[i] == NULL ){
       (sekeer->hijos)[int(key[i])] = new Nodo();
     }
-    seeker = (seeker->hijos)[int(key[i])];
+      sekeer = (sekeer->hijos)[int(key[i])];
   }
-  seeker->definicion = T();
-  return seeker->definicion;
+    sekeer->definicion = T();
+  return sekeer->definicion;
 }
 
 //devuelve el significado de la clave, sin modificar la clave
@@ -85,11 +87,13 @@ mapped_type& string_map<T>::at(const key_type& key){
   Nodo* sekeer = raiz;
   for(u_int i = 0; i < key.size(); i++){
     if((sekeer->hijos)[int(key[i])] == NULL ){
-      throw domain_error("El elemento no esta");
+        //Esto es para debbuguear
+      //throw domain_error("El elemento no esta");
+        cout << "El elemento no esta" << endl;
     }
-    seeker = (seeker->hijos)[int(key[i])];
+      sekeer = (sekeer->hijos)[int(key[i])];
   }
-  return seeker->definicion;
+  return sekeer->definicion;
 }
 
 //devuelve el significado de la clave, sin modificar clave ni significado
@@ -98,11 +102,12 @@ const mapped_type& string_map<T>::at(const key_type& key) const{
   Nodo* sekeer = raiz;
   for(u_int i = 0; i < key.size(); i++){
     if((sekeer->hijos)[int(key[i])] == NULL ){
-      throw domain_error("El elemento no esta");
+      //throw domain_error("El elemento no esta");
+        cout << "El elemento no esta" << endl;
     }
-    seeker = (seeker->hijos)[int(key[i])];
+      sekeer = (sekeer->hijos)[int(key[i])];
   }
-  return seeker->definicion;
+  return sekeer->definicion;
 }
 
 //vacia el mapa
@@ -112,7 +117,8 @@ void string_map<T>::clear(){}
 //devuelve iterator al primer par en orden lexicografico
 template <typename T>
 typename string_map<T>::iterator string_map<T>::begin(){
-  return string_map<T>::iterator it(*raiz);
+  string_map<T>::iterator it(raiz);
+    return  it;
 }
 
 //devuelve iterator al ultimo par en orden lexicografico
@@ -122,7 +128,8 @@ typename string_map<T>::iterator string_map<T>::end(){}
 //devuelve const_iterator al primer par en orden lexicografico
 template <typename T>
 typename string_map<T>::const_iterator string_map<T>::begin()const{
-  return string_map<T>::const_iterator it(*raiz);
+  string_map<T>::const_iterator it(raiz);
+    return it;
 }
 
 //devuelve const_iterator al ultimo par en orden lexicografico
@@ -132,7 +139,8 @@ typename string_map<T>::const_iterator string_map<T>::end()const{}
 //devuelve const_iterator al primer (const)par en orden lexicografico
 template <typename T>
 typename string_map<T>::const_iterator string_map<T>::cbegin()const{
-  return string_map<T>::const_iterator it(*raiz);
+  string_map<T>::const_iterator it(raiz);
+    return it;
 }
 
 //devuelve const_iterator al ultimo (const)par en orden lexicografico
@@ -145,43 +153,54 @@ typename string_map<T>::iterator string_map<T>::find(const key_type &key){
   Nodo* sekeer = raiz;
   for(u_int i = 0; i < key.size(); i++){
     if((sekeer->hijos)[int(key[i])] == NULL ){
-      throw domain_error("El elemento no esta");
+      //throw domain_error("El elemento no esta");
+        cout << "El elemento no esta" << endl;
     }
-    seeker = (seeker->hijos)[int(key[i])];
+    sekeer = (sekeer->hijos)[int(key[i])];
   }
-  return string_map<T>::iterator it(*seeker);
+  string_map<T>::iterator it(sekeer);
+    return it;
 }
 
 //devuelve un iterador a la clave 
 template <typename T>
-typename string_map<T>::const_iterator string_map<T>::find(const key_type &key){
+typename string_map<T>::const_iterator string_map<T>::find(const key_type &key) const {
   Nodo* sekeer = raiz;
   for(u_int i = 0; i < key.size(); i++){
     if((sekeer->hijos)[int(key[i])] == NULL ){
-      throw domain_error("El elemento no esta");
+      //throw domain_error("El elemento no esta");
+        cout << "El elemento no esta" << endl;
     }
-    seeker = (seeker->hijos)[int(key[i])];
+    sekeer = (sekeer->hijos)[int(key[i])];
   }
-  return string_map<T>::const_iterator it(*seeker);
+  string_map<T>::const_iterator it(sekeer);
+    return it;
 }
 
+
+//NO anda!
 //dado una pair<clave,sig> devuelve un pair<iterator,bool> indicando si lo inserto
 template <typename T>
 typename pair<string_map<T>::iterator, bool> string_map<T>::insert(const value_type &value){
-  if(empty()){throw domain_error("Error: Diccionario vacio");}
+  if(empty()){
+      //throw domain_error("Error: Diccionario vacio");
+      cout << "Error: Diccionario vacio" << endl;}
   string_map<T>::iterator iter = begin();
   for(u_int i = 0; i < value.second.size(); i++){
-    if(iterator){//no esta definido en la posicion, creo un nodo}
-      else{itererase(const key_type& key){}
+    if(iter){//no esta definido en la posicion, creo un nodo
+         }
+      else{iter->erase(const key_type& key){}
       }
     }
-  }
 }
+
 
 template <typename T>
 typename string_map<T>::iterator string_map<T>::erase(string_map<T>::iterator pos){}
 
-void swap(const string_map other&){
+
+template <typename T>
+void string_map<T>::swap(const string_map &other){
   using std::swap;
   swap(raiz, other.raiz);
   swap(cantElem, other.cantElem);
@@ -194,21 +213,22 @@ void string_map<T>::iterator::iterator(const iterator& otro){
 }
 
 template <typename T>
-string_map<T>::iterator string_map<T>::iterator::operator=(const iterator& otro){
-  return string_map<T>::iterator it(otro->nodo);
+string_map<T>::iterator& string_map<T>::iterator::operator=(const iterator& otro){
+  string_map<T>::iterator it(otro->nodo);
+    return it;
 }
 
 template <typename T>
-bool string_map<T>::iterator::operator==(const iterator& otro){
+bool string_map<T>::iterator::operator==(const iterator& otro) const {
   return nodo == otro->nodo;
 }
 
 template <typename T>
-bool string_map<T>::iterator::operator!=(const iterator& otro){
+bool string_map<T>::iterator::operator!=(const iterator& otro) const {
   return !(*this == otro);
 }
 
-
+//QUIEN ES PADRE???
 template <typename T>
 string_map<T>::iterator& string_map<T>::iterator::operator++(){
   string_map<T>::iterator it(*this);
@@ -224,10 +244,12 @@ string_map<T>::iterator& string_map<T>::iterator::operator++(){
     return it;//devuelvo iterator que apunta a el menor de la rama en la que estoy
   }
   else{
-    return it();//iterator apuntado a la posicion pasando el ultimo
+    return it;//iterator apuntado a la posicion pasando el ultimo
   }
  }
 
+
+//QUIEN ES PADRE???
 template <typename T>
 string_map<T>::iterator string_map<T>::iterator::operator++(){
   string_map<T>::iterator it(*this);
@@ -243,14 +265,19 @@ string_map<T>::iterator string_map<T>::iterator::operator++(){
     return *(it);//devuelvo iterator que apunta a el menor
   }
   else{
-    return *(it());//iterator apuntado a la posicion pasando el ultimo
+    return *(it);//iterator apuntado a la posicion pasando el ultimo
   }
 }
 
+
+//Todavia no funca!
 template <typename T>
 typename   string_map<T>::value_type& string_map<T>::iterator::operator*(){
-  return nodo->definicion;
+  return (nodo->definicion);
 }
+
+//*/desreferencia
+//->atributo/ desreferencia y accede al atributo
 
 template <typename T>
 typename string_map<T>::value_type* string_map<T>::iterator::operator->(){
