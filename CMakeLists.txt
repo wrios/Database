@@ -8,6 +8,7 @@ set(SOURCE_FILES
         cmake-build-debug/tests/google-test/cmake_install.cmake
         cmake-build-debug/tests/google-test/gtest.cbp
         cmake-build-debug/tests/google-test/Makefile
+        cmake-build-debug/aed2_2c2017_tp2.cbp
         cmake-build-debug/cmake_install.cmake
         cmake-build-debug/CMakeCache.txt
         cmake-build-debug/Makefile
@@ -32,6 +33,7 @@ set(SOURCE_FILES
         src/Restriccion.cpp
         src/Restriccion.h
         src/string_map.h
+        src/string_map.hpp
         src/Tabla.cpp
         src/Tabla.h
         src/utils.h
