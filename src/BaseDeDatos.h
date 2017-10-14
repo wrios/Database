@@ -10,6 +10,7 @@
 #include "linear_map.h"
 #include "linear_set.h"
 #include "utils.h"
+#include "Indice.h"
 
 using namespace std;
 
@@ -162,9 +163,9 @@ public:
    */
   linear_set<Criterio> top_criterios() const;
 
-    void BaseDeDatos::crearIndice(const string &nombre, const string &campo);
+    void crearIndice(const string &nombre, const string &campo);
 
-    join_iterator BaseDeDatos::join(const string &tabla1, const string &tabla2, const string &campo) const;
+//    join_iterator BaseDeDatos::join(const string &tabla1, const string &tabla2, const string &campo) const;
 
 private:
 	  ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -196,7 +197,7 @@ private:
     linear_map<Criterio, int> _uso_criterios;
 
 //    string_map<string_map<Indice>> _indices;
-    string_map<string_map<string_map>> _indices; //TODO reemplazar por Indice
+    string_map<string_map<Indice>> _indices; //TODO reemplazar por Indice
     /** @} */
 
     /** @{ */

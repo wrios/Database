@@ -140,3 +140,7 @@ linear_set<BaseDeDatos::Criterio> BaseDeDatos::top_criterios() const {
   }
   return ret;
 }
+
+void BaseDeDatos::crearIndice(const string &nombre, const string &campo) {
+
+}
