@@ -703,7 +703,7 @@ TEST_F(DBAlumnos, join_sin_repetidos) {
 
   int count = 0;
   for (auto it = begin; it != end; it++) {
-    EXPECT_EQ(it->campos(), nuevos_campos);
+    EXPECT_EQ((*it).campos(), nuevos_campos);
     count++;
   }
 
@@ -719,7 +719,7 @@ TEST_F(DBAlumnos, join_repetidos_uno) {
 
   linear_set<string> nuevos_campos({"LU_N", "LU_A", "LU", "Materia"});
   for (auto it = begin; it != end; it++) {
-    EXPECT_EQ(it->campos(), nuevos_campos);
+    EXPECT_EQ((*it).campos(), nuevos_campos);
   }
 
   linear_set<Registro> join(begin, end);
@@ -770,7 +770,7 @@ TEST_F(DBAlumnos, join_repetidos_ambos) {
   linear_set<string> nuevos_campos({"X", "Y", "Z"});
   for (auto it = begin; it != end; it++) {
     cout << *it << endl;
-    EXPECT_EQ(it->campos(), nuevos_campos);
+    EXPECT_EQ((*it).campos(), nuevos_campos);
   }
 
   linear_set<Registro> join(begin, end);
