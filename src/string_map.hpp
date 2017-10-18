@@ -231,44 +231,50 @@ typename pair<string_map<T>::iterator, bool> string_map<T>::insert(const value_t
   recognizer->definicion = value.second;
 }
 
-//define
+//devuelve un bool indicando si tiene significado
 template <typename T>
-typename string_map<T>::iterator string_map<T>::fast_insert(const value_type& v){
-  Nodo* recognizer = raiz;
-  for(u_int i = 0; i < value.first.size(); i++){
-    if(recognizer->hijos[int(value[i])] == NULL){
-      recognizer->hijos[int(value.first[i])] = new Nodo();
-      recognizer->hijos[int(value.first[i])]->padre = recognizer;
-      recognizer->hijos[int(value.first[i])]->padre->prim = hijos[int(value[i])];
-    }
-    reestablecerPrim(recognizer);
-    recognizer->hijos[int(value.first[i])]->padre->cant_hijos++;
-    recognizer->hijos[int(value.first[i])]->padre->cant_descendientes++;
-    recognizer = recognizer->hijos[int(value.first[i])];
+bool reestablecerPrim(Nodo* pos){
+  u_int menor;
+  for(u_int i = 0; i<256 && aux == NULL; i++){
+    menor = i;
   }
-  recognizer->definicion = value.second;
-  can_Elem++;
-  string_map<T>::iterator it(recognizer);
-}
-
-template <typename T>
-void reestablecerPrim(Nodo* pos){
-  for(u_int i = 0; i<256; i++){
-    pos->prim = ;
-  }
-
+  pos->prim = pos->hijos[menor];
+  return (prim != NULL)&&(prim->definicion != NULL);
 }
 
 template <typename T>
 typename string_map<T>::iterator string_map<T>::erase(string_map<T>::iterator pos){
   if(empty()){throw domain_error("Error: Diccionario vacio");}
-  string_map<T>::iterator iter = begin();
-  for(u_int i = 0; i < value.second.size(); i++){
-    if(iterator){//no esta definido en la posicion, creo un nodo}
-      else{itererase(const key_type& key){}
+  string_map<T>::iterator viejo = pos->padre;
+  string_map<T>::iterator res = pos;
+  res++;
+  if(pos->cant_hijos > 0){
+    //si tiene hijos, borro su definicion y dejo que su hijos vivan
+    pos->definicion = NULL;
+  }else{
+    //no tiene hijos, borro el nodo y me fijo que pasa con el padre
+    if(viejo->cant_hijos > 1){
+      //el padre tiene otros hijos nodos
+      //solo borro ese nodo
+      delete pos;
+    }else{
+      //el padre solo tiene ese nodo como hijo, borro los antesesores
+      while(pos != raiz && pos->padre->cant_hijos == 0){
+        Nodo* aux = pos;
+        pos = pos->padre;
+        delete aux;
       }
     }
+    viejo->cant_hijos--;
+    reestablecerPrim(viejo->padre);
   }
+  return res;
+}
+
+template <typename T>
+typename string_map<T>::iterator string_map<T>::erase(const key_type &key){
+  string_map<T>::iterator iter = find();
+  erase(iter);
 }
 
 void swap(const string_map other&){
@@ -298,26 +304,6 @@ template <typename T>
    bool string_map<T>::iterator::operator!=(const iterator& otro){
    return !(*this == otro);
 }
-
-
-
-   string_map<T>::iterator& string_map<T>::iterator::operator++(){
-   string_map<T>::iterator it(*this);
-   while(padre->der == NULL && it->padre != NULL){
-     it = it->padre;
-     if(it->padre->definicion != NULL){return it;}
-   }
-   if(it->der != NULL){//tengo hermano derecho
-     it = it->der;
-     while(it->h_prim != NULL){//voy por el menor camino(lexicografico)
-       it = it->h_prim;
-     }
-     return it;//devuelvo iterator que apunta a el menor de la rama en la que estoy
-   }
-   else{
-     return it();//iterator apuntado a la posicion pasando el ultimo
-   }
- }
 
 template <typename T>
 //3 casos
