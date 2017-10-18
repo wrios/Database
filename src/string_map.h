@@ -201,20 +201,23 @@ private:
 
 
     struct Nodo {
-        T *definicion;
-        Nodo **hijos;
-        Nodo *padre;
-        Nodo *der;
-        Nodo *izq;
-        Nodo *prim;
-        Nodo *ult;
-
+      T* definicion;
+      Nodo** hijos;
+      Nodo* padre;
+      Nodo* prim;
+      size_t cant_descendientes;
+      size_t cant_hijos;
+      
         Nodo() {
             hijos = new Nodo *[256];
             for (int i = 0; i < 256; i++) {
                 hijos[i] = NULL;
             }
             definicion = NULL;
+            padre = NULL;
+            prim = NULL;
+            cant_hijos = 0;
+           cant_descendientes = 0;
         }
 
         ~Nodo() {
