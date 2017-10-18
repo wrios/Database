@@ -164,7 +164,7 @@ private:
     string_map<bool> _claves;
     //string_map<bool> _campos;
     string_map<Dato> _camposYtipos;
-    std::map<unsigned int, Registro> _registros;
+    linear_set<Registro> _registros;
     /** }@ */
 
 };

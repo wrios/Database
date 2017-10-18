@@ -17,11 +17,12 @@ Tabla::Tabla(const linear_set<string> &claves,
         }
 }
 
-//QUE ONDAAAAAAaa??
+
 Tabla::const_iterador_registros Tabla::agregarRegistro(const Registro& r) {
     return Tabla::const_iterador_registros(
-        linear_set<Registro>::const_iterator(_registros.insert(make_pair(_registros.size()+1, r))));
+            linear_set<Registro>::const_iterator(_registros.insert(r).first));
 }
+
 
 const linear_set<string>& Tabla::campos() const {
     return _camposYtipos.claves();
@@ -34,15 +35,12 @@ const linear_set<string>& Tabla::claves() const {
 const Dato& Tabla::tipoCampo(const string& campo) const {
     return _camposYtipos.at(campo);
 }
-//Deberia ir llenando el vector res con los registros, no con el par<int, registro>
+
 const linear_set<Registro> &Tabla::registros() const {
-    linear_set<Registro> res;
-    for (int i = 1; i < _registros.size()+1; ++i) {
-        res.insert(_registros[i]);
-    }
-    return res;
+    return _registros;
 }
-//QUE ONDAAAAAAAA???
+
+
 Tabla::const_iterador_registros Tabla::registros_begin() const {
   return Tabla::const_iterador_registros(_registros.begin());
 }

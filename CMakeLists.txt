@@ -16,7 +16,7 @@ add_subdirectory(tests/google-test)
 
 
 # Creamos el ejecutable para correr los tests
-add_executable(correrTests ${TEST_SOURCES} ${SOURCE_FILES})
+add_executable(correrTests ${TEST_SOURCES} ${SOURCE_FILES} src/Indice.cpp)
 
 # Creamos el ejecutable para correr los tests
 add_executable(correrTests_sol ${TEST_SOURCES} ${SOURCE_FILES})

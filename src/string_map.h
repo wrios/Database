@@ -274,4 +274,6 @@ private:
 
 
 };
+
+#include "string_map.hpp"
 #endif //STRING_MAP_STRING_MAP_H

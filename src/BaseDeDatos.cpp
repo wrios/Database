@@ -13,9 +13,10 @@ void BaseDeDatos::crearTabla(const string &nombre,
   _tablas.fast_insert(make_pair(nombre, Tabla(claves, campos, tipos)));
 }
 
-void BaseDeDatos::agregarRegistro(const Registro &r, const string &nombre) {
-  Tabla &t = _tablas.at(nombre);
-  t.agregarRegistro(r);
+void BaseDeDatos::agregarRegistro(Registro &r, const string &nombre) {
+    Tabla &t = _tablas.at(nombre);
+    r.set_id(t.registros().size());
+    t.agregarRegistro(r);
 }
 
 const linear_set<string> &BaseDeDatos::tablas() const { return _nombres_tablas; }
@@ -142,5 +143,9 @@ linear_set<BaseDeDatos::Criterio> BaseDeDatos::top_criterios() const {
 }
 
 void BaseDeDatos::crearIndice(const string &nombre, const string &campo) {
-
+    Tabla t = dameTabla(nombre);
+    Dato d = t.tipoCampo(campo);
+    bool b = d.esString();
+    Indice ind = Indice(t, campo, b);
+    _indices[nombre][campo] = ind;
 }

@@ -56,6 +56,12 @@ public:
      */
     const linear_set<string>& campos() const;
 
+    
+    int get_id();
+
+
+    void set_id(int _id);
+
 private:
 	  ///////////////////////////////////////////////////////////////////////////////////////////////////
     /** \name Representación
@@ -73,6 +79,7 @@ private:
 
     /** @{ */
     string_map<Dato> _campoYdato;
+    int _id;
     /** @} */
 
 
