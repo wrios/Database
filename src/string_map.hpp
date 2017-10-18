@@ -196,7 +196,7 @@ typename string_map<T>::const_iterator string_map<T>::end()const{
     return string_map<T>::const_iterator it(*raiz);
 }
 
-//devuelve un iterador a la clave 
+//devuelve un iterador a la clave
 template <typename T>
 typename string_map<T>::iterator string_map<T>::find(const key_type &key){
     Nodo* seeker = raiz;
@@ -223,7 +223,7 @@ typename string_map<T>::const_iterator string_map<T>::find(const key_type &key){
     return string_map<T>::const_iterator it(*sekeer);
 }
 
-//define o redefine 
+//define o redefine
 template <typename T>
 typename pair<string_map<T>::iterator, bool> string_map<T>::insert(const value_type &value){
     Nodo* recognizer = raiz;

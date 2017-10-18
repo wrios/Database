@@ -16,7 +16,7 @@ add_subdirectory(tests/google-test)
 
 
 # Creamos el ejecutable para correr los tests
-add_executable(correrTests ${TEST_SOURCES} ${SOURCE_FILES} src/Indice.cpp)
+add_executable(correrTests ${TEST_SOURCES} ${SOURCE_FILES} src/Indice.cpp src/linear_map.hpp src/linear_set.hpp src/string_map.hpp)
 
 # Creamos el ejecutable para correr los tests
 add_executable(correrTests_sol ${TEST_SOURCES} ${SOURCE_FILES})

@@ -9,7 +9,7 @@ linear_set<T>::linear_set(std::initializer_list<value_type> init) {
       _elems.insert(make_pair(x, true));
     }
   }
-  
+
 template<class T>
 template<class InputIt>
 linear_set<T>::linear_set(InputIt first, InputIt last) {
@@ -26,7 +26,7 @@ pair<typename linear_set<T>::iterator, bool> linear_set<T>::insert(const T &x) {
   auto ret = _elems.insert(make_pair(x, true));
   return make_pair(iterator(ret.first), ret.second);
 }
-  
+
 template<class T>
 typename linear_set<T>::iterator linear_set<T>::fast_insert(const typename linear_set<T>::value_type& v) {
   auto it = _elems.fast_insert(make_pair(v, true));
@@ -47,7 +47,7 @@ template<class T>
 typename linear_set<T>::size_type linear_set<T>::size() const {
   return _elems.size();
 }
-  
+
 template<class T>
 typename linear_set<T>::size_type linear_set<T>::erase(const T &x) {
   return _elems.erase(x);
@@ -72,12 +72,12 @@ bool linear_set<T>::operator==(const linear_set<T> &other) const {
   }
   return true;
 }
-  
+
 template<class T>
 typename linear_set<T>::iterator linear_set<T>::begin() {
   return iterator(_elems.begin());
 }
-  
+
 template<class T>
 typename linear_set<T>::iterator linear_set<T>::end() {
   return iterator(_elems.end());
@@ -114,7 +114,7 @@ std::ostream &operator<<(std::ostream &os, const linear_set<T> &s) {
     if (count) {
      os << ", ";
     }
-  } 
+  }
   os << " }";
   return os;
 }
