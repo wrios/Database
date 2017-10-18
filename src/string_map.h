@@ -4,12 +4,11 @@
 #include <cassert>
 #include <string>
 #include <vector>
-//#include "Lista.h"
 #include <ostream>
-#include <vector>
+#include "linear_set.h"
+
 
 using std::string;
-//using std::vector;
 using std::pair;
 
 /**
@@ -172,6 +171,12 @@ public:
      */
     iterator erase(iterator pos);
 
+    //Devuelve las claves del diccionario
+    linear_set<string> claves() const;
+
+    //Devuelve la union de todos los significados
+    linear_set<T> significados() const;
+
 private:
 
 
@@ -209,6 +214,7 @@ private:
      **/
 
     void swap(const string_map &other);
+
 
  public:
     class iterator{

@@ -15,7 +15,7 @@ Registro::Registro(const vector<string>& campos, const vector<Dato>& datos) :
          _campoYdato(){
     for (int i = 0; i < campos.size(); ++i) {
 
-        _campoYdato.insert(make_pair (campos[i], datos[i]));
+        _campoYdato.insert(make_pair(campos[i], datos[i]));
 
     }
 };
@@ -32,7 +32,17 @@ const linear_set<string>& Registro::campos() const {
 }
 
 bool operator==(const Registro& r1, const Registro& r2) {
-    return r1._campoYdato == r2._campoYdato;
+    if (! seteq(r1.campos(), r2.campos())){
+        return false;
+    } else {
+        for (auto it = r1.campos().begin(); it != r1.campos().end(); ++it) {
+            if (r1.dato(*it) != r2.dato(*it)){
+                return false;
+            }
+        }
+    }
+
+    return true;
 }
 
 ostream &operator<<(ostream &os, const Registro &r) {

@@ -5,6 +5,9 @@
 #include <vector>
 #include <list>
 
+//TODO: conjuntos iguales con Contenedores!!!
+
+
 template<class T>
 bool pertenece(T x, vector<T> v) {
     for (int i = 0; i < v.size(); ++i) {

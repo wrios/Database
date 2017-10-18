@@ -6,7 +6,7 @@ using namespace std;
 Tabla::Tabla(const linear_set<string> &claves, 
              const vector<string> &campos, 
              const vector<Dato> &tipos) 
-    :  {
+      {
     //QUE ONDAAA??
         for (auto it = claves.begin(); it != claves.end(); ++it) {
             _claves.insert(make_pair(*it, true));
