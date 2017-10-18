@@ -192,12 +192,9 @@ private:
     //////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /** @{ */
-    linear_set<string> _nombres_tablas;
-    linear_map<string, Tabla> _tablas;
-    linear_map<Criterio, int> _uso_criterios;
-
-//    string_map<string_map<Indice>> _indices;
-    string_map<string_map<Indice>> _indices; //TODO reemplazar por Indice
+    string_map<Tabla> _nombresYtablas;
+    linear_map<Criterio, int> _criteriosYusos;
+    string_map<string_map<Indice> > _indices;
     /** @} */
 
     /** @{ */

@@ -124,7 +124,7 @@ public:
 
     const_iterator end() const;
 
-    const_iterator cbegin() const;
+    const const_iterator cbegin() const;
 
     const_iterator cend() const;
 
@@ -175,7 +175,7 @@ public:
     linear_set<string> claves() const;
 
     //Devuelve la union de todos los significados
-    linear_set<T> significados() const;
+     linear_set<T> significados() const;
 
 private:
 
@@ -206,7 +206,7 @@ private:
         }
     };
 
-    size_t cantElem;
+    size_type cantElem;
     Nodo* raiz;
 
     /** @brief Preguntar
@@ -216,6 +216,13 @@ private:
     void swap(const string_map &other);
 
     Nodo* minimo();
+
+    Nodo* minimo() const;
+
+    bool reestablecerPrim(Nodo* pos);
+
+
+    Nodo* sucesor(Nodo* pos) const;
 
 
  public:
@@ -243,6 +250,12 @@ private:
 
     iterator(Nodo* n) : nodo(n) {};
     Nodo* nodo;
+
+        iterator herm_Mayor();
+
+        iterator avanzarAlMin();
+
+        bool tieneHM(key_type& clave);
 
     };
 

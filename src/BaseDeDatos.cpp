@@ -9,33 +9,33 @@ void BaseDeDatos::crearTabla(const string &nombre,
                              const linear_set<string> &claves,
                              const vector<string> &campos,
                              const vector<Dato> &tipos) {
-  _nombres_tablas.fast_insert(nombre);
-  _tablas.fast_insert(make_pair(nombre, Tabla(claves, campos, tipos)));
+  _nombresYtablas.insert(make_pair(nombre, Tabla(claves, campos, tipos)));
 }
 
 void BaseDeDatos::agregarRegistro(Registro &r, const string &nombre) {
-    Tabla &t = _tablas.at(nombre);
+    Tabla &t = _nombresYtablas.at(nombre);
     r.set_id(t.registros().size());
     t.agregarRegistro(r);
 }
 
-const linear_set<string> &BaseDeDatos::tablas() const { return _nombres_tablas; }
+const linear_set<string> &BaseDeDatos::tablas() const {
+    return _nombresYtablas.claves(); }
 
 const Tabla &BaseDeDatos::dameTabla(const string &nombre) const {
-  return _tablas.at(nombre);
+  return _nombresYtablas.at(nombre);
 }
 
 int BaseDeDatos::uso_criterio(const BaseDeDatos::Criterio &criterio) const {
-  if (_uso_criterios.count(criterio)) {
-    return _uso_criterios.at(criterio);
+  if (_criteriosYusos.count(criterio)) {
+    return _criteriosYusos.at(criterio);
   } else {
     return 0;
   }
 }
 
-bool BaseDeDatos::registroValido(const Registro &r,
-                                 const string &nombre) const {
-  const Tabla &t = _tablas.at(nombre);
+//CHEQUEAR COMPLEJIDAD
+bool BaseDeDatos::registroValido(const Registro &r, const string &nombre) const {
+  const Tabla &t = _nombresYtablas.at(nombre);
 
   return (t.campos() == r.campos() and _mismos_tipos(r, t) and
           _no_repite(r, t));
@@ -92,7 +92,7 @@ pair<vector<string>, vector<Dato> > BaseDeDatos::_tipos_tabla(const Tabla &t) {
 
 bool BaseDeDatos::criterioValido(const Criterio &c,
                                  const string &nombre) const {
-  const Tabla &t = _tablas.at(nombre);
+  const Tabla &t = _nombresYtablas.at(nombre);
   for (auto restriccion : c) {
     if (not t.campos().count(restriccion.campo())) {
       return false;
@@ -107,10 +107,10 @@ bool BaseDeDatos::criterioValido(const Criterio &c,
 
 Tabla BaseDeDatos::busqueda(const BaseDeDatos::Criterio &c,
                             const string &nombre) {
-  if (_uso_criterios.count(c)) {
-    _uso_criterios.at(c)++;
+  if (_criteriosYusos.count(c)) {
+    _criteriosYusos.at(c)++;
   } else {
-    _uso_criterios.fast_insert(make_pair(c, 1));
+    _criteriosYusos.fast_insert(make_pair(c, 1));
   }
 
   const Tabla &ref = dameTabla(nombre);
@@ -130,7 +130,7 @@ Tabla BaseDeDatos::busqueda(const BaseDeDatos::Criterio &c,
 linear_set<BaseDeDatos::Criterio> BaseDeDatos::top_criterios() const {
   linear_set<Criterio> ret;
   int max = 0;
-  for (auto crit_count : _uso_criterios) {
+  for (auto crit_count : _criteriosYusos) {
     if (crit_count.second >= max) {
       if (crit_count.second > max) {
         ret = linear_set<Criterio>();

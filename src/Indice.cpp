@@ -14,14 +14,12 @@ string Indice::dameCampo() const {
 }
 
 Indice::~Indice() {
-    //TODO invocar destructores
-//    if (_esString){
-//        _indicesStr.~string_map();
-//    } else{
-//        _indicesNat.~map();
-//    }
-//    _campo.~string();
-//    _esString.~bool();
+    if (_esString){
+        _indicesStr.~string_map();
+    } else{
+        _indicesNat.~map();
+    }
+    //_campo.~string();
 }
 
 void Indice::agregarRegistro(const Registro &r) {
