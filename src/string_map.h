@@ -215,6 +215,8 @@ private:
 
     void swap(const string_map &other);
 
+    Nodo* minimo();
+
 
  public:
     class iterator{
