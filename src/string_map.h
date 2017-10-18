@@ -14,8 +14,8 @@ using std::pair;
 /**
  * Implementacion de map<string,T> sobre Trie
  * Asume de T:
- * - tiene constructor por copia 
- * - tiene operador ==
+ * - tiene constructor por copia (con complejidad copy(T))
+ * - tiene operador == (con complejidad cmp(T))
  * - solo permite utilizar el operator[] si T tiene constructor por defecto
  */
 template < typename T >
@@ -45,19 +45,19 @@ public:
 
     /** @brief Constructor por copia
      *
-     * \complexity{\O(sn * S)}
+     * \complexity{\O(sn * S * copy(T))}
      */
     string_map(const string_map &);
 
     /** @brief Operador de asignacion
      *
-     * \complexity{\O(sn * S)}
+     * \complexity{\O(sn * S * copy(T))}
      */
     string_map &operator=(const string_map &);
 
     /** @brief Operadores de comparacion
      *
-     * \complexity{\O(sn * S)}
+     * \complexity{\O(sn * S * cmp(T))}
      */
     bool operator==(const string_map &otro) const;
 
@@ -151,7 +151,7 @@ public:
      * modificado y un bool que indica si la clave se insertó como una clave
      * nueva.
      * 
-     * \complexity{\O(S + copy(value_type))}
+     * \complexity{\O(S + copy(T))}
      */
     pair<iterator, bool> insert(const value_type &value);
 
