@@ -5,10 +5,11 @@
 #include <string>
 #include <vector>
 //#include "Lista.h"
-//#include <ostream>
+#include <ostream>
+#include <vector>
 
 using std::string;
-using std::vector;
+//using std::vector;
 using std::pair;
 
 /**
@@ -201,12 +202,14 @@ private:
     };
 
     size_t cantElem;
-    Nodo *raiz;
+    Nodo* raiz;
 
     /** @brief Preguntar
      *
      **/
+
     void swap(const string_map &other);
+
  public:
     class iterator{
     public:
@@ -232,6 +235,34 @@ private:
 
     iterator(Nodo* n) : nodo(n) {};
     Nodo* nodo;
+
+    };
+
+
+    class const_iterator{
+    public:
+        typedef T value_type;
+
+        const_iterator(const const_iterator &);
+
+        const_iterator& operator=(const const_iterator &);
+
+        bool operator==(const const_iterator &) const;
+
+        bool operator!=(const const_iterator &) const;
+
+        const_iterator operator++();
+
+        value_type &operator*();
+
+        value_type *operator->();
+
+        friend class string_map;
+
+    private:
+
+        const_iterator(Nodo* n) : nodo(n) {};
+        Nodo* nodo;
 
     };
 

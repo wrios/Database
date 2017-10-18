@@ -34,7 +34,7 @@ const linear_set<string>& Tabla::claves() const {
 const Dato& Tabla::tipoCampo(const string& campo) const {
     return _camposYtipos.at(campo);
 }
-
+//Deberia ir llenando el vector res con los registros, no con el par<int, registro>
 const linear_set<Registro> &Tabla::registros() const {
     linear_set<Registro> res;
     for (int i = 1; i < _registros.size()+1; ++i) {
