@@ -27,33 +27,7 @@ public:
     typedef size_t size_type;
 
 
-    class iterator {
-    public:
-        typedef T value_type;
-
-        iterator(const iterator &);
-
-        iterator& operator=(const iterator &);
-
-        bool operator==(const iterator &) const;
-
-        bool operator!=(const iterator &) const;
-
-        iterator &operator++();
-
-        iterator operator++();
-
-        value_type &operator*();
-
-        value_type *operator->();
-
-    private:
-        friend class string_map;
-        iterator(Nodo *n) : nodo(n) {};
-        Nodo *nodo;
-
-    };
-
+    class iterator;
     class const_iterator;
 
 
@@ -233,6 +207,33 @@ private:
      *
      **/
     void swap(const string_map &other);
+ public:
+    class iterator{
+    public:
+    typedef T value_type;
+
+    iterator(const iterator &);
+
+    iterator& operator=(const iterator &);
+
+    bool operator==(const iterator &) const;
+
+    bool operator!=(const iterator &) const;
+
+    iterator operator++();
+
+    value_type &operator*();
+
+    value_type *operator->();
+
+    friend class string_map;
+
+    private:
+
+    iterator(Nodo* n) : nodo(n) {};
+    Nodo* nodo;
+
+    };
 
 
 };
