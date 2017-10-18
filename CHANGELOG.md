@@ -30,3 +30,7 @@
 * String map tienen en cuenta el costo de copiar y comparar T
 * Detalle del tests de join
 * Aclaración en la complejidad del iterador de string_map
+
+## 1.3.1
+
+* Corrección en rep de Tabla

@@ -144,8 +144,7 @@ private:
      *    * \FORALL (c : campo) c \IN _campos \IMPLIES 
      *        Nat?(valor(c, r)) = Nat?(obtener(c, _tipos))
      *    * no se repiten claves \EQUIV 
-     *      \FORALL (r' : registro) r \IN (_registros - {r}) \IMPLIES 
-     *      \LNOT hayCoincidencia(r, _claves, _registros)
+     *      \LNOT hayCoincidencia(r, _claves, _registros - {r})
      *  * ) 
      *
      * abs: tabla \TO Tabla\n
