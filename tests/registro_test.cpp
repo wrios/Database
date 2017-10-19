@@ -48,7 +48,7 @@ TEST(registro_test, ig_obs) {
     EXPECT_FALSE(r1 == r5);
 
     // Más campos
-    Registro r6({"LU", "LU_A", "Nombre"}, 
+    Registro r6({"LU", "LU_A", "Nombre"},
             {datoNat(2), datoStr("a"), datoStr("b")});
     EXPECT_FALSE(r1 == r6);
 }

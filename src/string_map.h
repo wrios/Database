@@ -8,6 +8,7 @@
 #include "linear_set.h"
 
 
+
 using std::string;
 using std::pair;
 
@@ -61,7 +62,7 @@ public:
      */
     bool operator==(const string_map &otro) const;
 
-    bool operator!=(const string_map &otro) const { return !(*this == otro); }
+    bool operator!=(const string_map &otro) const;
 
     /** @brief Cantidad de apariciones de la clave (0 o 1)
      *  @param key clave a buscar
@@ -215,14 +216,54 @@ private:
 
     void swap(const string_map &other);
 
-    Nodo* minimo();
 
-    Nodo* minimo() const;
+    Nodo* minimo(Nodo* nodo){
+        Nodo* aux = nodo->prim;
+        while(aux->prim != NULL){
+            aux = aux->prim;
+        }
+        return aux;
+    }
+
+
+    Nodo* minimo(){
+        return minimo(raiz);
+    }
+
+
+    Nodo* minimo() const{
+        return minimo(raiz);
+    }
+
+
+    Nodo* minimo(Nodo* nodo) const {
+        Nodo* aux = nodo->prim;
+        while(aux->prim != NULL){
+            aux = aux->prim;
+        }
+        return aux;
+    }
+
 
     bool reestablecerPrim(Nodo* pos);
 
 
-    Nodo* sucesor(Nodo* pos) const;
+    //devuelve el sucesor inorder de la posicion pasada como parametro
+    Nodo* sucesor(Nodo* pos) const{
+        if(pos->cant_descendientes == 0 && pos->padre->cant_hijos > 0){
+            Nodo* aux = pos->padre;
+            string_map<T>::iterator it = aux;
+            if (aux != end()){
+                aux = (++it)->nodo;
+            }
+            return aux;
+        }
+        else if(pos->cant_descendientes > 0){
+            Nodo*  aux = minimo(pos);
+
+            return aux;
+        }
+    }
 
 
  public:
@@ -230,13 +271,13 @@ private:
     public:
     typedef T value_type;
 
-    iterator(const iterator &);
+    iterator(const iterator& otro);
 
-    iterator& operator=(const iterator &);
+    iterator& operator=(const iterator & otro);
 
-    bool operator==(const iterator &) const;
+    bool operator==(const iterator & otro) const;
 
-    bool operator!=(const iterator &) const;
+    bool operator!=(const iterator & otro) const;
 
     iterator operator++();
 

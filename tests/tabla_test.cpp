@@ -13,7 +13,7 @@ linear_set<Registro> to_set(Tabla::const_iterador_registros begin,
                             Tabla::const_iterador_registros end) {
   linear_set<Registro> res;
   for (auto it = begin; it != end; ++it) {
-   res.insert(*it); 
+   res.insert(*it);
   }
   return res;
 }
@@ -43,7 +43,7 @@ TEST(tabla_test, crear) {
 };
 
 TEST_F(TablaTests, campos) {
-    EXPECT_EQ(t.campos(), 
+    EXPECT_EQ(t.campos(),
               linear_set<string>({"LU", "LU_A", "Nombre", "Carrera"}));
     EXPECT_EQ(t2.campos(), linear_set<string>({"Cod", "Carrera"}));
 };
@@ -155,7 +155,7 @@ TEST(tabla_test, it_registro) {
   EXPECT_EQ(*t.registros_begin(), r1);
   EXPECT_EQ(t.registros_begin()->dato("LU"), datoStr("123/01"));
   EXPECT_EQ(++t.registros_begin(), t.registros_end());
- 
+
   Registro r2({"LU", "Nombre"}, {datoStr("123/02"), datoStr("Gerva")});
   Registro r3({"LU", "Nombre"}, {datoStr("123/03"), datoStr("Analía")});
 

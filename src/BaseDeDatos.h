@@ -28,6 +28,9 @@ using namespace std;
 class BaseDeDatos {
 
 public:
+
+    class join_iterator;
+
   /** @brief Criterio de búsqueda para una base de datos */
   typedef linear_set<Restriccion> Criterio;
 
@@ -165,7 +168,7 @@ public:
 
     void crearIndice(const string &nombre, const string &campo);
 
-//    join_iterator BaseDeDatos::join(const string &tabla1, const string &tabla2, const string &campo) const;
+    join_iterator join(const string &tabla1, const string &tabla2, const string &campo) const;
 
 private:
 	  ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -258,6 +261,38 @@ private:
      */
     pair<vector<string>, vector<Dato> > _tipos_tabla(const Tabla &t);
     /** @} */
+
+
+
+public:
+    class join_iterator{
+    public:
+//        typedef T value_type;
+
+        join_iterator(const join_iterator& otro);
+
+//        join_iterator& operator=(const join_iterator & otro);
+
+        bool operator==(const join_iterator & otro) const;
+
+        bool operator!=(const join_iterator & otro) const;
+
+        join_iterator operator++();
+
+        Registro operator*();
+
+        Registro *operator->();
+
+        friend class BaseDeDatos;
+
+    private:
+
+        join_iterator(const linear_set<Registro>::iterator);
+
+        linear_set<Registro>::iterator it;
+
+    };
+
 };
 
 #endif

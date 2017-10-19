@@ -149,3 +149,40 @@ void BaseDeDatos::crearIndice(const string &nombre, const string &campo) {
     Indice ind = Indice(t, campo, b);
     _indices[nombre][campo] = ind;
 }
+
+
+BaseDeDatos::join_iterator::join_iterator(const join_iterator& otro) :
+    it(otro.it){}
+
+
+//BaseDeDatos::join_iterator& BaseDeDatos::join_iterator::operator=(const join_iterator & otro){
+//
+//}
+
+bool BaseDeDatos::join_iterator::operator==(const BaseDeDatos::join_iterator & otro) const{
+    return it == otro.it;
+}
+
+bool BaseDeDatos::join_iterator::operator!=(const BaseDeDatos::join_iterator & otro) const{
+    return !(it == otro.it);
+}
+
+BaseDeDatos::join_iterator BaseDeDatos::join_iterator::operator++(){
+    ++it;
+    return *this;
+}
+
+Registro BaseDeDatos::join_iterator::operator*(){
+    return *it;
+}
+
+Registro *BaseDeDatos::join_iterator::operator->(){
+    return &(*it);
+}
+
+
+BaseDeDatos::join_iterator BaseDeDatos::join(const string &tabla1, const string &tabla2, const string &campo) const {
+
+}
+
+
