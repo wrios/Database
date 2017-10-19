@@ -95,41 +95,41 @@ bool string_map<T>::empty() const {return cantElem == 0;}
 //acceso a la definicion, si no esta define por constructor por defecto
 template <typename T>
 T& string_map<T>::operator[](const key_type &key){
-    Nodo* sekeer = raiz;
+    Nodo* seeker = raiz;
     for(u_int i = 0; i < key.size(); i++){
-        if((sekeer->hijos)[i] == NULL ){
-            (sekeer->hijos)[int(key[i])] = new Nodo();
+        if((seeker->hijos)[i] == NULL ){
+            (seeker->hijos)[int(key[i])] = new Nodo();
         }
-        sekeer = (sekeer->hijos)[int(key[i])];
+        seeker = (seeker->hijos)[int(key[i])];
     }
-    if(sekeer->definicion == NULL){sekeer->definicion = T();}
-    return sekeer->definicion;
+    if(seeker->definicion == NULL){seeker->definicion = T();}
+    return seeker->definicion;
 }
 
 //devuelve el significado de la clave, sin modificar la clave
 template <typename T>
 T& string_map<T>::at(const key_type& key){
-    Nodo* sekeer = raiz;
+    Nodo* seeker = raiz;
     for(u_int i = 0; i < key.size(); i++){
-        if((sekeer->hijos)[int(key[i])] == NULL ){
+        if((seeker->hijos)[int(key[i])] == NULL ){
             cout << "El elemento no esta" ;
         }
-        sekeer = (sekeer->hijos)[int(key[i])];
+        seeker = (seeker->hijos)[int(key[i])];
     }
-    return *(sekeer->definicion);
+    return *(seeker->definicion);
 }
 
 //devuelve el significado de la clave, sin modificar clave ni significado
 template <typename T>
 const T& string_map<T>::at(const key_type& key) const{
-    Nodo* sekeer = raiz;
+    Nodo* seeker = raiz;
     for(u_int i = 0; i < key.size(); i++){
-        if((sekeer->hijos)[int(key[i])] == NULL ){
+        if((seeker->hijos)[int(key[i])] == NULL ){
             cout << "El elemento no esta";
         }
-        sekeer = (sekeer->hijos)[int(key[i])];
+        seeker = (seeker->hijos)[int(key[i])];
     }
-    return sekeer->definicion;
+    return seeker->definicion;
 }
 
 
@@ -203,14 +203,14 @@ typename string_map<T>::iterator string_map<T>::find(const key_type &key){
 //devuelve un iterador a la clave
 template <typename T>
 typename string_map<T>::const_iterator string_map<T>::find(const key_type &key) const{
-    Nodo* sekeer = raiz;
-    for(u_int i = 0; i < key.size() && sekeer->cant_hijos > 1; i++){
-        if((sekeer->hijos)[int(key[i])] == NULL ){
+    Nodo* seeker = raiz;
+    for(u_int i = 0; i < key.size() && seeker->cant_hijos > 1; i++){
+        if((seeker->hijos)[int(key[i])] == NULL ){
             cout << "El elemento no esta";
         }
-        sekeer = (sekeer->hijos)[int(key[i])];
+        seeker = (seeker->hijos)[int(key[i])];
     }
-    string_map<T>::const_iterator it = sekeer;
+    string_map<T>::const_iterator it = seeker;
     return it;
 }
 

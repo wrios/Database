@@ -290,7 +290,7 @@ private:
 
     private:
 
-    iterator(Nodo* n) : nodo(n) {};
+        explicit iterator(Nodo* n) : nodo(n) {};
     Nodo* nodo;
 
         iterator herm_Mayor();

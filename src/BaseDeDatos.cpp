@@ -12,9 +12,9 @@ void BaseDeDatos::crearTabla(const string &nombre,
   _nombresYtablas.insert(make_pair(nombre, Tabla(claves, campos, tipos)));
 }
 
-void BaseDeDatos::agregarRegistro(Registro &r, const string &nombre) {
+void BaseDeDatos::agregarRegistro(const Registro &r, const string &nombre) {
     Tabla &t = _nombresYtablas.at(nombre);
-    r.set_id(t.registros().size());
+//    r.set_id(t.registros().size());
     t.agregarRegistro(r);
 }
 

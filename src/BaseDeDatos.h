@@ -76,7 +76,7 @@ public:
    *
    * \complexity{\O(T + copy(reg))}
    */
-  void agregarRegistro(Registro &r, const string &nombre);
+  void agregarRegistro(const Registro &r, const string &nombre);
 
   /**
    * @brief Devuelve el conjunto de tablas existentes en la base.
