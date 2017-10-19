@@ -219,7 +219,7 @@ typename string_map<T>::const_iterator string_map<T>::find(const key_type &key) 
 //FALTA RETORNAR EL PAR!!!!!!!!!!!
 //define o redefine
 template <typename T>
-pair<typename string_map<T>::iterator, bool> string_map<T>::insert(const T &value){
+pair<typename string_map<T>::iterator, bool> string_map<T>::insert(const value_type &value){
     Nodo* recognizer = raiz;
     for(u_int i = 0; i < value.first.size(); i++){
         if(recognizer->hijos[int(value.first[i])] == NULL){
@@ -266,12 +266,12 @@ typename string_map<T>::iterator string_map<T>::iterator::operator++(){
     string_map<T>::iterator it(nodo);
     //CUIDADO ACAA!!!
     while(/*nodo->padre != raiz &&*/ nodo->padre->cant_hijos > 1){
-        it->nodo = it->nodo->padre;
+        it.nodo = it.nodo->padre;
     }
     //sali porque el padre es la raiz o la cantidad de hermanos es mayor a 1
     //busco a mi hermano mayor o al menor de mis "primos lejanos"
-    if((it->avanzarMayor())->nodo->clave > it->nodo->clave){
-        nodo =  it->avanzarAlMin()->nodo;
+    if((it.avanzarMayor()).nodo->definicion->first > it.nodo->definicion->first){
+        nodo =  it.avanzarAlMin().nodo;
         //devuelvo iterador apuntando al menor primo o mayor hermano
         return *this;
     }
@@ -283,7 +283,7 @@ typename string_map<T>::iterator string_map<T>::iterator::operator++(){
 
 template <typename T>
 typename string_map<T>::iterator& string_map<T>::iterator::operator=(const iterator& otro){
-    string_map<T>::iterator it = otro->nodo;
+    string_map<T>::iterator it = otro.nodo;
     return it;
 }
 
@@ -338,7 +338,7 @@ string_map<T>::iterator::iterator(const iterator& otro){
 
 template <typename T>
 bool string_map<T>::iterator::operator==(const iterator& otro) const{
-    return nodo == otro->nodo;
+    return nodo == otro.nodo;
 }
 
 template <typename T>
@@ -358,6 +358,13 @@ typename string_map<T>::iterator string_map<T>::iterator::herm_Mayor(){
     }
     //si sale por aca es porque sigue apuntando al mismo lugar
     return *this;
+}
+
+
+//FALTA IMPLEMENTAR!!!!!!!!!!!
+template <typename T>
+typename string_map<T>::iterator string_map<T>::iterator::avanzarMayor(){
+
 }
 
 

@@ -154,6 +154,7 @@ public:
      * 
      * \complexity{\O(S + copy(T))}
      */
+
     pair<iterator, bool> insert(const value_type &value);
 
     /** @brief eliminar una clave
@@ -293,6 +294,8 @@ private:
     Nodo* nodo;
 
         iterator herm_Mayor();
+
+        iterator avanzarMayor();
 
         iterator avanzarAlMin();
 
