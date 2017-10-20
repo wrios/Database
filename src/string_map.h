@@ -183,7 +183,7 @@ private:
 
 
     struct Nodo {
-      T* definicion;
+      value_type* definicion;
       Nodo** hijos;
       Nodo* padre;
       Nodo* prim;
@@ -216,20 +216,6 @@ private:
      **/
 
     void swap(const string_map &other);
-
-
-    Nodo* minimo(Nodo* nodo){
-        Nodo* aux = nodo->prim;
-        while(aux->prim != NULL){
-            aux = aux->prim;
-        }
-        return aux;
-    }
-
-
-    Nodo* minimo(){
-        return minimo(raiz);
-    }
 
 
     Nodo* minimo() const{
@@ -270,7 +256,7 @@ private:
  public:
     class iterator{
     public:
-    typedef T value_type;
+    //typedef T value_type;
 
     iterator(const iterator& otro);
 
@@ -306,7 +292,7 @@ private:
 
     class const_iterator{
     public:
-        typedef T value_type;
+        //typedef T value_type;
 
         const_iterator(const const_iterator &);
 

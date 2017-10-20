@@ -161,7 +161,7 @@ typename string_map<T>::iterator string_map<T>::end(){
 //devuelve const_iterator al primer par en orden lexicografico
 template <typename T>
 typename string_map<T>::const_iterator string_map<T>::begin()const{
-    string_map<T>::const_iterator it = minimo();
+    string_map<T>::const_iterator it(minimo());
     return it;
 }
 
@@ -175,14 +175,14 @@ typename string_map<T>::const_iterator string_map<T>::end()const{
 //devuelve const_iterator al primer (const)par en orden lexicografico
 template <typename T>
 const typename string_map<T>::const_iterator string_map<T>::cbegin()const{
-    string_map<T>::const_iterator it = minimo();
+    string_map<T>::const_iterator it(minimo());
     return it;
 }
 
 //devuelve const_iterator al ultimo (const)par en orden lexicografico
 template <typename T>
 typename string_map<T>::const_iterator string_map<T>::cend() const{
-    string_map<T>::const_iterator it = raiz;
+    string_map<T>::const_iterator it(raiz);
     return it;
 }
 
@@ -235,7 +235,7 @@ pair<typename string_map<T>::iterator, bool> string_map<T>::insert(const string_
     if(recognizer->definicion == NULL){cantElem++; insertado = true;}
     else{insertado = false;}
     //recognizer->definicion es de tipo dato
-    *(recognizer->definicion) = value;
+    *(recognizer->definicion) = value.second;
     //me dice que no tiene operador de asignacion
     string_map<T>::iterator it(recognizer);
     return make_pair(it,insertado);
@@ -394,18 +394,17 @@ bool string_map<T>::iterator::tieneHM(key_type& clave){
 
 
 template <typename T>
-T& string_map<T>::iterator::operator*(){
-
+typename string_map<T>::value_type& string_map<T>::iterator::operator*(){
     return *(nodo->definicion);
 }
 
 template <typename T>
-T* string_map<T>::iterator::operator->(){
+typename string_map<T>::value_type* string_map<T>::iterator::operator->(){
     return nodo->definicion;
 }
 
 
-
+/*b
 
 template <typename T>
 linear_set<string> string_map<T>::claves() const{
@@ -424,9 +423,9 @@ linear_set<T> string_map<T>::significados() const{
         ls.insert(it->second);
     }
     return ls;
-}
+} b*/
 
-
+/*b
 template <typename T>
 string_map<T>::const_iterator::const_iterator(const const_iterator &){}
 
@@ -454,4 +453,7 @@ T& string_map<T>::const_iterator::operator*(){
 
 }
 template <typename T>
-T* string_map<T>::const_iterator::operator->(){}
+T* string_map<T>::const_iterator::operator->(){
+
+}
+b*/
