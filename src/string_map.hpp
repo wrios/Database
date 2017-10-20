@@ -31,13 +31,15 @@ string_map<T>::string_map(const string_map & other){}
 //operador de asignacion
 template <typename T>
 string_map<T>& string_map<T>::operator=(const string_map &otro){
-    //invocar al destructor
-    this->cantElem = otro.cantElem;
-    this->raiz = otro.raiz;
+    this->~string_map();
+
     for(auto it = otro.begin(); it!=otro.end(); ++it){
         this->insert(*(it.nodo->definicion));
     }
     return *this;
+
+
+
 }
 
 
