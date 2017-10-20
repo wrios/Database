@@ -17,8 +17,8 @@ string_map<T>::string_map(){
 template <typename T>
 string_map<T>::~string_map(){
     this->cantElem = 0;
-    auto it = this->begin();
-    while (it != this->end()){
+    auto it = begin();
+    while (it != end()){
         it = erase(it);
     }
     delete raiz;
@@ -102,8 +102,8 @@ T& string_map<T>::operator[](const key_type &key){
         }
         seeker = (seeker->hijos)[int(key[i])];
     }
-    if(seeker->definicion == NULL){seeker->definicion = T();}
-    return seeker->definicion;
+    if(seeker->definicion == NULL){*(seeker->definicion) = T();}
+    return *(seeker->definicion);
 }
 
 //devuelve el significado de la clave, sin modificar la clave
@@ -129,7 +129,7 @@ const T& string_map<T>::at(const key_type& key) const{
         }
         seeker = (seeker->hijos)[int(key[i])];
     }
-    return seeker->definicion;
+    return *(seeker->definicion);
 }
 
 
@@ -147,7 +147,7 @@ void string_map<T>::clear(){
 //devuelve iterator al primer par en orden lexicografico
 template <typename T>
 typename string_map<T>::iterator string_map<T>::begin(){
-    string_map<T>::iterator it = minimo();
+    string_map<T>::iterator it(minimo());
     return it;
 }
 //PORQUE DEVUELVE RAIZ!!!!
@@ -219,7 +219,7 @@ typename string_map<T>::const_iterator string_map<T>::find(const key_type &key) 
 //FALTA RETORNAR EL PAR!!!!!!!!!!!
 //define o redefine
 template <typename T>
-pair<typename string_map<T>::iterator, bool> string_map<T>::insert(const value_type &value){
+pair<typename string_map<T>::iterator, bool> string_map<T>::insert(const T& value){
     Nodo* recognizer = raiz;
     for(u_int i = 0; i < value.first.size(); i++){
         if(recognizer->hijos[int(value.first[i])] == NULL){
@@ -231,8 +231,12 @@ pair<typename string_map<T>::iterator, bool> string_map<T>::insert(const value_t
         recognizer->hijos[int(value.first[i])]->padre->cant_descendientes++;
         recognizer = recognizer->hijos[int(value.first[i])];
     }
-    if(recognizer->definicion == NULL){cantElem++;}
-    recognizer->definicion = value.second;
+    bool insertado;
+    if(recognizer->definicion == NULL){cantElem++; insertado = true;}
+    else{insertado = false;}
+    recognizer->definicion = value;
+    string_map<T>::iterator it(recognizer);
+    return make_pair(it,insertado);
 
 }
 

@@ -253,15 +253,15 @@ private:
     Nodo* sucesor(Nodo* pos) const{
         if(pos->cant_descendientes == 0 && pos->padre->cant_hijos > 0){
             Nodo* aux = pos->padre;
-            string_map<T>::iterator it = aux;
-            if (aux != end()){
-                aux = (++it)->nodo;
+            string_map<T>::iterator it(aux);
+            if (aux != raiz){
+                ++it;
             }
+            aux = it.nodo;
             return aux;
         }
         else if(pos->cant_descendientes > 0){
             Nodo*  aux = minimo(pos);
-
             return aux;
         }
     }

@@ -197,7 +197,7 @@ private:
     /** @{ */
     string_map<Tabla> _nombresYtablas;
     linear_map<Criterio, int> _criteriosYusos;
-    string_map<string_map<Indice> > _indices;
+    string_map<Indice> _indices;
     /** @} */
 
     /** @{ */

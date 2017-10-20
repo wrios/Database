@@ -17,10 +17,13 @@ class Indice {
 
 public:
 
-    Indice(Tabla tab, string campo, bool esString);
+    Indice(const Tabla tab,const string campo, const string& valorStr);
+    //el constructor de indice se crea con un string map
 
+    Indice(const Tabla tab,const string campo, const int valorNat);
+    //el constructor de indice se crea con un ABBV(arbol binario de busqueda valanciado)
 
-    ~Indice();
+    //~Indice();
 
 
 //    Indice& operator=(const Indice &);
@@ -36,6 +39,7 @@ public:
 
 
     string dameCampo() const;
+    //el indice tiene mas de un campo, "s"
 
 
 private:
