@@ -37,16 +37,14 @@ public:
 //
 //    bool operator!=(const Indice& otro) const {return !(*this == otro);}
 
-
     void agregarRegistro(const Registro &r);
-
+    bool esVacio();
 
     string dameCampo() const;
     //el indice tiene mas de un campo, "s"
 
 
 private:
-
     bool _esString;
     string _campo;
     map<int, linear_set<const Registro*> > _indicesNat;

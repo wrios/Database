@@ -49,13 +49,3 @@ ostream &operator<<(ostream &os, const Registro &r) {
     os << r._campoYdato.significados(); //RECORDAR: significados() es un metodo de string_map que tiene que hacer Willy
     return os;
 }
-
-
-int Registro::get_id() {
-    return _id;
-}
-
-
-void Registro::set_id(int _id) {
-    Registro::_id = _id;
-}

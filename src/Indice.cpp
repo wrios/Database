@@ -21,6 +21,12 @@ Indice::~Indice() {
     }
     //_campo.~string();
 }
+bool Indice::esVacio() {
+    if (_esString)
+        return _indicesStr.empty();
+    else
+        return _indicesNat.empty();
+}
 
 void Indice::agregarRegistro(const Registro &r) {
     if (_esString){

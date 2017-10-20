@@ -287,7 +287,7 @@ public:
 
     private:
 
-        //TODO reemplazar
+        //TODO: esto puede no existir
         join_iterator(const linear_set<Registro>::iterator);
 
         linear_set<Registro>::iterator it;

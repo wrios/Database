@@ -182,6 +182,14 @@ Registro *BaseDeDatos::join_iterator::operator->(){
 
 
 BaseDeDatos::join_iterator BaseDeDatos::join(const string &tabla1, const string &tabla2, const string &campo) const {
+    //recorrer tabla o indice en tabla
+    //pregunta si no tiene indice
+    if (_indices[tabla1][campo].esVacio()){
+
+    }else{
+        //usa el indice
+
+    }
 
 }
 
