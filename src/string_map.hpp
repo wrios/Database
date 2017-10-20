@@ -1,7 +1,7 @@
 #include "string_map.h"
 #include <utility>
 #include <iostream>
-
+#include "linear_set.h"
 using namespace std;
 
 typedef unsigned int u_int;
@@ -154,7 +154,7 @@ typename string_map<T>::iterator string_map<T>::begin(){
 //devuelve iterator al ultimo par en orden lexicografico
 template <typename T>
 typename string_map<T>::iterator string_map<T>::end(){
-    string_map<T>::iterator it = raiz;
+    string_map<T>::iterator it(raiz);
     return it;
 }
 
@@ -219,7 +219,7 @@ typename string_map<T>::const_iterator string_map<T>::find(const key_type &key) 
 //FALTA RETORNAR EL PAR!!!!!!!!!!!
 //define o redefine
 template <typename T>
-pair<typename string_map<T>::iterator, bool> string_map<T>::insert(const T& value){
+pair<typename string_map<T>::iterator, bool> string_map<T>::insert(const string_map::value_type& value){
     Nodo* recognizer = raiz;
     for(u_int i = 0; i < value.first.size(); i++){
         if(recognizer->hijos[int(value.first[i])] == NULL){
@@ -234,7 +234,9 @@ pair<typename string_map<T>::iterator, bool> string_map<T>::insert(const T& valu
     bool insertado;
     if(recognizer->definicion == NULL){cantElem++; insertado = true;}
     else{insertado = false;}
-    recognizer->definicion = value;
+    //recognizer->definicion es de tipo dato
+    *(recognizer->definicion) = value;
+    //me dice que no tiene operador de asignacion
     string_map<T>::iterator it(recognizer);
     return make_pair(it,insertado);
 
@@ -274,7 +276,7 @@ typename string_map<T>::iterator string_map<T>::iterator::operator++(){
     }
     //sali porque el padre es la raiz o la cantidad de hermanos es mayor a 1
     //busco a mi hermano mayor o al menor de mis "primos lejanos"
-    if((it.avanzarMayor()).nodo->definicion->first > it.nodo->definicion->first){
+    if((it.avanzarMayor())->first > it->first){
         nodo =  it.avanzarAlMin().nodo;
         //devuelvo iterador apuntando al menor primo o mayor hermano
         return *this;
@@ -287,8 +289,8 @@ typename string_map<T>::iterator string_map<T>::iterator::operator++(){
 
 template <typename T>
 typename string_map<T>::iterator& string_map<T>::iterator::operator=(const iterator& otro){
-    string_map<T>::iterator it = otro.nodo;
-    return it;
+    nodo = otro.nodo;
+    return *this;
 }
 
 //DEBERIA DEVOLVER LA CANTIDAD DE ELEMENTOS ELIMINADOS (size_type)!!!
@@ -409,7 +411,7 @@ template <typename T>
 linear_set<string> string_map<T>::claves() const{
     linear_set<string> ls;
     for (auto it = this->begin(); it!= this->end(); ++it){
-        ls.fast_insert((*it)->first());
+        ls.fast_insert(it->first);
     }
     return ls;
 }
@@ -419,7 +421,7 @@ template <typename T>
 linear_set<T> string_map<T>::significados() const{
     linear_set<T> ls;
     for (auto it = this->begin(); it!= this->end(); ++it){
-        ls.insert(*it.second());
+        ls.insert(it->second);
     }
     return ls;
 }
