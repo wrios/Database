@@ -197,7 +197,7 @@ private:
     /** @{ */
     string_map<Tabla> _nombresYtablas;
     linear_map<Criterio, int> _criteriosYusos;
-    string_map<Indice> _indices;
+    string_map<string_map<Indice> > _indices;
     /** @} */
 
     /** @{ */
@@ -287,6 +287,7 @@ public:
 
     private:
 
+        //TODO reemplazar
         join_iterator(const linear_set<Registro>::iterator);
 
         linear_set<Registro>::iterator it;

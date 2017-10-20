@@ -26,11 +26,11 @@ void Indice::agregarRegistro(const Registro &r) {
     if (_esString){
         string valorCampo = r.dato(_campo).valorStr();
         //chequear caso no definido
-        _indicesStr[valorCampo].insert(r);
+        _indicesStr[valorCampo].insert(&r);
     }else{
         int valorCampo = r.dato(_campo).valorNat();
 
-        _indicesNat[valorCampo].insert(r);
+        _indicesNat[valorCampo].insert(&r);
     }
 }
 
