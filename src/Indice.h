@@ -42,7 +42,7 @@ public:
 
     string dameCampo() const;
     //el indice tiene mas de un campo, "s"
-
+    linear_set<const Registro*> dameRegistros(const Dato &d);
 
 private:
     bool _esString;

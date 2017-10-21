@@ -13,6 +13,14 @@ string Indice::dameCampo() const {
     return _campo;
 }
 
+linear_set<const Registro*> Indice::dameRegistros(const Dato &d) {
+    if (_esString){
+        return _indicesStr[d.valorStr()];
+    } else {
+        return _indicesNat[d.valorNat()];
+    }
+}
+
 Indice::~Indice() {
     if (_esString){
         _indicesStr.~string_map();
