@@ -237,7 +237,7 @@ pair<typename string_map<T>::iterator, bool> string_map<T>::insert(const string_
     if(recognizer->definicion == NULL){cantElem++; insertado = true;}
     else{insertado = false;}
     //recognizer->definicion es de tipo dato
-    *(recognizer->definicion) = value.second;
+    recognizer->definicion->second = value.second;
     //me dice que no tiene operador de asignacion
     string_map<T>::iterator it(recognizer);
     return make_pair(it,insertado);
