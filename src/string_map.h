@@ -78,7 +78,10 @@ public:
      *  @param key clave a acceder, si no existe, se crea
      *  @returns una referencia a la definicion.
      *
-     *  \complexity{\O(S)}
+     *  \complexity{
+     *    * \O(S) si la clave esta definida 
+     *    * \O(S) + copy(T) sino
+     *  }
      */
     mapped_type &operator[](const key_type &key);
 
