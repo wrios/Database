@@ -315,6 +315,10 @@ private:
         const_iterator(Nodo* n) : nodo(n) {};
         Nodo* nodo;
 
+        const_iterator avanzarMayor();
+
+        const_iterator avanzarAlMin();
+
     };
 
 

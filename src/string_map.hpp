@@ -406,14 +406,12 @@ typename string_map<T>::value_type* string_map<T>::iterator::operator->(){
 }
 
 
-/*b
-
 template <typename T>
 linear_set<string> string_map<T>::claves() const{
     linear_set<string> ls;
-    for (auto it = this->begin(); it!= this->end(); ++it){
-        ls.fast_insert(it->first);
-    }
+//    for (auto it = this->begin(); it!= this->end(); ++it){
+//        ls.insert(it->definicion->first);
+//    }
     return ls;
 }
 
@@ -421,10 +419,25 @@ linear_set<string> string_map<T>::claves() const{
 template <typename T>
 linear_set<T> string_map<T>::significados() const{
     linear_set<T> ls;
-    for (auto it = this->begin(); it!= this->end(); ++it){
-        ls.insert(it->second);
-    }
+//    for (auto it = this->begin(); it!= this->end(); ++it){
+//        ls.insert(it->definicion->second);
+//    }
     return ls;
+}
+
+//FALTA IMPLEMENTAR!!!!!!!!!!!
+template <typename T>
+typename string_map<T>::const_iterator string_map<T>::const_iterator::avanzarMayor(){
+
+}
+
+
+template <typename T>
+typename string_map<T>::const_iterator string_map<T>::const_iterator::avanzarAlMin(){
+    while(nodo->prim != NULL){
+        nodo = nodo->prim;
+    }
+    return *this;
 }
 
 template <typename T>
@@ -450,7 +463,30 @@ bool string_map<T>::const_iterator::operator!=(const const_iterator& otro) const
 
 template <typename T>
 typename string_map<T>::const_iterator string_map<T>::const_iterator::operator++(){
-
+    //es descendiente
+    while(nodo->cant_hijos > 0){
+        while(nodo->prim->definicion == NULL){
+            nodo = nodo->prim;
+        }
+        return *this;
+    }
+    //si llego hasta aca es porque no tiene descendientes
+    string_map<T>::const_iterator it(nodo);
+    //CUIDADO ACAA!!!
+    while(/*nodo->padre != raiz &&*/ nodo->padre->cant_hijos > 1){
+        it.nodo = it.nodo->padre;
+    }
+    //sali porque el padre es la raiz o la cantidad de hermanos es mayor a 1
+    //busco a mi hermano mayor o al menor de mis "primos lejanos"
+    if((it.avanzarMayor())->first > it->first){
+        nodo =  it.avanzarAlMin().nodo;
+        //devuelvo iterador apuntando al menor primo o mayor hermano
+        return *this;
+    }
+    //si estoy aca es porque soy el mayor elemento
+    while(nodo->padre != NULL){ nodo = nodo->padre;}
+    return *this;
+    //devuelvo iterator apuntando al final
 }
 
 template <typename T>
@@ -461,5 +497,3 @@ template <typename T>
 typename string_map<T>::value_type* string_map<T>::const_iterator::operator->(){
     return nodo->definicion;
 }
-
-b*/
