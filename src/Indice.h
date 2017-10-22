@@ -17,6 +17,7 @@ class Indice {
 
 public:
 
+    Indice();
     Indice(const Tabla tab,const string campo, bool esString);
     //constructor de indice
 
@@ -26,7 +27,7 @@ public:
 //    Indice(const Tabla tab,const string campo, const int valorNat);
     //el constructor de indice se crea con un ABBV(arbol binario de busqueda valanciado)
 
-    //~Indice();
+    ~Indice();
 
 
 //    Indice& operator=(const Indice &);

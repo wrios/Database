@@ -1,10 +1,14 @@
 #include "Indice.h"
 
+Indice::Indice() {
+
+}
+
 Indice::Indice(Tabla tab, string campo, bool esString) {
     _campo = campo;
     _esString = esString;
     for (auto elem: tab.registros()){
-        agregarRegistro(*elem);
+        agregarRegistro(elem);
     }
 }
 
@@ -23,7 +27,7 @@ linear_set<const Registro*> Indice::dameRegistros(const Dato &d) {
 
 Indice::~Indice() {
     if (_esString){
-        _indicesStr.~string_map();
+//        _indicesStr.~string_map();
     } else{
         _indicesNat.~map();
     }

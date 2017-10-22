@@ -177,49 +177,49 @@ Registro BaseDeDatos::join_iterator::operator*(){
 }
 
 Registro *BaseDeDatos::join_iterator::operator->(){
-    return &(*it);
+//    return &(*it);
 }
 
 
 BaseDeDatos::join_iterator BaseDeDatos::join(const string &tabla1, const string &tabla2, const string &campo) const {
     //funcion auxiliar
-    Registro combinarRegistros(const Registro &r1, const Registro &r2){
-        vector<string> campos;
-        vector<Dato> datos;
-        for (auto campo: r1.campos()) {
-            campos.push_back(campo);
-            datos.push_back(r1.dato(campo));
-        }
-        for (auto campo: r2.campos()) {
-            if (not(pertenece(campo, campos))){
-                campos.push_back(campo);
-                datos.push_back(r2.dato(campo));
-            }
-        }
-        Registro registroCombinado = Registro(campos, datos);
-        return registroCombinado;
-    }
-
-    //idea de como sería el algoritmo, esto hay que reemplazarlo por ocmo se utilizan en verdad los iteradores
-    BaseDeDatos::join_iterator algoritmo(const string tablaSinIndice, const string tablaConIndice){
-        linear_set<Registro> registrosEnTabla = _nombresYtablas[tablaSinIndice].registros();
-        for (auto it = registrosEnTabla.begin(); it != registrosEnTabla.end() ; ++it) {
-            //chequeo la lista de registros que coinciden el valor del campo en el indice de la otra tabla
-            linear_set<const Registro*> registrosEnIndice = _indices[tablaConIndice][campo].dameRegistros(*it.dato(campo));
-            for (auto it2 = registrosEnIndice.begin(); it2 != registrosEnIndice.end(); ++it2) {
-                //armo el nuevo registro combinado del join
-                it.insert(combinarRegistros(*it, **it2));
-            }
-        }
-    }
-
-    if (_indices[tabla1][campo].esVacio()){
-        //tabla1 no tiene indice, por lo tanto tabla2 lo tiene (por el PRE)
-        return algoritmo(tabla1, tabla2);
-    }else{
-        //usa el indice de tabla1
-        return algoritmo(tabla2, tabla1);
-    }
+//    Registro combinarRegistros(const Registro &r1, const Registro &r2){
+//        vector<string> campos;
+//        vector<Dato> datos;
+//        for (auto campo: r1.campos()) {
+//            campos.push_back(campo);
+//            datos.push_back(r1.dato(campo));
+//        }
+//        for (auto campo: r2.campos()) {
+//            if (not(pertenece(campo, campos))){
+//                campos.push_back(campo);
+//                datos.push_back(r2.dato(campo));
+//            }
+//        }
+//        Registro registroCombinado = Registro(campos, datos);
+//        return registroCombinado;
+//    }
+//
+//    //idea de como sería el algoritmo, esto hay que reemplazarlo por ocmo se utilizan en verdad los iteradores
+//    BaseDeDatos::join_iterator algoritmo(const string tablaSinIndice, const string tablaConIndice){
+//        linear_set<Registro> registrosEnTabla = _nombresYtablas[tablaSinIndice].registros();
+//        for (auto it = registrosEnTabla.begin(); it != registrosEnTabla.end() ; ++it) {
+//            //chequeo la lista de registros que coinciden el valor del campo en el indice de la otra tabla
+//            linear_set<const Registro*> registrosEnIndice = _indices[tablaConIndice][campo].dameRegistros(*it.dato(campo));
+//            for (auto it2 = registrosEnIndice.begin(); it2 != registrosEnIndice.end(); ++it2) {
+//                //armo el nuevo registro combinado del join
+//                it.insert(combinarRegistros(*it, **it2));
+//            }
+//        }
+//    }
+//
+//    if (_indices[tabla1][campo].esVacio()){
+//        //tabla1 no tiene indice, por lo tanto tabla2 lo tiene (por el PRE)
+//        return algoritmo(tabla1, tabla2);
+//    }else{
+//        //usa el indice de tabla1
+//        return algoritmo(tabla2, tabla1);
+//    }
 }
 
 
