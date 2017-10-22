@@ -140,15 +140,15 @@ private:
      * rep(t) \EQUIV 
      *  * \LNOT \EMPTYSET?(claves(_claves)) \LAND
      *  * claves(_claves) \SUBSETEQ claves(_camposYtipos) \LAND
-     *  * 0 \LNOT \IN claves(_registros) \LAND
-     *  * \FORALL (n : nat) def?(n, _registros) \IMPLIES (
-     *    * campos(obtener(n, _registros)) = claves(_camposYtipos)
+     *  * \FORALL (r : registro) r \IN _registros \IMPLIES (
+     *    * campos(r) = claves(_camposYtipos)
      *    * \FORALL (c : campo) def?(c, _camposYtipos) \IMPLIES
-     *        Nat?(valor(c, obtener(n, _camposYtipos))) = Nat?(obtener(c, _camposYtipos))
-     *    * no se repiten claves \EQUIV 
-     *      \FORALL (n' : registro) n \LNOT n' \LAND def?(n', _registros) \IMPLIES
-     *      \LNOT hayCoincidencia(n', claves(_claves), significados(_registros))
-     *  * ) 
+     *        Nat?(valor(c, r)) = Nat?(obtener(c, _camposYtipos))
+     *    * no se repiten claves \EQUIV
+    *      \FORALL (r' : registro) r \IN (_registros - {r}) \IMPLIES
+     *      \LNOT hayCoincidencia(r, claves(_claves), _registros)
+     *  * )
+
      *
      * abs: tabla \TO Tabla\n
      * abs(t) \EQUIV t' \|
@@ -156,13 +156,12 @@ private:
      *  * claves(t') = claves(_claves) \LAND
      *  * \FORALL (c : string) def?(c, _camposYtipos) \IMPLIES tipoCampo(c, t') =
      *    Nat?(obtener(c, _campostYtipos)) \LAND
-     *  * registros(t') = significados(_registros)
+     *  * registros(t') = _registros
      */
     //////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /** @{ */
     string_map<bool> _claves;
-    //string_map<bool> _campos;
     string_map<Dato> _camposYtipos;
     linear_set<Registro> _registros;
     /** }@ */
