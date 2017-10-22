@@ -284,7 +284,7 @@ typename string_map<T>::iterator string_map<T>::iterator::operator++(){
         return *this;
     }
     //si estoy aca es porque soy el mayor elemento
-    nodo = end();
+    while(nodo->padre != NULL){ nodo = nodo->padre;}
     return *this;
     //devuelvo iterator apuntando al final
 }
