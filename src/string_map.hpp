@@ -152,7 +152,7 @@ typename string_map<T>::iterator string_map<T>::begin(){
     string_map<T>::iterator it(minimo());
     return it;
 }
-//PORQUE DEVUELVE RAIZ!!!!
+
 //devuelve iterator al ultimo par en orden lexicografico
 template <typename T>
 typename string_map<T>::iterator string_map<T>::end(){
@@ -216,9 +216,6 @@ typename string_map<T>::const_iterator string_map<T>::find(const key_type &key) 
     return it;
 }
 
-
-
-//FALTA RETORNAR EL PAR!!!!!!!!!!!
 //define o redefine
 template <typename T>
 pair<typename string_map<T>::iterator, bool> string_map<T>::insert(const string_map::value_type& value){
@@ -241,7 +238,6 @@ pair<typename string_map<T>::iterator, bool> string_map<T>::insert(const string_
     //me dice que no tiene operador de asignacion
     string_map<T>::iterator it(recognizer);
     return make_pair(it,insertado);
-
 }
 
 //devuelve un bool indicando si tiene significado
@@ -409,9 +405,9 @@ typename string_map<T>::value_type* string_map<T>::iterator::operator->(){
 template <typename T>
 linear_set<string> string_map<T>::claves() const{
     linear_set<string> ls;
-//    for (auto it = this->begin(); it!= this->end(); ++it){
-//        ls.insert(it->definicion->first);
-//    }
+    for (auto it = this->begin(); it!= this->end(); ++it){
+        ls.insert(it.nodo->definicion->first);
+    }
     return ls;
 }
 
@@ -419,9 +415,9 @@ linear_set<string> string_map<T>::claves() const{
 template <typename T>
 linear_set<T> string_map<T>::significados() const{
     linear_set<T> ls;
-//    for (auto it = this->begin(); it!= this->end(); ++it){
-//        ls.insert(it->definicion->second);
-//    }
+    for (auto it = this->begin(); it!= this->end(); ++it){
+        ls.insert(it.nodo->definicion->second);
+    }
     return ls;
 }
 
