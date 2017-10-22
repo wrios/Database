@@ -224,8 +224,8 @@ private:
 
 
     Nodo* minimo(Nodo* nodo) const {
-        Nodo* aux = nodo->prim;
-        while(aux->prim != NULL){
+        Nodo* aux = nodo;
+        while(aux != NULL && aux->prim != NULL){
             aux = aux->prim;
         }
         return aux;
