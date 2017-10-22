@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 #include <algorithm>
-#include <sstream> 
+#include <sstream>
 #include "../src/linear_set.h"
 #include "../src/Registro.h"
 

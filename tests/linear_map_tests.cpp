@@ -51,7 +51,7 @@ TEST(my_map, insert) {
   for (int i = 0; i < 5; i++) {
     a.insert(make_pair(i, i));
    }
-  
+
   my_map<int, char> b;
   string s = "abcde";
   for (int i = 0; i < 5; i++) {

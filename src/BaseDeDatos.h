@@ -175,22 +175,34 @@ private:
     /** \name Representación
      * rep: basededatos \TO bool\n
      * rep(bd) \EQUIV 
-     *  * _nombres_tablas = claves(_tablas) \LAND
-     *  * \FORALL (c : Criterio) c \IN claves(_uso_criterios) \IMPLIES 
+     *  * claves(_indices) = claves(_nombresYtablas) \LAND
+     *  * \FORALL (c : Criterio) c \IN claves(_uso_criterios) \IMPLIES
      *     * (
-     *       * \EXISTS (n : string) n \IN _nombres_tablas 
+     *       * \EXISTS (n : string) n \IN _nombres_tablas
      *       * \LAND criterioValido(c, n, db)
      *     * ) \LAND
      *     * obtener(c, _uso_criterios) > 0
+     *  *\FORALL (t : string) def?(t, _indices) \IMPLIES
+     *    * (
+     *      * \FORALL (c : Campo) def?(c, obtener(t, _indices)) \IMPLIES
+     *        * (
+     *          * c \IN campos(t)
+     *          * ) )
      *
      * abs: basededatos \TO BaseDeDatos\n
      * abs(bd) \EQUIV bd' \|
-     *  * _nombres_tablas = tablas(bd') \LAND
-     *  * (\FORALL nt : string) nt \IN _nombres_tablas \IMPLIES
-     *    * obtener(nt, _tablas) = dameTabla(nt, bd') \LAND
+     *  * tablas(bd') = significados(_nombresYtablas)\LAND
+     *  * (\FORALL t : string) def?(t, _nombresYtablas) \IMPLIES
+     *    * obtener(t, _nombresYtablas) = dameTabla(nt, bd') \LAND
      *  * (\FORALL c : criterio) 
      *    * (usoCriterio(c, bd') == 0 \LAND \LNOT def?(c, _uso_criterios)) \LOR
      *    * (usoCriterio(c, db') == obtener(c, _uso_criterios))
+     *  * \FORALL (t : string) def?(t, _indices) \IMPLIES
+     *    * (
+     *      *\FORALL (c : Campo) def?(c, obtener(t, _indices)) \IMPLIES
+     *        * (
+     *          * \LNOT esVacio?(obtener(c, obtener(t, _indices))) =
+     *          * tieneIndice?(t, c, bd') ) )
      */
     //////////////////////////////////////////////////////////////////////////////////////////////////////
 
