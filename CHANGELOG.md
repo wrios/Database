@@ -34,3 +34,8 @@
 ## 1.3.1
 
 * Corrección en rep de Tabla
+
+## 1.4
+
+* CrearIndice en tests join
+* Complejidad string_map::operator[] incluye copy(T)
