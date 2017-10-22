@@ -104,8 +104,8 @@ T& string_map<T>::operator[](const key_type &key){
         }
         seeker = (seeker->hijos)[int(key[i])];
     }
-    if(seeker->definicion == NULL){*(seeker->definicion) = T();}
-    return *(seeker->definicion);
+    if(seeker->definicion == NULL){seeker->definicion->second = T();}
+    return seeker->definicion->second;
 }
 
 //devuelve el significado de la clave, sin modificar la clave
@@ -118,7 +118,7 @@ T& string_map<T>::at(const key_type& key){
         }
         seeker = (seeker->hijos)[int(key[i])];
     }
-    return *(seeker->definicion);
+    return (seeker->definicion->second);
 }
 
 //devuelve el significado de la clave, sin modificar clave ni significado
@@ -131,7 +131,7 @@ const T& string_map<T>::at(const key_type& key) const{
         }
         seeker = (seeker->hijos)[int(key[i])];
     }
-    return *(seeker->definicion);
+    return (seeker->definicion->second);
 }
 
 
@@ -425,37 +425,41 @@ linear_set<T> string_map<T>::significados() const{
         ls.insert(it->second);
     }
     return ls;
-} b*/
-
-/*b
-template <typename T>
-string_map<T>::const_iterator::const_iterator(const const_iterator &){}
-
-template <typename T>
-typename string_map<T>::const_iterator& string_map<T>::const_iterator::operator=(const const_iterator &){
-
 }
 
 template <typename T>
-bool string_map<T>::const_iterator::operator==(const const_iterator &) const{
-
+string_map<T>::const_iterator::const_iterator(const const_iterator& otro){
+    nodo = otro.nodo;
 }
 
 template <typename T>
-bool string_map<T>::const_iterator::operator!=(const const_iterator &) const{
+typename string_map<T>::const_iterator& string_map<T>::const_iterator::operator=(const const_iterator& otro){
+    nodo = otro.nodo;
+    return *this;
+}
 
+template <typename T>
+bool string_map<T>::const_iterator::operator==(const const_iterator& otro) const{
+    return nodo == otro.nodo;
+}
+
+template <typename T>
+bool string_map<T>::const_iterator::operator!=(const const_iterator& otro) const{
+    return !(*this == otro);
 }
 
 template <typename T>
 typename string_map<T>::const_iterator string_map<T>::const_iterator::operator++(){
 
 }
-template <typename T>
-T& string_map<T>::const_iterator::operator*(){
 
+template <typename T>
+typename string_map<T>::value_type& string_map<T>::const_iterator::operator*(){
+    return *(nodo->definicion);
 }
 template <typename T>
-T* string_map<T>::const_iterator::operator->(){
-
+typename string_map<T>::value_type* string_map<T>::const_iterator::operator->(){
+    return nodo->definicion;
 }
+
 b*/
