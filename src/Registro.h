@@ -22,6 +22,8 @@ class Registro {
 
 public:
 
+    string_map<Dato> datos() const;
+
     /**
      * @brief Genera un nuevo registro con los campos y valores designados.
      *
@@ -73,7 +75,8 @@ private:
     //////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /** @{ */
-    string_map<Dato> _campoYdato;
+    string_map<Dato> _datos;
+    linear_set<string> _campos;
     /** @} */
 
 
