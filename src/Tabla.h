@@ -7,8 +7,6 @@
 #include "linear_set.h"
 #include "Dato.h"
 #include "Registro.h"
-#include <map>
-
 
 using namespace std;
 
@@ -145,10 +143,8 @@ private:
      *    * \FORALL (c : campo) def?(c, _camposYtipos) \IMPLIES
      *        Nat?(valor(c, r)) = Nat?(obtener(c, _camposYtipos))
      *    * no se repiten claves \EQUIV
-    *      \FORALL (r' : registro) r \IN (_registros - {r}) \IMPLIES
      *      \LNOT hayCoincidencia(r, claves(_claves), _registros)
      *  * )
-
      *
      * abs: tabla \TO Tabla\n
      * abs(t) \EQUIV t' \|
