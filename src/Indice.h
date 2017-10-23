@@ -25,7 +25,7 @@ public:
     //el constructor de indice se crea con un string map
 
 //    Indice(const Tabla tab,const string campo, const int valorNat);
-    //el constructor de indice se crea con un ABBV(arbol binario de busqueda valanciado)
+    //el constructor de indice se crea con un ABBV(arbol binario de busqueda balanceado)
 
     ~Indice();
 

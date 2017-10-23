@@ -9,7 +9,7 @@ typedef unsigned int u_int;
 //construye mapa vacio
 template <typename T>
 string_map<T>::string_map(){
-    raiz = NULL;
+    raiz = new Nodo();
     cantElem = 0;
 }
 
@@ -198,7 +198,7 @@ typename string_map<T>::iterator string_map<T>::find(const key_type &key){
         }
         seeker = (seeker->hijos)[int(key[i])];
     }
-    string_map<T>::iterator it = seeker;
+    string_map<T>::iterator it(seeker);
     return it;
 }
 
@@ -220,22 +220,35 @@ typename string_map<T>::const_iterator string_map<T>::find(const key_type &key) 
 template <typename T>
 pair<typename string_map<T>::iterator, bool> string_map<T>::insert(const string_map::value_type& value){
     Nodo* recognizer = raiz;
+    bool insertado = false;
     for(u_int i = 0; i < value.first.size(); i++){
+
         if(recognizer->hijos[int(value.first[i])] == NULL){
+
             recognizer->hijos[int(value.first[i])] = new Nodo();
             recognizer->hijos[int(value.first[i])]->padre = recognizer;
-            recognizer->hijos[int(value.first[i])]->padre->prim = recognizer->hijos[int(value.first[i])];
+            recognizer->cant_hijos++;
+
+            if(recognizer->cant_hijos == 0){
+                recognizer->prim = recognizer->hijos[int(value.first[i])];
+            } else{
+                reestablecerPrim(recognizer);
+            }
         }
-        recognizer->hijos[int(value.first[i])]->padre->cant_hijos++;
-        recognizer->hijos[int(value.first[i])]->padre->cant_descendientes++;
+
+        if (i == value.first.size() - 1 && recognizer->hijos[int(value.first[i])] == NULL ){
+
+            insertado = true;
+        }
+
         recognizer = recognizer->hijos[int(value.first[i])];
+    }//recognizer es un puntero donde voy a insertar el significado o a redefinir el significado
+
+    if (insertado){
+
+        cantElem++;
     }
-    bool insertado;
-    if(recognizer->definicion == NULL){cantElem++; insertado = true;}
-    else{insertado = false;}
-    //recognizer->definicion es de tipo dato
-    recognizer->definicion->second = value.second;
-    //me dice que no tiene operador de asignacion
+    *(recognizer->definicion) = value;
     string_map<T>::iterator it(recognizer);
     return make_pair(it,insertado);
 }

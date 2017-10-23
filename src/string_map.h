@@ -190,7 +190,7 @@ private:
       Nodo** hijos;
       Nodo* padre;
       Nodo* prim;
-      size_t cant_descendientes;
+//      size_t cant_descendientes;
       size_t cant_hijos;
       
         Nodo() {
@@ -202,7 +202,7 @@ private:
             padre = NULL;
             prim = NULL;
             cant_hijos = 0;
-           cant_descendientes = 0;
+//           cant_descendientes = 0;
         }
 
         ~Nodo() {
@@ -240,7 +240,7 @@ private:
 
     //devuelve el sucesor inorder de la posicion pasada como parametro
     Nodo* sucesor(Nodo* pos) const{
-        if(pos->cant_descendientes == 0 && pos->padre->cant_hijos > 0){
+        if(pos->cant_hijos == 0 && pos->padre->cant_hijos > 0){
             Nodo* aux = pos->padre;
             string_map<T>::iterator it(aux);
             if (aux != raiz){
@@ -249,7 +249,7 @@ private:
             aux = it.nodo;
             return aux;
         }
-        else if(pos->cant_descendientes > 0){
+        else if(pos->cant_hijos > 0){
             Nodo*  aux = minimo(pos);
             return aux;
         }
