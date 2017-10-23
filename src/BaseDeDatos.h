@@ -176,12 +176,12 @@ private:
      * rep: basededatos \TO bool\n
      * rep(bd) \EQUIV 
      *  * claves(_indices) = claves(_nombresYtablas) \LAND
-     *  * \FORALL (c : Criterio) c \IN claves(_uso_criterios) \IMPLIES
+     *  * \FORALL (c : Criterio) c \IN claves(_criteriosYusos) \IMPLIES
      *     * (
-     *       * \EXISTS (n : string) n \IN _nombres_tablas
+     *       * \EXISTS (n : string) n \IN _nombresYtablas
      *       * \LAND criterioValido(c, n, db)
      *     * ) \LAND
-     *     * obtener(c, _uso_criterios) > 0
+     *     * obtener(c, _criteriosYusos) > 0
      *  *\FORALL (t : string) def?(t, _indices) \IMPLIES
      *    * (
      *      * \FORALL (c : Campo) def?(c, obtener(t, _indices)) \IMPLIES
@@ -195,8 +195,8 @@ private:
      *  * (\FORALL t : string) def?(t, _nombresYtablas) \IMPLIES
      *    * obtener(t, _nombresYtablas) = dameTabla(nt, bd') \LAND
      *  * (\FORALL c : criterio) 
-     *    * (usoCriterio(c, bd') == 0 \LAND \LNOT def?(c, _uso_criterios)) \LOR
-     *    * (usoCriterio(c, db') == obtener(c, _uso_criterios))
+     *    * (usoCriterio(c, bd') == 0 \LAND \LNOT def?(c, _criteriosYusos)) \LOR
+     *    * (usoCriterio(c, db') == obtener(c, _criteriosYusos))
      *  * \FORALL (t : string) def?(t, _indices) \IMPLIES
      *    * (
      *      *\FORALL (c : Campo) def?(c, obtener(t, _indices)) \IMPLIES
