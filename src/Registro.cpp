@@ -5,32 +5,27 @@
 using namespace std;
 
 string_map<Dato> Registro::datos() const{
-    return _datos;
+    return _camposYdatos;
 }
 
-//Registro::Registro(const vector<string>& campos, const vector<Dato>& datos) :
-//    _campo(campos.begin(), campos.end()) {
-//        for (int i = 0; i < campos.size(); i++) {
-//            _datos.fast_insert(make_pair(campos[i], datos[i]));
-//        }
-//};
+
 
 Registro::Registro(const vector<string>& campos, const vector<Dato>& datos){
     for (int i = 0; i < campos.size(); ++i) {
         _campos.insert(campos[i]);
-        _datos.insert(pair(campos[i], datos[i]));
+        _camposYdatos.insert(make_pair(campos[i], datos[i]));
     }
 };
 
 
 
 const Dato& Registro::dato(const string& campo) const {
-    return _datos.at(campo);
+    return _camposYdatos.at(campo);
 }
 
-//Podemos cambiar lo que nos devuelven los metodos publicos de las clases??
+
 const linear_set<string> Registro::campos() const {
-    return _campos; //RECORDAR: claves() es un metodo de string_map que tiene que hacer Willy
+    return _campos;
 }
 
 bool operator==(const Registro& r1, const Registro& r2) {
@@ -54,6 +49,6 @@ bool operator==(const Registro& r1, const Registro& r2) {
 
 ostream &operator<<(ostream &os, const Registro &r) {
     //os toma un linear_set
-    //os << r._campoYdato.significados(); //RECORDAR: significados() es un metodo de string_map que tiene que hacer Willy
+    //os << r._campoYdato.significados();
     return os;
 }

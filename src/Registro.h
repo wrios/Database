@@ -22,6 +22,7 @@ class Registro {
 
 public:
 
+    //PARA QUE QUEREMOS ESTA FUNCION?????????
     string_map<Dato> datos() const;
 
     /**
@@ -75,7 +76,7 @@ private:
     //////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /** @{ */
-    string_map<Dato> _datos;
+    string_map<Dato> _camposYdatos;
     linear_set<string> _campos;
     /** @} */
 
