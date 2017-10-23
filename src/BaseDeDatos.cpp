@@ -19,7 +19,8 @@ void BaseDeDatos::agregarRegistro(const Registro &r, const string &nombre) {
 }
 
 const linear_set<string> &BaseDeDatos::tablas() const {
-    return _nombresYtablas.claves(); }
+    return _nombresYtablas.claves();
+}
 
 const Tabla &BaseDeDatos::dameTabla(const string &nombre) const {
   return _nombresYtablas.at(nombre);
@@ -208,7 +209,11 @@ BaseDeDatos::join_iterator BaseDeDatos::join(const string &tabla1, const string 
 //            linear_set<const Registro*> registrosEnIndice = _indices[tablaConIndice][campo].dameRegistros(*it.dato(campo));
 //            for (auto it2 = registrosEnIndice.begin(); it2 != registrosEnIndice.end(); ++it2) {
 //                //armo el nuevo registro combinado del join
-//                it.insert(combinarRegistros(*it, **it2));
+//                //pregunto cual es la tabla1 porque esta tiene más prioridad
+//                if (tablaConIndice == tabla1)
+//                    it.insert(combinarRegistros(*it, **it2));
+//                else
+//                    it.insert(combinarRegistros(**it2, *it));
 //            }
 //        }
 //    }
