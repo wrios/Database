@@ -73,7 +73,7 @@ public:
    *
    * \complexity{\O(1)}
    */
-  const linear_set<string> &campos() const;
+  const linear_set<string> campos() const;
 
   /**
    * @brief Tipo del campo parámetro para la tabla
@@ -98,7 +98,7 @@ public:
    *
    * \complexity{\O(1)}
    */
-  const linear_set<string> &claves() const;
+  const linear_set<string> claves() const;
 
   const linear_set<Registro>& registros() const;
 

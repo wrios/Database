@@ -88,7 +88,7 @@ public:
    *
    * \complexity{\O(1)}
    */
-  const linear_set<string> &tablas() const;
+  const linear_set<string> tablas() const;
 
   /**
    * @brief Devuelve la tabla asociada al nombre.

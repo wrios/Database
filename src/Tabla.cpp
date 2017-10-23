@@ -24,11 +24,11 @@ Tabla::const_iterador_registros Tabla::agregarRegistro(const Registro& r) {
 }
 
 
-const linear_set<string>& Tabla::campos() const {
+const linear_set<string> Tabla::campos() const {
     return _camposYtipos.claves();
 }
 
-const linear_set<string>& Tabla::claves() const {
+const linear_set<string> Tabla::claves() const {
     return _claves.claves();
 }
 

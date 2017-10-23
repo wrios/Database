@@ -54,7 +54,7 @@ public:
      *
      * \complexity{\O(1)}
      */
-    const linear_set<string>& campos() const;
+    const linear_set<string> campos() const;
 
 
 private:

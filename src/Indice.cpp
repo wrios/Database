@@ -27,7 +27,7 @@ linear_set<const Registro*> Indice::dameRegistros(const Dato &d) {
 
 Indice::~Indice() {
     if (_esString){
-//        _indicesStr.~string_map();
+        _indicesStr.~string_map();
     } else{
         _indicesNat.~map();
     }

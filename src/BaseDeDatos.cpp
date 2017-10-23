@@ -18,9 +18,8 @@ void BaseDeDatos::agregarRegistro(const Registro &r, const string &nombre) {
     t.agregarRegistro(r);
 }
 
-const linear_set<string> &BaseDeDatos::tablas() const {
-    return _nombresYtablas.claves();
-}
+const linear_set<string> BaseDeDatos::tablas() const {
+    return _nombresYtablas.claves(); }
 
 const Tabla &BaseDeDatos::dameTabla(const string &nombre) const {
   return _nombresYtablas.at(nombre);

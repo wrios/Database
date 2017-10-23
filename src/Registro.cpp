@@ -27,7 +27,7 @@ const Dato& Registro::dato(const string& campo) const {
 }
 
 //Podemos cambiar lo que nos devuelven los metodos publicos de las clases??
-const linear_set<string>& Registro::campos() const {
+const linear_set<string> Registro::campos() const {
     return _campoYdato.claves(); //RECORDAR: claves() es un metodo de string_map que tiene que hacer Willy
 }
 
