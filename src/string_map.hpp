@@ -255,17 +255,17 @@ pair<typename string_map<T>::iterator, bool> string_map<T>::insert(const string_
 }
 
 //devuelve un bool indicando si tiene significado
-template <typename T>
-bool string_map<T>::reestablecerPrim(Nodo* pos){
-    u_int menor;
-    Nodo* aux = pos->hijos[0];
-    for(u_int i = 0; i<256 && aux == NULL; i++){
-        menor = i;
-        aux = pos->hijos[i];
-    }
-    pos->prim = pos->hijos[menor];
-    return (pos->prim != NULL)&&(pos->prim->definicion != NULL);
-}
+//template <typename T>
+//bool string_map<T>::reestablecerPrim(Nodo* pos){
+//    u_int menor;
+//    Nodo* aux = pos->hijos[0];
+//    for(u_int i = 0; i<256 && aux == NULL; i++){
+//        menor = i;
+//        aux = pos->hijos[i];
+//    }
+//    pos->prim = pos->hijos[menor];
+//    return (pos->prim != NULL)&&(pos->prim->definicion != NULL);
+//}
 
 template <typename T>
 //3 casos
