@@ -20,13 +20,16 @@ string_map<T>::~string_map(){
     auto it = begin();
     while (it != end()){
         it = erase(it);
+        ++it;
     }
     delete raiz;
 }
 
 //constructor por copia
 template <typename T>
-string_map<T>::string_map(const string_map & other){}
+string_map<T>::string_map(const string_map & other){
+
+}
 
 //operador de asignacion
 template <typename T>
@@ -37,15 +40,12 @@ string_map<T>& string_map<T>::operator=(const string_map &otro){
         this->insert(*(it.nodo->definicion));
     }
     return *this;
-
-
-
 }
 
 
 template <typename Nodo>
 bool mismosNodos(Nodo* n1 ,Nodo* n2){
-    bool res = true;
+    bool res = false;
     if(n1 != NULL && n2 != NULL){
         if(n1->definicion != NULL && n2->definicion != NULL){
             if(n1->definicion != n2->definicion || n1->cant_hijos != n2->cant_hijos || n1->cant_descendientes != n2->cant_descendientes ){
@@ -83,7 +83,8 @@ size_t string_map<T>::count(const key_type &key) const{
             return 0;
         }else{esta = esta->hijos[int(key[i])];}
     }
-    return 1;
+    if(esta->definicion != NULL){ return 1;}
+    return 0;
 }
 
 //cantidad de claves definidas
@@ -237,7 +238,6 @@ pair<typename string_map<T>::iterator, bool> string_map<T>::insert(const string_
         }
         //HACIENDO DEBBUG ACA NUNCA ENTRO!!!!
         if (i == value.first.size() - 1 && recognizer->hijos[int(value.first[i])] == NULL ){
-
             insertado = true;
         }
 
@@ -245,7 +245,6 @@ pair<typename string_map<T>::iterator, bool> string_map<T>::insert(const string_
     }//recognizer es un puntero donde voy a insertar el significado o a redefinir el significado
 
     if (insertado){
-
         cantElem++;
     }
     recognizer->definicion->second = value.second; //SE ROMPE PORQUE DATO NO TIENE OPERATOR=
