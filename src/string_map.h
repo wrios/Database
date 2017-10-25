@@ -6,7 +6,6 @@
 #include <vector>
 #include <ostream>
 #include "linear_set.h"
-#include "string_map.hpp"
 
 
 using std::string;
@@ -189,8 +188,6 @@ private:
       value_type* definicion;
       Nodo** hijos;
       Nodo* padre;
-      //Nodo* prim;
-//      size_t cant_descendientes;
       size_t cant_hijos;
       
         Nodo() {
@@ -200,9 +197,7 @@ private:
             }
             definicion = NULL;
             padre = NULL;
-            //prim = NULL;
             cant_hijos = 0;
-//           cant_descendientes = 0;
         }
 
         ~Nodo() {
@@ -286,13 +281,10 @@ private:
         explicit iterator(Nodo* n) : nodo(n) {};
         Nodo* nodo;
 
-        iterator herm_Mayor();
-
         iterator avanzarMayor();
 
         iterator avanzarAlMin();
 
-        bool tieneHM(key_type& clave);
 
     };
 
