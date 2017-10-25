@@ -16,12 +16,7 @@ string_map<T>::string_map(){
 //destructor de mapa
 template <typename T>
 string_map<T>::~string_map(){
-    this->cantElem = 0;
-    auto it = begin();
-    while (it != end()){
-        it = erase(it);
-        ++it;
-    }
+    clear();
     delete raiz;
 }
 
@@ -105,7 +100,10 @@ T& string_map<T>::operator[](const key_type &key){
         }
         seeker = (seeker->hijos)[int(key[i])];
     }
-    if(seeker->definicion == NULL){seeker->definicion->second = T();}
+    if(seeker->definicion == NULL){
+//        seeker->definicion = new
+        seeker->definicion->second = T();
+    }
     return seeker->definicion->second;
 }
 
@@ -230,14 +228,14 @@ pair<typename string_map<T>::iterator, bool> string_map<T>::insert(const string_
             recognizer->hijos[int(value.first[i])]->padre = recognizer;
             recognizer->cant_hijos++;
 
-            if(recognizer->cant_hijos == 0){
-                recognizer->prim = recognizer->hijos[int(value.first[i])];
-            } else{
-                reestablecerPrim(recognizer);
-            }
+//            if(recognizer->cant_hijos == 1){
+//                recognizer->prim = recognizer->hijos[int(value.first[i])];
+//            } else{
+//                reestablecerPrim(recognizer);
+//            }
         }
         //HACIENDO DEBBUG ACA NUNCA ENTRO!!!!
-        if (i == value.first.size() - 1 && recognizer->hijos[int(value.first[i])] == NULL ){
+        if (i == value.first.size() - 1 && recognizer->hijos[int(value.first[i])]->definicion == NULL ){
             insertado = true;
         }
 
@@ -247,7 +245,11 @@ pair<typename string_map<T>::iterator, bool> string_map<T>::insert(const string_
     if (insertado){
         cantElem++;
     }
-    recognizer->definicion->second = value.second; //SE ROMPE PORQUE DATO NO TIENE OPERATOR=
+
+    if (recognizer->definicion != nullptr)
+        delete recognizer->definicion;
+    recognizer->definicion = new value_type(value);
+//    recognizer->definicion->second = value.second; //SE ROMPE PORQUE DATO NO TIENE OPERATOR=
     string_map<T>::iterator it(recognizer);
     return make_pair(it,insertado);
 }
@@ -256,7 +258,7 @@ pair<typename string_map<T>::iterator, bool> string_map<T>::insert(const string_
 template <typename T>
 bool string_map<T>::reestablecerPrim(Nodo* pos){
     u_int menor;
-    Nodo* aux;
+    Nodo* aux = pos->hijos[0];
     for(u_int i = 0; i<256 && aux == NULL; i++){
         menor = i;
         aux = pos->hijos[i];
