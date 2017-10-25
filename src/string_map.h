@@ -30,6 +30,9 @@ public:
     class iterator;
     class const_iterator;
 
+    friend class iterator;
+    friend class const_iterator;
+
 
     /** @brief Construye mapa vacio
      *
@@ -223,15 +226,20 @@ private:
 
     Nodo* minimo(Nodo* nodo) const {
         Nodo* aux = nodo;
-        for(u_int i = 0; i < 256; ++i){
-            if(aux->hijos[i] != NULL){
-                aux = aux->hijos[i];
-                if(aux->definicion != NULL){ return aux;}
-                else{i = 0;}
+        if(aux == nullptr){ std::cout << "minimo de un null"<< std::endl;}
+        else {
+            for (u_int i = 0; i < 256; ++i) {
+                if (aux->hijos[i] != nullptr) {
+                    aux = aux->hijos[i];
+                    if (aux->definicion != nullptr) {
+                        return aux;
+                    } else {
+                        return minimo(aux);
+                    }
+                }
             }
+            std::cout << "esta devolviendo el mismo nodo" << std::endl;
         }
-        std::cout << "esta devolviendo el mismo nodo" << std::endl;
-        return aux;
     }
 
 
@@ -281,8 +289,10 @@ private:
 
     private:
 
-        explicit iterator(Nodo* n) : nodo(n) {};
         Nodo* nodo;
+        explicit iterator(const string_map& s) : nodo(minimo(s.raiz)) {};
+        iterator(Nodo* n) : nodo(n){};
+        string_map* sm;
 
         iterator avanzarMayor();
 
@@ -314,8 +324,11 @@ private:
 
     private:
 
-        const_iterator(Nodo* n) : nodo(n) {};
         Nodo* nodo;
+        string_map* sm;
+        explicit const_iterator(const string_map& s ) : nodo(minimo(s.raiz)) {};
+        const_iterator(Nodo* n) : nodo(n){};
+
 
         const_iterator avanzarMayor();
 

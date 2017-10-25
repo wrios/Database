@@ -140,9 +140,11 @@ const T& string_map<T>::at(const key_type& key) const{
 template <typename T>
 void string_map<T>::clear(){
     this->cantElem = 0;
-    auto it = begin();
-    while(it != this->end()){
-        it = erase(it);
+    if(!empty()){
+            auto it = begin();
+            while(it != this->end()){
+            it = erase(it);
+        }
     }
 }
 
@@ -230,13 +232,8 @@ pair<typename string_map<T>::iterator, bool> string_map<T>::insert(const string_
             recognizer->hijos[int(value.first[i])]->padre = recognizer;
             recognizer->cant_hijos++;
 
-//            if(recognizer->cant_hijos == 1){
-//                recognizer->prim = recognizer->hijos[int(value.first[i])];
-//            } else{
-//                reestablecerPrim(recognizer);
-//            }
         }
-        //HACIENDO DEBBUG ACA NUNCA ENTRO!!!!
+
         if (i == value.first.size() - 1 && recognizer->hijos[int(value.first[i])]->definicion == NULL ){
             insertado = true;
         }
@@ -251,7 +248,6 @@ pair<typename string_map<T>::iterator, bool> string_map<T>::insert(const string_
     if (recognizer->definicion != nullptr)
         delete recognizer->definicion;
     recognizer->definicion = new value_type(value);
-//    recognizer->definicion->second = value.second; //SE ROMPE PORQUE DATO NO TIENE OPERATOR=
     string_map<T>::iterator it(recognizer);
     return make_pair(it,insertado);
 }
@@ -266,8 +262,8 @@ template <typename T>
 typename string_map<T>::iterator string_map<T>::iterator::operator++(){
     //es descendiente
     while(nodo->cant_hijos > 0){
-        while(minimo(nodo)->definicion == NULL){
-            nodo = minimo(nodo);
+        while(sm->minimo(nodo)->definicion == NULL){
+            nodo = sm->minimo(nodo);
         }
         return *this;
     }
@@ -365,7 +361,7 @@ typename string_map<T>::iterator string_map<T>::iterator::avanzarMayor(){
 
 template <typename T>
 typename string_map<T>::iterator string_map<T>::iterator::avanzarAlMin(){
-    nodo = minimo(nodo);
+    nodo = sm->minimo(nodo);
     return *this;
 }
 
@@ -411,8 +407,8 @@ typename string_map<T>::const_iterator string_map<T>::const_iterator::avanzarMay
 
 template <typename T>
 typename string_map<T>::const_iterator string_map<T>::const_iterator::avanzarAlMin(){
-    while(nodo->prim != NULL){
-        nodo = nodo->prim;
+    while(sm->minimo(nodo) != NULL){
+        nodo = sm->minimo(nodo);
     }
     return *this;
 }
@@ -442,8 +438,8 @@ template <typename T>
 typename string_map<T>::const_iterator string_map<T>::const_iterator::operator++(){
     //es descendiente
     while(nodo->cant_hijos > 0){
-        while(minimo(nodo)->definicion == NULL){
-            nodo = minimo(nodo);
+        while(sm->minimo(nodo)->definicion == NULL){
+            nodo = sm->minimo(nodo);
         }
         return *this;
     }
