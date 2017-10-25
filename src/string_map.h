@@ -181,6 +181,7 @@ public:
     //Devuelve la union de todos los significados
      linear_set<T> significados() const;
 
+
 private:
 
 
@@ -213,7 +214,6 @@ private:
      *
      **/
 
-    void swap(const string_map &other);
 
 
     Nodo* minimo() const{
@@ -256,6 +256,9 @@ private:
 
 
  public:
+
+
+
     class iterator{
     public:
     //typedef T value_type;

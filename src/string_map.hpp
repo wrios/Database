@@ -6,6 +6,8 @@ using namespace std;
 
 typedef unsigned int u_int;
 
+
+
 //construye mapa vacio
 template <typename T>
 string_map<T>::string_map(){
@@ -254,18 +256,7 @@ pair<typename string_map<T>::iterator, bool> string_map<T>::insert(const string_
     return make_pair(it,insertado);
 }
 
-//devuelve un bool indicando si tiene significado
-//template <typename T>
-//bool string_map<T>::reestablecerPrim(Nodo* pos){
-//    u_int menor;
-//    Nodo* aux = pos->hijos[0];
-//    for(u_int i = 0; i<256 && aux == NULL; i++){
-//        menor = i;
-//        aux = pos->hijos[i];
-//    }
-//    pos->prim = pos->hijos[menor];
-//    return (pos->prim != NULL)&&(pos->prim->definicion != NULL);
-//}
+
 
 template <typename T>
 //3 casos
@@ -275,15 +266,15 @@ template <typename T>
 typename string_map<T>::iterator string_map<T>::iterator::operator++(){
     //es descendiente
     while(nodo->cant_hijos > 0){
-        while(nodo->prim->definicion == NULL){
-            nodo = nodo->prim;
+        while(minimo(nodo)->definicion == NULL){
+            nodo = minimo(nodo);
         }
         return *this;
     }
     //si llego hasta aca es porque no tiene descendientes
     string_map<T>::iterator it(nodo);
     //CUIDADO ACAA!!!
-    while(/*nodo->padre != raiz &&*/ nodo->padre->cant_hijos > 1){
+    while(nodo->padre != nodo && nodo->padre->cant_hijos > 1){
         it.nodo = it.nodo->padre;
     }
     //sali porque el padre es la raiz o la cantidad de hermanos es mayor a 1
@@ -329,7 +320,6 @@ typename string_map<T>::iterator string_map<T>::erase(string_map<T>::iterator po
             }
         }
         aux->cant_hijos--;
-        reestablecerPrim(aux->padre);
     }
     return ++pos;
 }
@@ -340,13 +330,7 @@ size_t string_map<T>::erase(const key_type &key){
     erase(iter);
     return 1;
 }
-template <typename T>
-void string_map<T>::swap(const string_map &other){
-using std::swap;
-swap(raiz, other.raiz);
-swap(cantElem, other.cantElem);
 
-}
 
 
 template <typename T>
@@ -367,7 +351,7 @@ bool string_map<T>::iterator::operator!=(const iterator& otro) const{
 
 
 template <typename T>
-typename string_map<T>::iterator string_map<T>::iterator::herm_Mayor(){
+typename string_map<T>::iterator string_map<T>::iterator::avanzarMayor(){
     for(u_int i = 0; i < nodo->padre->cant_hijos; i++){
         if(nodo->padre->hijos[i] != NULL && nodo->padre->hijos[i]->definicion->first > nodo->definicion->first){
             nodo = nodo->padre->hijos[i];
@@ -379,30 +363,13 @@ typename string_map<T>::iterator string_map<T>::iterator::herm_Mayor(){
 }
 
 
-//FALTA IMPLEMENTAR!!!!!!!!!!!
-template <typename T>
-typename string_map<T>::iterator string_map<T>::iterator::avanzarMayor(){
-
-}
-
-
 template <typename T>
 typename string_map<T>::iterator string_map<T>::iterator::avanzarAlMin(){
-    while(nodo->prim != NULL){
-        nodo = nodo->prim;
-    }
+    nodo = minimo(nodo);
     return *this;
 }
 
 
-template <typename T>
-bool string_map<T>::iterator::tieneHM(key_type& clave){
-    for(u_int i = 0; i < nodo->padre->cant_hijos; i++){
-        Nodo* aux  = nodo->padre->hijos[i];
-        if(!(nodo->definicion->first > aux->definicion->first)){ return true;}
-    }
-    return false;
-}
 
 
 template <typename T>
@@ -475,8 +442,8 @@ template <typename T>
 typename string_map<T>::const_iterator string_map<T>::const_iterator::operator++(){
     //es descendiente
     while(nodo->cant_hijos > 0){
-        while(nodo->prim->definicion == NULL){
-            nodo = nodo->prim;
+        while(minimo(nodo)->definicion == NULL){
+            nodo = minimo(nodo);
         }
         return *this;
     }
