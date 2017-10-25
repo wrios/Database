@@ -6,7 +6,7 @@
 #include <vector>
 #include <ostream>
 #include "linear_set.h"
-
+#include "string_map.hpp"
 
 
 using std::string;
@@ -189,7 +189,7 @@ private:
       value_type* definicion;
       Nodo** hijos;
       Nodo* padre;
-      Nodo* prim;
+      //Nodo* prim;
 //      size_t cant_descendientes;
       size_t cant_hijos;
       
@@ -200,7 +200,7 @@ private:
             }
             definicion = NULL;
             padre = NULL;
-            prim = NULL;
+            //prim = NULL;
             cant_hijos = 0;
 //           cant_descendientes = 0;
         }
@@ -228,14 +228,18 @@ private:
 
     Nodo* minimo(Nodo* nodo) const {
         Nodo* aux = nodo;
-        while(aux != NULL && aux->prim != NULL){
-            aux = aux->prim;
+        for(u_int i = 0; i < 256; ++i){
+            if(aux->hijos[i] != NULL){
+                aux = aux->hijos[i];
+                if(aux->definicion != NULL){ return aux;}
+                else{i = 0;}
+            }
         }
+        std::cout << "esta devolviendo el mismo nodo" << std::endl;
         return aux;
     }
 
 
-    bool reestablecerPrim(Nodo* pos);
 
 
     //devuelve el sucesor inorder de la posicion pasada como parametro
