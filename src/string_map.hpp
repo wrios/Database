@@ -226,33 +226,26 @@ typename string_map<T>::const_iterator string_map<T>::find(const key_type &key) 
 //define o redefine
 template <typename T>
 pair<typename string_map<T>::iterator, bool> string_map<T>::insert(const string_map::value_type& value){
-    Nodo* recognizer = raiz;
+    Nodo* parent = raiz;
+    Nodo* son = raiz;
     bool insertado = false;
     for(u_int i = 0; i < value.first.size(); i++){
-
-        if(recognizer->hijos[int(value.first[i])] == NULL){
-
-            recognizer->hijos[int(value.first[i])] = new Nodo();
-            recognizer->hijos[int(value.first[i])]->padre = recognizer;
-            recognizer->cant_hijos++;
-
+        if(parent->hijos == NULL)throw runtime_error("hijos es null");
+        if(*(parent->hijos) == NULL) throw runtime_error("*hijos es null");
+        son = (parent->hijos)[int(value.first[i])];
+        if(son == NULL){
+            son = new Nodo();
+            (parent->hijos)[int(value.first[i])] = son;
+            if (i == value.first.size() - 1 && (parent->hijos)[int(value.first[i])]->definicion == NULL ){
+                insertado = true;
+                cantElem++;
+            }
         }
-
-        if (i == value.first.size() - 1 && recognizer->hijos[int(value.first[i])]->definicion == NULL ){
-            insertado = true;
-        }
-
-        recognizer = recognizer->hijos[int(value.first[i])];
+        parent = son;
     }//recognizer es un puntero donde voy a insertar el significado o a redefinir el significado
-
-    if (insertado){
-        cantElem++;
-    }
-
-    if (recognizer->definicion != nullptr)
-        delete recognizer->definicion;
-    recognizer->definicion = new value_type(value);
-    string_map<T>::iterator it(recognizer);
+    delete son->definicion;
+    son->definicion = new value_type(value);
+    string_map<T>::iterator it(son);
     return make_pair(it,insertado);
 }
 

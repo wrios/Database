@@ -205,6 +205,7 @@ private:
         }
 
         ~Nodo() {
+            //delete padre;
             delete definicion;
             delete[] hijos;
         }
