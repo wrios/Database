@@ -205,9 +205,16 @@ private:
         }
 
         ~Nodo() {
+            //delete padre;
             delete definicion;
             delete[] hijos;
         }
+        Nodo* minimo();
+        Nodo* sucesor();
+        bool tieneHM();
+        Nodo* hermanoMayor();
+        void eliminarNodos(Nodo*);
+        bool mismosNodos(Nodo* n2);
     };
 
     size_type cantElem;
@@ -217,50 +224,6 @@ private:
      *
      **/
 
-
-
-    Nodo* minimo() const{
-        return minimo(raiz);
-    }
-
-
-    Nodo* minimo(Nodo* nodo) const {
-        Nodo* aux = nodo;
-        if(aux == nullptr){ std::cout << "minimo de un null"<< std::endl;}
-        else {
-            for (u_int i = 0; i < 256; ++i) {
-                if (aux->hijos[i] != nullptr) {
-                    aux = aux->hijos[i];
-                    if (aux->definicion != nullptr) {
-                        return aux;
-                    } else {
-                        return minimo(aux);
-                    }
-                }
-            }
-            std::cout << "esta devolviendo el mismo nodo" << std::endl;
-        }
-    }
-
-
-
-
-    //devuelve el sucesor inorder de la posicion pasada como parametro
-    Nodo* sucesor(Nodo* pos) const{
-        if(pos->cant_hijos == 0 && pos->padre->cant_hijos > 0){
-            Nodo* aux = pos->padre;
-            string_map<T>::iterator it(aux);
-            if (aux != raiz){
-                ++it;
-            }
-            aux = it.nodo;
-            return aux;
-        }
-        else if(pos->cant_hijos > 0){
-            Nodo*  aux = minimo(pos);
-            return aux;
-        }
-    }
 
 
  public:
@@ -290,9 +253,7 @@ private:
     private:
 
         Nodo* nodo;
-        explicit iterator(const string_map& s) : nodo(minimo(s.raiz)) {};
         iterator(Nodo* n) : nodo(n){};
-        string_map* sm;
 
         iterator avanzarMayor();
 
@@ -325,8 +286,6 @@ private:
     private:
 
         Nodo* nodo;
-        string_map* sm;
-        explicit const_iterator(const string_map& s ) : nodo(minimo(s.raiz)) {};
         const_iterator(Nodo* n) : nodo(n){};
 
 
@@ -335,7 +294,6 @@ private:
         const_iterator avanzarAlMin();
 
     };
-
 
 };
 

@@ -3,6 +3,8 @@
 #include <iostream>
 #include "linear_set.h"
 using namespace std;
+//funciones de Nodo
+
 
 typedef unsigned int u_int;
 
@@ -12,6 +14,7 @@ typedef unsigned int u_int;
 template <typename T>
 string_map<T>::string_map(){
     raiz = new Nodo();
+    raiz->padre = raiz;
     cantElem = 0;
 }
 
@@ -25,32 +28,33 @@ string_map<T>::~string_map(){
 //constructor por copia
 template <typename T>
 string_map<T>::string_map(const string_map & other){
-
+    clear();
+    for(auto it = other.begin(); it!=other.end(); ++it){
+        this->insert(*(it.nodo->definicion));
+    }
 }
 
 //operador de asignacion
 template <typename T>
 string_map<T>& string_map<T>::operator=(const string_map &otro){
-    this->~string_map();
-
+    clear();
     for(auto it = otro.begin(); it!=otro.end(); ++it){
         this->insert(*(it.nodo->definicion));
     }
     return *this;
 }
 
-
-template <typename Nodo>
-bool mismosNodos(Nodo* n1 ,Nodo* n2){
+template <typename T>
+bool string_map<T>::Nodo::mismosNodos(Nodo* n2){
     bool res = false;
-    if(n1 != NULL && n2 != NULL){
-        if(n1->definicion != NULL && n2->definicion != NULL){
-            if(n1->definicion != n2->definicion || n1->cant_hijos != n2->cant_hijos || n1->cant_descendientes != n2->cant_descendientes ){
+    if(this != NULL && n2 != NULL){
+        if(definicion != NULL && n2->definicion != NULL){
+            if(definicion != n2->definicion || cant_hijos != n2->cant_hijos || cant_hijos != n2->cant_hijos){
                 return false;
             }
         }
         for(u_int i = 0; i < 256; i++){
-            res = res && mismosNodos(n1->hijos[i],n2->hijos[i]);
+            res = res && hijos[i]->mismosNodos(n2->hijos[i]);
         }
     }
     return res;
@@ -60,7 +64,7 @@ bool mismosNodos(Nodo* n1 ,Nodo* n2){
 template <typename T>
 bool string_map<T>::operator==(const string_map<T>& otro) const{
     bool iguales = (cantElem == otro.cantElem);
-    iguales = iguales && mismosNodos(raiz, otro.raiz);
+    iguales = iguales && raiz->mismosNodos(otro.raiz);
     return iguales;
 }
 
@@ -152,7 +156,7 @@ void string_map<T>::clear(){
 //devuelve iterator al primer par en orden lexicografico
 template <typename T>
 typename string_map<T>::iterator string_map<T>::begin(){
-    string_map<T>::iterator it(minimo());
+    string_map<T>::iterator it(raiz->minimo());
     return it;
 }
 
@@ -166,7 +170,7 @@ typename string_map<T>::iterator string_map<T>::end(){
 //devuelve const_iterator al primer par en orden lexicografico
 template <typename T>
 typename string_map<T>::const_iterator string_map<T>::begin()const{
-    string_map<T>::const_iterator it(minimo());
+    string_map<T>::const_iterator it(raiz->minimo());
     return it;
 }
 
@@ -180,7 +184,7 @@ typename string_map<T>::const_iterator string_map<T>::end()const{
 //devuelve const_iterator al primer (const)par en orden lexicografico
 template <typename T>
 const typename string_map<T>::const_iterator string_map<T>::cbegin()const{
-    string_map<T>::const_iterator it(minimo());
+    string_map<T>::const_iterator it(raiz->minimo());
     return it;
 }
 
@@ -222,33 +226,26 @@ typename string_map<T>::const_iterator string_map<T>::find(const key_type &key) 
 //define o redefine
 template <typename T>
 pair<typename string_map<T>::iterator, bool> string_map<T>::insert(const string_map::value_type& value){
-    Nodo* recognizer = raiz;
+    Nodo* parent = raiz;
+    Nodo* son = raiz;
     bool insertado = false;
     for(u_int i = 0; i < value.first.size(); i++){
-
-        if(recognizer->hijos[int(value.first[i])] == NULL){
-
-            recognizer->hijos[int(value.first[i])] = new Nodo();
-            recognizer->hijos[int(value.first[i])]->padre = recognizer;
-            recognizer->cant_hijos++;
-
+        if(parent->hijos == NULL)throw runtime_error("hijos es null");
+        if(*(parent->hijos) == NULL) throw runtime_error("*hijos es null");
+        son = (parent->hijos)[int(value.first[i])];
+        if(son == NULL){
+            son = new Nodo();
+            (parent->hijos)[int(value.first[i])] = son;
+            if (i == value.first.size() - 1 && (parent->hijos)[int(value.first[i])]->definicion == NULL ){
+                insertado = true;
+                cantElem++;
+            }
         }
-
-        if (i == value.first.size() - 1 && recognizer->hijos[int(value.first[i])]->definicion == NULL ){
-            insertado = true;
-        }
-
-        recognizer = recognizer->hijos[int(value.first[i])];
+        parent = son;
     }//recognizer es un puntero donde voy a insertar el significado o a redefinir el significado
-
-    if (insertado){
-        cantElem++;
-    }
-
-    if (recognizer->definicion != nullptr)
-        delete recognizer->definicion;
-    recognizer->definicion = new value_type(value);
-    string_map<T>::iterator it(recognizer);
+    delete son->definicion;
+    son->definicion = new value_type(value);
+    string_map<T>::iterator it(son);
     return make_pair(it,insertado);
 }
 
@@ -262,8 +259,8 @@ template <typename T>
 typename string_map<T>::iterator string_map<T>::iterator::operator++(){
     //es descendiente
     while(nodo->cant_hijos > 0){
-        while(sm->minimo(nodo)->definicion == NULL){
-            nodo = sm->minimo(nodo);
+        while(nodo->minimo()->definicion == NULL){
+            nodo = nodo->minimo();
         }
         return *this;
     }
@@ -361,7 +358,7 @@ typename string_map<T>::iterator string_map<T>::iterator::avanzarMayor(){
 
 template <typename T>
 typename string_map<T>::iterator string_map<T>::iterator::avanzarAlMin(){
-    nodo = sm->minimo(nodo);
+    nodo = nodo->minimo();
     return *this;
 }
 
@@ -407,8 +404,8 @@ typename string_map<T>::const_iterator string_map<T>::const_iterator::avanzarMay
 
 template <typename T>
 typename string_map<T>::const_iterator string_map<T>::const_iterator::avanzarAlMin(){
-    while(sm->minimo(nodo) != NULL){
-        nodo = sm->minimo(nodo);
+    while(nodo->minimo() != NULL){
+        nodo = nodo->minimo();
     }
     return *this;
 }
@@ -438,8 +435,8 @@ template <typename T>
 typename string_map<T>::const_iterator string_map<T>::const_iterator::operator++(){
     //es descendiente
     while(nodo->cant_hijos > 0){
-        while(sm->minimo(nodo)->definicion == NULL){
-            nodo = sm->minimo(nodo);
+        while(nodo->minimo()->definicion == NULL){
+            nodo = nodo->minimo();
         }
         return *this;
     }
@@ -470,3 +467,81 @@ template <typename T>
 typename string_map<T>::value_type* string_map<T>::const_iterator::operator->(){
     return nodo->definicion;
 }
+
+
+//funciones de Nodo
+
+
+template <typename T>
+typename string_map<T>::Nodo* string_map<T>::Nodo::minimo(){
+    std::cout << "llamada al minimo" << std::endl;
+    Nodo* aux = this;
+    if(aux == nullptr) throw runtime_error("minimo de un null");
+    for (u_int i = 0; i < 256; ++i) {
+        std::cout << "for del minimo "<< i << std::endl;
+        if (aux->hijos[i] != nullptr) {
+            std::cout << "primer hijo no null "<< i << std::endl;
+            aux = aux->hijos[i];
+            i =0;
+            if (aux->definicion != nullptr) {
+                std::cout << "primera definicion "<< i << std::endl;
+                return aux;
+            }
+        }
+    }
+    std::cout << " esta devolviendo el mismo nodo" << std::endl;
+    return aux;
+}
+
+template <typename T>
+typename string_map<T>::Nodo* string_map<T>::Nodo::sucesor(){
+    std::cout << "llamada al sucesor" << std::endl;
+    //no tiene hijos, entonces el siguiente mayor es algun pariente mayor o el final
+    if(cant_hijos > 0 ) throw runtime_error("buscando el sucesor cuando el nodo tiene hijos");
+    bool hm = this->tieneHM();
+    Nodo* temp = this;
+    while(temp != temp->padre && hm){
+        std::cout << "while del sucesor" << std::endl;
+        temp = temp->padre;
+    }
+    if(hm){//si tiene hermano mayor, asigno el hermano mayor
+        temp->hermanoMayor();
+    }//sino, this es la raiz, asique no haga nada y devuelvo this porque ya esta en la posicion
+    return temp;
+}
+
+template <typename T>
+bool string_map<T>::Nodo::tieneHM(){
+    for(u_int i = 0; i < 256; i++){
+        std::cout << "for tieneHM" << std::endl;
+        Nodo* temp = padre->hijos[i];
+        if(temp->definicion != NULL && temp->definicion->first > definicion->first){
+            return true;
+        }
+
+    }
+    return false;
+}
+
+template <typename T>
+typename string_map<T>::Nodo* string_map<T>::Nodo::hermanoMayor() {
+    for(u_int i = 0; i < 256; i++){
+        std::cout << "for del hermanoMayor" << std::endl;
+        Nodo* temp = padre->hijos[i];
+        if(temp->definicion != NULL && temp->definicion->first > definicion->first){
+            return temp;
+        }
+    }
+    if(true) throw runtime_error("no tiene hermano mayor");
+}
+
+template <typename T>
+void string_map<T>::Nodo::eliminarNodos(string_map<T>::Nodo* n){
+    for(u_int i = 0; i < 256; i++){
+        if(n->hijos[i] != NULL){
+            eliminarNodos(n->hijos[i]);
+        }
+    }
+    delete n;
+}
+
