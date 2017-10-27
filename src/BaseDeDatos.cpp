@@ -168,62 +168,87 @@ bool BaseDeDatos::join_iterator::operator!=(const BaseDeDatos::join_iterator & o
 }
 
 BaseDeDatos::join_iterator BaseDeDatos::join_iterator::operator++(){
-    ++it;
-    return *this;
+    if (it2 == endIt2){
+        ++it;
+        linear_set<const Registro*> registrosEnIndice = _indices.at(tablaConIndice).at(campo).dameRegistros(*it.dato(campo));
+        while (registrosEnIndice.empty() and it != endIt){
+            ++it;
+            registrosEnIndice = _indices.at(tablaConIndice).at(campo).dameRegistros(*it.dato(campo));
+        }
+        it2 = registrosEnIndice.begin();
+    }else{
+        ++it2;
+    }
+//    if (it == endIt){
+        //llego al join_iterator.end()
+        //devuelvo posicion al end() (posicion arbitraria?)
+//    }else
+        return *this;
 }
 
 Registro BaseDeDatos::join_iterator::operator*(){
-    return *it;
+    Registro combinarRegistros(const Registro &r1, const Registro &r2){
+        vector<string> campos;
+        vector<Dato> datos;
+        for (auto campo: r1.campos()) {
+            campos.push_back(campo);
+            datos.push_back(r1.dato(campo));
+        }
+        for (auto campo: r2.campos()) {
+            if (not(pertenece(campo, campos))){
+                campos.push_back(campo);
+                datos.push_back(r2.dato(campo));
+            }
+        }
+        Registro registroCombinado = Registro(campos, datos);
+        return registroCombinado;
+    }
+    if (prioridadDeIndice)
+        return combinarRegistros(**it2, *it);
+    else
+        return combinarRegistros(*it, **it2);
 }
 
 Registro *BaseDeDatos::join_iterator::operator->(){
-//    return &(*it);
+    return preg;
 }
 
 
 BaseDeDatos::join_iterator BaseDeDatos::join(const string &tabla1, const string &tabla2, const string &campo) const {
-    //funcion auxiliar
-//    Registro combinarRegistros(const Registro &r1, const Registro &r2){
-//        vector<string> campos;
-//        vector<Dato> datos;
-//        for (auto campo: r1.campos()) {
-//            campos.push_back(campo);
-//            datos.push_back(r1.dato(campo));
-//        }
-//        for (auto campo: r2.campos()) {
-//            if (not(pertenece(campo, campos))){
-//                campos.push_back(campo);
-//                datos.push_back(r2.dato(campo));
-//            }
-//        }
-//        Registro registroCombinado = Registro(campos, datos);
-//        return registroCombinado;
-//    }
+    //definir al final end()
+
 //
 //    //idea de como sería el algoritmo, esto hay que reemplazarlo por ocmo se utilizan en verdad los iteradores
-//    BaseDeDatos::join_iterator algoritmo(const string tablaSinIndice, const string tablaConIndice){
-//        linear_set<Registro> registrosEnTabla = _nombresYtablas[tablaSinIndice].registros();
-//        for (auto it = registrosEnTabla.begin(); it != registrosEnTabla.end() ; ++it) {
-//            //chequeo la lista de registros que coinciden el valor del campo en el indice de la otra tabla
-//            linear_set<const Registro*> registrosEnIndice = _indices[tablaConIndice][campo].dameRegistros(*it.dato(campo));
-//            for (auto it2 = registrosEnIndice.begin(); it2 != registrosEnIndice.end(); ++it2) {
-//                //armo el nuevo registro combinado del join
-//                //pregunto cual es la tabla1 porque esta tiene más prioridad
-//                if (tablaConIndice == tabla1)
-//                    it.insert(combinarRegistros(*it, **it2));
-//                else
-//                    it.insert(combinarRegistros(**it2, *it));
-//            }
-//        }
-//    }
-//
-//    if (_indices[tabla1][campo].esVacio()){
-//        //tabla1 no tiene indice, por lo tanto tabla2 lo tiene (por el PRE)
-//        return algoritmo(tabla1, tabla2);
-//    }else{
-//        //usa el indice de tabla1
-//        return algoritmo(tabla2, tabla1);
-//    }
+    BaseDeDatos::join_iterator algoritmo(const string tablaSinIndice, const string tablaConIndice) const{
+        join_iterator nuevoJoin = new join_iterator();
+        linear_set<Registro> registrosEnTabla = _nombresYtablas.at(tablaSinIndice).registros();
+        nuevoJoin.it = registrosEnTabla.begin();
+        linear_set<const Registro*> registrosEnIndice = _indices.at(tablaConIndice).at(campo).dameRegistros(*(nuevoJoin.it).dato(campo));
+        nuevoJoin.it2 = registrosEnIndice.begin();
+        while(!registrosEnIndice.empty()){
+            nuevoJoin.it++;
+            registrosEnIndice = _indices.at(tablaConIndice).at(campo).dameRegistros(*(nuevoJoin.it).dato(campo));
+        }
+        return nuevoJoin;
+    }
+
+
+    join_iterator nuevoJoin = new join_iterator();
+    nuevoJoin.prioridadDeIndice = not _indices[tabla1][campo].esVacio();
+    if (nuevoJoin.prioridadDeIndice){
+        //tabla1 si tiene indice
+        linear_set<Registro> registrosEnTabla = _nombresYtablas.at(tabla2).registros();
+        nuevoJoin.it = registrosEnTabla.begin();
+        linear_set<const Registro*> registrosEnIndice = _indices.at(tabla1).at(campo).dameRegistros(*(nuevoJoin.it).dato(campo));
+        nuevoJoin.it2 = registrosEnIndice.begin();
+        while(!registrosEnIndice.empty()){
+            ++nuevoJoin.it;
+            registrosEnIndice = _indices.at(tabla1).at(campo).dameRegistros(*(nuevoJoin.it).dato(campo));
+        }
+    }else{
+//        return algoritmo
+    }
+    return nuevoJoin:
 }
 
 

@@ -30,7 +30,7 @@ class BaseDeDatos {
 public:
 
     class join_iterator;
-
+    friend class join_iterator;
   /** @brief Criterio de búsqueda para una base de datos */
   typedef linear_set<Restriccion> Criterio;
 
@@ -302,8 +302,14 @@ public:
         //TODO: esto puede no existir
         join_iterator(const linear_set<Registro>::iterator);
 
+        bool prioridadDeIndice; //tabla1 tiene ind
         linear_set<Registro>::iterator it;
-
+        linear_set<Registro*>::iterator it2;
+        linear_set<Registro>::iterator endIt;
+        linear_set<Registro*>::iterator endIt2;
+        Registro* preg;
+        string campo;
+        string tablaConIndice;
     };
 
 };
