@@ -205,7 +205,7 @@ private:
         }
 
         ~Nodo() {
-            //delete padre;
+            delete padre;
             delete definicion;
             delete[] hijos;
         }
@@ -213,7 +213,7 @@ private:
         Nodo* sucesor();
         bool tieneHM();
         Nodo* hermanoMayor();
-        void eliminarNodos(Nodo*);
+        void eliminarNodos();
         bool mismosNodos(Nodo* n2);
     };
 
