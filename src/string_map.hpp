@@ -1,6 +1,7 @@
 #include "string_map.h"
 #include <utility>
 #include <iostream>
+#include <stdexcept>
 #include "linear_set.h"
 using namespace std;
 //funciones de Nodo
