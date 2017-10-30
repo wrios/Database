@@ -25,6 +25,7 @@ public:
     typedef T mapped_type;
     typedef std::pair<const key_type, mapped_type> value_type;
     typedef size_t size_type;
+    using difference_type = std::ptrdiff_t;
 
 
     class iterator;
@@ -50,13 +51,13 @@ public:
      *
      * \complexity{\O(sn * S * copy(T))}
      */
-    string_map(const string_map &);
+    string_map(const string_map &other);
 
     /** @brief Operador de asignacion
      *
      * \complexity{\O(sn * S * copy(T))}
      */
-    string_map &operator=(const string_map &);
+    string_map &operator=(const string_map &other);
 
     /** @brief Operadores de comparacion
      *
@@ -214,7 +215,7 @@ private:
         bool tieneHM();
         Nodo* hermanoMayor();
         void eliminarNodos();
-        bool mismosNodos(Nodo* n2);
+        bool mismosNodos(Nodo* n);
       void sumar1padres();
       void eliminarNodosHijos();
     };
@@ -235,6 +236,7 @@ private:
     class iterator{
     public:
     //typedef T value_type;
+      using difference_type = std::ptrdiff_t;
 
     iterator(const iterator& otro);
 
@@ -245,6 +247,8 @@ private:
     bool operator!=(const iterator & otro) const;
 
     iterator operator++();
+
+    void it_avanzarAlMin();
 
     value_type &operator*();
 
@@ -268,6 +272,7 @@ private:
     class const_iterator{
     public:
         //typedef T value_type;
+      using difference_type = std::ptrdiff_t;
 
         const_iterator(const const_iterator &);
 
@@ -278,6 +283,8 @@ private:
         bool operator!=(const const_iterator &) const;
 
         const_iterator operator++();
+
+        void it_avanzarAlMin();
 
         value_type &operator*();
 
