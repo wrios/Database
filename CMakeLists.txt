@@ -7,15 +7,18 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++11 -ggdb3 -g")
 
 # Leemos todos los archivos fuentes en ./src
+file(GLOB SOURCE_FILES_STRING_MAP src/string_map.h)
 file(GLOB SOURCE_FILES src/*.cpp src/*.h)
 
 # Leemos todos los archivos de test en ./tests
 file(GLOB TEST_SOURCES tests/*.cpp)
+file(GLOB TEST_SOURCES_STRING_MAP tests/string_map_test.cpp)
 
 add_subdirectory(tests/google-test)
 
 
 # Creamos el ejecutable para correr los tests
+add_executable(correrStringMap ${TEST_SOURCES_STRING_MAP} ${SOURCE_FILES_STRING_MAP} src/string_map.hpp)
 add_executable(correrTests ${TEST_SOURCES} ${SOURCE_FILES} src/Indice.cpp src/linear_map.hpp src/linear_set.hpp src/string_map.hpp)
 
 # Creamos el ejecutable para correr los tests
@@ -23,9 +26,11 @@ add_executable(correrTests_sol ${TEST_SOURCES} ${SOURCE_FILES})
 target_compile_definitions(correrTests_sol PRIVATE POST_SOLUCION)
 
 # Necesitamos asociar los archivos del framework de testing
+target_link_libraries(correrStringMap gtest gtest_main)
 target_link_libraries(correrTests gtest gtest_main)
 target_link_libraries(correrTests_sol gtest gtest_main)
 
+add_test(correrStringMap correrStringMap)
 add_test(correrTests correrTests)
 
 # first we can indicate the documentation build as an option and set it to ON by default
