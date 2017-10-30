@@ -215,6 +215,8 @@ private:
         Nodo* hermanoMayor();
         void eliminarNodos();
         bool mismosNodos(Nodo* n2);
+      void sumar1padres();
+      void eliminarNodosHijos();
     };
 
     size_type cantElem;
