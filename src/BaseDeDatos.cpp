@@ -151,8 +151,8 @@ void BaseDeDatos::crearIndice(const string &nombre, const string &campo) {
 }
 
 
-BaseDeDatos::join_iterator::join_iterator(const join_iterator& otro) :
-    it(otro.it){}
+//BaseDeDatos::join_iterator::join_iterator(const join_iterator& otro) :
+//    it(otro.it){}
 
 
 //BaseDeDatos::join_iterator& BaseDeDatos::join_iterator::operator=(const join_iterator & otro){
