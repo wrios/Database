@@ -137,7 +137,6 @@ void string_map<T>::clear(){
 template <typename T>
 typename string_map<T>::iterator string_map<T>::begin(){
   string_map<T>::iterator it(NULL);
-  std::cout << "minimo en begin" << std::endl;
   if(!empty()){
     it.nodo = raiz->minimo();
   }
@@ -154,7 +153,6 @@ typename string_map<T>::iterator string_map<T>::end(){
 //devuelve const_iterator al primer par en orden lexicografico
 template <typename T>
 typename string_map<T>::const_iterator string_map<T>::begin()const{
-  std::cout << "const minimo en begin" << std::endl;
   string_map<T>::const_iterator it(NULL);
   if(!empty()){
     it.nodo = raiz->minimo();
@@ -172,7 +170,6 @@ typename string_map<T>::const_iterator string_map<T>::end()const{
 //devuelve const_iterator al primer (const)par en orden lexicografico
 template <typename T>
 const typename string_map<T>::const_iterator string_map<T>::cbegin()const{
-  std::cout << "const cminimo en begin" << std::endl;
   string_map<T>::const_iterator it(NULL);
   if(!empty()){
     it.nodo = raiz->minimo();
@@ -246,7 +243,7 @@ pair<typename string_map<T>::iterator, bool> string_map<T>::insert(const string_
             son = new Nodo();
             (parent->hijos)[int(value.first[i])] = son;
             son->padre = parent;
-            if (i == value.first.size() - 1 && son->definicion == NULL ){
+            if (i == value.first.size() - 1){
                 insertado = true;
                 cantElem++;
                 son->sumar1padres();
@@ -264,7 +261,6 @@ pair<typename string_map<T>::iterator, bool> string_map<T>::insert(const string_
 //funciones de iterator
 template <typename T>
 typename string_map<T>::iterator string_map<T>::iterator::it_avanzarAlMin(){
-  std::cout << "llamada al it_minimo" << std::endl;
   Nodo* aux = nodo;
   typename string_map<T>::iterator it(aux);
   if(aux == NULL) throw runtime_error("minimo de un null");
@@ -286,7 +282,6 @@ template <typename T>
 typename string_map<T>::const_iterator string_map<T>::const_iterator::it_avanzarAlMin(){
   Nodo* aux = nodo;
   typename string_map<T>::const_iterator it(aux);
-  std::cout << "llamada al const_it_minimo" << std::endl;
   if(aux == NULL) throw runtime_error("minimo de un null");
   for (u_int i = 0; i < 256; ++i) {
     if (aux->hijos[i] != NULL) {
@@ -306,7 +301,6 @@ template <typename T>
 typename string_map<T>::iterator string_map<T>::iterator::operator++(){
   Nodo* aux = nodo;
     if(aux->cant_hijos > 0){
-      std::cout << "llamada a minimo en it"<< std::endl;
       nodo = aux->minimo();
         return *this;
     }
@@ -348,20 +342,18 @@ typename string_map<T>::iterator string_map<T>::erase(string_map<T>::iterator po
   typename string_map<T>::iterator res = ++pos;
   int tam = key.size()-1;
    if (aux->cant_hijos > 0){
-     std::cout << "tiene hijos" << std::endl;
      delete aux->definicion;
      aux->definicion = NULL;
      aux->restar1padres();
      cantElem--;
      return res;
-   } else{
+   }else{
      if(aux->padre == aux){
        std::cout << " "" " << std::endl;
        eliminarRec(aux);
        cantElem--;
        return res;
      }else{
-       std::cout << "no tiene hijos y no es raiz" << std::endl;
        restablecerCadena(aux, key, tam);
        cantElem--;
        return res;
@@ -411,7 +403,6 @@ typename string_map<T>::iterator string_map<T>::iterator::avanzarMayor(){
             return *this;
         }
     }
-    std::cout << "si sale por aca es porque sigue apuntando al mismo lugar" << std::endl;
     return *this;
 }
 
@@ -464,7 +455,6 @@ typename string_map<T>::const_iterator string_map<T>::const_iterator::avanzarMay
       return *this;
     }
   }
-  std::cout << "si sale por aca es porque sigue apuntando al mismo lugar" << std::endl;
   return *this;
 
 }
@@ -501,7 +491,6 @@ template <typename T>
 typename string_map<T>::const_iterator string_map<T>::const_iterator::operator++(){
   Nodo* aux = nodo;
   if(aux->cant_hijos > 0){
-    std::cout << "llamada a minimo en const it"<< std::endl;
     nodo = aux->minimo();
     return *this;
   }
@@ -720,20 +709,43 @@ void string_map<T>::eliminarRaiz(string_map<T>::Nodo* inicial){
 
 template <typename T>
 void string_map<T>::restablecerCadena(typename string_map<T>::Nodo* n, string_map<T>::key_type key, int posicion){
+  //entro sabiendo que n no tiene hijos y no soy raiz
+  typename string_map<T>::Nodo* aux = n->padre;
   delete n->definicion;
   n->definicion = NULL;
-  typename string_map<T>::Nodo* aux = n->padre;
-  while(n->padre != n){
-    if(aux->cant_hijos == 1){
-      aux->hijos[int(key[posicion])] = NULL;
-      delete n;
-      n = NULL;
-    }else{
-      aux->cant_hijos --;
-    }
+  /*if(aux->cant_hijos == 1){
+    aux->hijos[int(key[posicion])] = NULL;
+    delete n;
+    //n = NULL;
     n = aux;
     aux = n->padre;
-    posicion--;
-  }
-  if(n->cant_hijos == 0 && n->definicion == NULL){delete n; n = NULL;}
+    n->cant_hijos--;
+    while(n->padre != n){
+      aux->cant_hijos--;
+      n = aux;
+      aux = n->padre;
+    }
+  }else{*/
+    bool borrar = true;
+    while(n->padre != n){
+      if(aux->cant_hijos == 1){
+        //delete n;
+        aux->hijos[int(key[posicion])] = NULL;
+        //n = NULL;
+        borrar = true;
+      }else if(aux->cant_hijos > 1 && borrar){
+        //delete n;
+        aux->hijos[int(key[posicion])] = NULL;
+        borrar = false;
+        //n = NULL;
+      }else{
+        aux->cant_hijos --;
+        borrar = false;
+      }
+        n = aux;
+        aux = n->padre;
+        posicion--;
+      }
+    //}
+  //if(n->cant_hijos 1 && n->definicion == NULL){delete n; n = NULL;}
 }
