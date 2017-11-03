@@ -185,7 +185,6 @@ public:
     //Devuelve la union de todos los significados
      linear_set<T> significados() const;
 
-
 private:
 
 
@@ -194,7 +193,7 @@ private:
       Nodo** hijos;
       Nodo* padre;
       size_t cant_hijos;
-      
+
         Nodo() {
             hijos = new Nodo *[256];
             for (int i = 0; i < 256; i++) {
@@ -205,19 +204,15 @@ private:
             cant_hijos = 0;
         }
 
-        ~Nodo() {
-            delete padre;
-            delete definicion;
-            delete[] hijos;
-        }
+      void restar1padres();
+      Nodo* primPadreCon1Hijo();
+      Nodo* padreConHermanoODefinicion();
+      Nodo* dameMayor();
         Nodo* minimo();
         Nodo* sucesor();
         bool tieneHM();
-        Nodo* hermanoMayor();
-        void eliminarNodos();
-        bool mismosNodos(Nodo* n);
+        Nodo* hermanoMayor(int key_i);
       void sumar1padres();
-      void eliminarNodosHijos();
     };
 
     size_type cantElem;
@@ -227,6 +222,13 @@ private:
      *
      **/
 
+    void restablecerCadena(Nodo* n, key_type key, int posicion);
+    void eliminarAncestros(Nodo* n, key_type key, int posicion);
+    bool mismosNodos(Nodo* n1, Nodo* n2);
+    void eliminarNodos(Nodo* n);
+    void eliminarNodosHijos(Nodo* n);
+    void eliminarRec(Nodo* n);
+    void eliminarRaiz(Nodo* n);
 
 
  public:
@@ -248,7 +250,7 @@ private:
 
     iterator operator++();
 
-    void it_avanzarAlMin();
+    iterator it_avanzarAlMin();
 
     value_type &operator*();
 
@@ -284,7 +286,7 @@ private:
 
         const_iterator operator++();
 
-        void it_avanzarAlMin();
+        const_iterator it_avanzarAlMin();
 
         value_type &operator*();
 
