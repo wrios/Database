@@ -56,3 +56,8 @@ if (DOXYGEN_FOUND)
 else (DOXYGEN_FOUND)
     message("Doxygen need to be installed to generate the doxygen documentation")
 endif (DOXYGEN_FOUND)
+
+# Target para correr Valgrind
+add_custom_target(correrValgrind
+        valgrind --leak-check=full -v ./correrTests 2>&1
+        DEPENDS correrTests)

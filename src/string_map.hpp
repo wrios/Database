@@ -1,6 +1,7 @@
 #include "string_map.h"
 #include <utility>
 #include <iostream>
+#include <stdexcept>
 #include "linear_set.h"
 using namespace std;
 //funciones de Nodo
@@ -263,7 +264,7 @@ template <typename T>
 typename string_map<T>::iterator string_map<T>::iterator::it_avanzarAlMin(){
   Nodo* aux = nodo;
   typename string_map<T>::iterator it(aux);
-  if(aux == NULL) throw runtime_error("minimo de un null");
+//  if(aux == NULL) throw runtime_error("minimo de un null");
   for (u_int i = 0; i < 256; ++i) {
     if (aux->hijos[i] != NULL) {
       aux = aux->hijos[i];
@@ -275,14 +276,14 @@ typename string_map<T>::iterator string_map<T>::iterator::it_avanzarAlMin(){
       }
     }
   }
-  if(true) throw runtime_error("no tiene minimo");
+//  if(true) throw runtime_error("no tiene minimo");
 }
 
 template <typename T>
 typename string_map<T>::const_iterator string_map<T>::const_iterator::it_avanzarAlMin(){
   Nodo* aux = nodo;
   typename string_map<T>::const_iterator it(aux);
-  if(aux == NULL) throw runtime_error("minimo de un null");
+//  if(aux == NULL) throw runtime_error("minimo de un null");
   for (u_int i = 0; i < 256; ++i) {
     if (aux->hijos[i] != NULL) {
       aux = aux->hijos[i];
@@ -294,7 +295,7 @@ typename string_map<T>::const_iterator string_map<T>::const_iterator::it_avanzar
       }
     }
   }
-  if(true) throw runtime_error("no tiene minimo");
+//  if(true) throw runtime_error("no tiene minimo");
 }
 
 template <typename T>
@@ -519,7 +520,7 @@ typename string_map<T>::value_type* string_map<T>::const_iterator::operator->(){
 template <typename T>
 typename string_map<T>::Nodo* string_map<T>::Nodo::minimo(){
     Nodo* aux = this;
-    if(aux == NULL) throw runtime_error("minimo de un null");
+//    if(aux == NULL) throw runtime_error("minimo de un null");
     for (u_int i = 0; i < 256; ++i) {
         if (aux->hijos[i] != NULL) {
             aux = aux->hijos[i];
@@ -536,7 +537,7 @@ template <typename T>
 typename string_map<T>::Nodo* string_map<T>::Nodo::sucesor(){
     std::cout << "llamada al sucesor" << std::endl;
     //no tiene hijos, entonces el siguiente mayor es algun pariente mayor o el final
-    if(cant_hijos > 0 ) throw runtime_error("buscando el sucesor cuando el nodo tiene hijos");
+//    if(cant_hijos > 0 ) throw runtime_error("buscando el sucesor cuando el nodo tiene hijos");
     bool hm = this->tieneHM();
     std::cout << " tieneHM en sucesor"<< std::endl;
     Nodo* temp = this;
@@ -553,7 +554,7 @@ typename string_map<T>::Nodo* string_map<T>::Nodo::sucesor(){
 template <typename T>
 bool string_map<T>::Nodo::tieneHM(){
     for(u_int i = 0; i < 256; i++){
-      if(this == NULL) throw runtime_error("hermano mayor de un null");
+//      if(this == NULL) throw runtime_error("hermano mayor de un null");
       Nodo* temp = padre->hijos[i];
       if(temp != NULL && temp->definicion != NULL && temp->definicion->first > definicion->first){
             return true;

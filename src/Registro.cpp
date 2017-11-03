@@ -9,11 +9,13 @@ string_map<Dato> Registro::datos() const{
 }
 
 
-
+//PREGUNTAR EMIIIIIIIII
 Registro::Registro(const vector<string>& campos, const vector<Dato>& datos){
     for (int i = 0; i < campos.size(); ++i) {
         _campos.insert(campos[i]);
         _camposYdatos.insert(make_pair(campos[i], datos[i]));
+        string_map<Dato>::iterator it = _camposYdatos.find(campos[i]);
+        std::cout << it->second << std::endl;
     }
 };
 
