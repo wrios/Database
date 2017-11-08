@@ -249,7 +249,7 @@ private:
      * abs(e) \EQUIV d \|
      *  (\FORALL s : string)
      *  * def?(s, d) \IFF encontrarPalabra(s, raiz) != NULL \LAND
-     *  * obtener(s, d) = (encontrarPalabra(s, raiz)->definicion) -> second
+     *  * def?(s, d) \IMPLIES obtener(s, d) = (encontrarPalabra(s, raiz)->definicion) -> second
      *
      *
      *  encontrarPalabra: string x puntero(nodo(T)) \TO puntero(nodo(T))\n
