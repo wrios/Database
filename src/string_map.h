@@ -273,7 +273,7 @@ private:
 public:
 
     /** @brief Iterador de las claves de un diccionario
-     *  **se explica con** TAD Iterador Modificable(T)
+     *  **se explica con** TAD Iterador Unidireccional Modificable(T)
      *  */
     class iterator {
     public:
@@ -364,9 +364,9 @@ public:
          *
          * abs: iterator \TO itMod(T)\n
          * abs(i) \EQUIV i' \|
-         *  * anteriores(i) = secuencia ordenada de todas las claves menores lexicográficamente
+         *  * anteriores(i') = secuencia ordenada de todas las claves menores lexicográficamente
          *  a la clave en la que está parado el iterador (es decir la clave de nodo) \LAND
-         *  * siguientes(i) = secuencia de las claves mayores o iguales a la clave de nodo
+         *  * siguientes(i') = secuencia de las claves mayores o iguales a la clave de nodo
          */
         //////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -464,15 +464,13 @@ public:
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////
         /** \name Representación
-         * rep: dato \TO bool\n
-         * rep(d) \EQUIV
-         *  * _esNat \IMPLIES _valorStr = "" \LOR \LNOT _esNat \IMPLIES _valorNat = 0
+         * rep: iterator \TO bool\n
+         * rep(i) \EQUIV
+         *  CHAMUYAR COSAS DE ITERADORES CONST
          *
-         * abs: dato \TO Dato\n
-         * abs(d) \EQUIV d' \|
-         *  * Nat?(d') = d._esNat \LAND
-         *  * Nat?(d') \IMPLIES valorNat(d) = d._valorNat \LAND
-         *  * \NEG Nat?(d') \IMPLIES valorStr(d) = d._valorStr
+         * abs: iterator \TO itMod(T)\n
+         * abs(i) \EQUIV i' \|
+         *  * siguientes(i') = secuencia de las claves mayores o iguales a la clave de nodo
          */
         //////////////////////////////////////////////////////////////////////////////////////////////////////
 
