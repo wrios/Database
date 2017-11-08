@@ -65,11 +65,11 @@ private:
     /** \name Representación
      * rep: registro \TO bool\n
      * rep(d) \EQUIV 
-     *  * true
+     *  * _campos = claves(_campoYdato)
      *
      * abs: registro \TO Registro\n
      * abs(r) \EQUIV r' \|
-     *  * campos(r') = claves(_campoYdato) \LAND
+     *  * campos(r') = _campos \LAND
      *  * \FORALL (c : string) def?(c, _campoYdato) \IMPLIES valor(c, r') =
      *  obtener(c, _campoYdato)
      */
