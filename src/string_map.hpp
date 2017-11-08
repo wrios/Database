@@ -416,7 +416,6 @@ typename string_map<T>::value_type* string_map<T>::const_iterator::operator->(){
 template <typename T>
 typename string_map<T>::Nodo* string_map<T>::Nodo::minimo(){
     Nodo* aux = this;
-    if(aux == NULL) throw runtime_error("minimo de un null");
     for (u_int i = 0; i < 256; ++i) {
         if (aux->hijos[i] != NULL) {
             aux = aux->hijos[i];
@@ -425,7 +424,7 @@ typename string_map<T>::Nodo* string_map<T>::Nodo::minimo(){
             }
             i =0;
         }
-    }//if(true) throw runtime_error("ultimo caso");
+    }
 }
 
 template <typename T>

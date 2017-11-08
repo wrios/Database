@@ -18,7 +18,7 @@ using std::pair;
  * - tiene operador == (con complejidad cmp(T))
  * - solo permite utilizar el operator[] si T tiene constructor por defecto
  */
-template < typename T >
+template<typename T>
 class string_map {
 public:
     typedef string key_type;
@@ -29,9 +29,11 @@ public:
 
 
     class iterator;
+
     class const_iterator;
 
     friend class iterator;
+
     friend class const_iterator;
 
 
@@ -120,7 +122,7 @@ public:
      */
     iterator begin();
 
-    /*  @brief iterador al fin de la coleccion
+    /**  @brief iterador al fin de la coleccion
      *
      *  \complexity{\O(S)}
      */
@@ -179,23 +181,35 @@ public:
      */
     iterator erase(iterator pos);
 
-    //Devuelve las claves del diccionario
+
+    //FALTA CHEQUEAR COMPLEJIDAD
+    /** @brief claves del diccionario
+     *  @returns conjunto con las claves del diccionario
+     *
+     *  \complexity{\O(S)}
+     */
     linear_set<string> claves() const;
 
-    //Devuelve la union de todos los significados
+
+    //FALTA CHEQUEAR COMPLEJIDAD
+    /** @brief Significados del diccionario
+     *  @returns conjunto con la union de todos los significados del diccionario
+     *
+     *  \complexity{\O(S)}
+     */
     linear_set<T> significados() const;
 
 private:
 
 
     struct Nodo {
-        value_type* definicion;
-        Nodo* hijos[256];
-        Nodo* padre;
+        value_type *definicion;
+        Nodo *hijos[256];
+        Nodo *padre;
         size_t cant_hijos;
 
         Nodo() {
-            //hijos = new Nodo *[256];
+
             for (int i = 0; i < 256; i++) {
                 hijos[i] = NULL;
             }
@@ -205,79 +219,236 @@ private:
         }
 
         void restaBlecerCantHijos(bool sr);
-        Nodo* primPadreCon1Hijo();
-        Nodo* dameMayor();
-        Nodo* minimo();
-        Nodo* hermanoMayor(int key_i);
+
+        //QUE ONDA QUE NO ESTA IMPLEMENTADA??
+        Nodo *primPadreCon1Hijo();
+
+        Nodo *dameMayor();
+
+        Nodo *minimo();
+
+        Nodo *hermanoMayor(int key_i);
     };
 
-    size_type cantElem;
-    Nodo* raiz;
+    ///////////////////////////////////////////////////////////////////////////////////////////////////
+    /** \name Representación
+     * rep: string_map \TO bool\n
+     * rep(e) \EQUIV
+     *  * 1) raíz tiene como padre a sí mismo \LAND
+     *  * 2) cant_Elem es igual a la cantidad de nodos con definición en el trie
+     *  * 3) Para todo nodo existe un camino formado por sus padres tal que termina en la raíz
+     *  * 4) No tiene ciclos
+     *  * 5) No tiene diamantes
+     *  * 6) Hay un único camino para llegar a una clave (definicion != NULL)
+     *  * 7) Para todo nodo, cant_hijos es igual a la cantidad de claves definidas a partir de él
+     *  (si él tiene una definicion != NULL NO se cuenta en cant_hijos)
+     *
+     * abs: string_map \TO Dicc(string, T)\n
+     * abs(e) \EQUIV d \|
+     *  \FORALL (s : string) def?(s, d) \IFF
+     *  *\LEFTRIGHTARROW
+     *  * encontrarPalabra(s, raiz) \LNOT = NULL \LAND
+     *  obtener(s, d) = (encontrarPalabra(s, raiz)->definicion) -> second
+     *
+     *
+     *  encontrarPalabra: string x puntero(nodo(T)) \TO puntero(nodo(T))\n
+     *  encontrarPalabra(s,p) \EQUIV
+     *  * if(\LNOT \LEMPTY s \LOR p = NULL) then p
+     *  * else encontrarPalabra(fin(s), p->hijos[prim(s)])
+     *
+     *  Suponiendo que TAD string es secu(char) con char tipo enumerado.
+     */
+    //////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    void restablecerCadena(Nodo* n, key_type key, int posicion);
-    void eliminarRec(Nodo* n);
+
+    size_type cantElem;
+    Nodo *raiz;
+
+    void restablecerCadena(Nodo *n, key_type key, int posicion);
+
+    void eliminarRec(Nodo *n);
 
 
 public:
 
 
-
-    class iterator{
+    class iterator {
     public:
         using difference_type = std::ptrdiff_t;
 
-        iterator(const iterator& otro);
+        /**
+         * @brief Constructor por copia del iterador.
+         *
+         * \complexity{\O(1)}
+         */
+        iterator(const iterator &otro);
 
-        iterator& operator=(const iterator & otro);
+        //FALTA CHEQUEAR QUE ESTE BIEN!!!!!
+        /**
+        * @brief Operador de asignación
+        *
+        * \pre true
+        * \post true sii los iteradores apuntan al mismo elemento
+        *
+        * \complexity{\O(1)}
+        */
+        iterator &operator=(const iterator &otro);
 
-        bool operator==(const iterator & otro) const;
+        /**
+        * @brief Comparación entre iteradores
+        *
+        * \pre ambos iteradores refieren a la misma colección
+        * \post true sii los iteradores apuntan al mismo elemento
+        *
+        * \complexity{\O(1)}
+        */
+        bool operator==(const iterator &otro) const;
 
-        bool operator!=(const iterator & otro) const;
+        /**
+         * @brief Comparación entre iteradores
+         *
+         * \pre ambos iteradores refieren a la misma colección
+         * \post true sii los iteradores no apuntan al mismo elemento
+         *
+         * \complexity{\O(1)}
+         */
+        bool operator!=(const iterator &otro) const;
 
+        /**
+         * @brief Avanza el iterador una posición.
+         *
+         * \pre El iterador no debe estar en la posición pasando-el-último.
+         * \post \P{res} es una referencia a \P{this}. \P{this} apunta a la posición
+         * siguiente.
+         *
+         * \complexity{\O(1)}
+         */
         iterator operator++();
 
+        /**
+        * @brief Desreferencia el puntero
+        *
+        * El valor devuelto tiene aliasing dentro de la colección.
+        *
+        * \pre El iterador no debe estar en la posición pasando-el-último.
+        * \post El valor resultado es una referencia al valor apuntado.
+        *
+        * \complexity{\O(1)}
+        */
         value_type &operator*();
 
+        /**
+         * @brief Operador flechita
+         *
+         * El valor devuelvo tiene aliasing dentro de la colección.
+         *
+         * \pre El iterador no debe estar en la posición pasando-el-último.
+         * \post El valor resultado es un puntero al valor apuntado.
+         *
+         * \complexity{\O(1)}
+         */
         value_type *operator->();
 
         friend class string_map;
 
     private:
 
-        Nodo* nodo;
-        iterator(Nodo* n) : nodo(n){};
+        Nodo *nodo;
+
+        iterator(Nodo *n) : nodo(n) {};
 
     };
 
 
-    class const_iterator{
+    class const_iterator {
     public:
         using difference_type = std::ptrdiff_t;
 
+        /**
+         * @brief Constructor por copia del iterador.
+         *
+         * \complexity{\O(1)}
+         */
         const_iterator(const const_iterator &);
 
-        const_iterator& operator=(const const_iterator &);
+        //FALTA CHEQUEAR QUE ESTE BIEN!!!!!
+        /**
+        * @brief Operador de asignación
+        *
+        * \pre true
+        * \post true sii los iteradores apuntan al mismo elemento
+        *
+        * \complexity{\O(1)}
+        */
+        const_iterator &operator=(const const_iterator &);
 
+        /**
+         * @brief Comparación entre iteradores
+         *
+         * \pre ambos iteradores refieren a la misma colección
+         * \post true sii los iteradores apuntan al mismo elemento
+         *
+         * \complexity{\O(1)}
+         */
         bool operator==(const const_iterator &) const;
 
+        /**
+         * @brief Comparación entre iteradores
+         *
+         * \pre ambos iteradores refieren a la misma colección
+         * \post true sii los iteradores no apuntan al mismo elemento
+         *
+         * \complexity{\O(1)}
+         */
         bool operator!=(const const_iterator &) const;
 
+        /**
+         * @brief Avanza el iterador una posición.
+         *
+         * \pre El iterador no debe estar en la posición pasando-el-último.
+         * \post \P{res} es una referencia a \P{this}. \P{this} apunta a la posición
+         * siguiente.
+         *
+         * \complexity{\O(1)}
+         */
         const_iterator operator++();
 
+        /**
+        * @brief Desreferencia el puntero
+        *
+        * El valor devuelto tiene aliasing dentro de la colección.
+        *
+        * \pre El iterador no debe estar en la posición pasando-el-último.
+        * \post El valor resultado es una referencia constante al valor apuntado.
+        *
+         * \complexity{\O(1)}
+         */
         value_type &operator*();
 
+        /**
+        * @brief Operador flechita
+        *
+        * El valor devuelvo tiene aliasing dentro de la colección.
+        *
+        * \pre El iterador no debe estar en la posición pasando-el-último.
+        * \post El valor resultado es un puntero al valor apuntado.
+        *
+        * \complexity{\O(1)}
+        */
         value_type *operator->();
 
         friend class string_map;
 
     private:
 
-        Nodo* nodo;
-        const_iterator(Nodo* n) : nodo(n){};
+        Nodo *nodo;
+
+        const_iterator(Nodo *n) : nodo(n) {};
 
     };
 
 };
 
 #include "string_map.hpp"
+
 #endif //STRING_MAP_STRING_MAP_H
