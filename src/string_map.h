@@ -17,6 +17,8 @@ using std::pair;
  * - tiene constructor por copia (con complejidad copy(T))
  * - tiene operador == (con complejidad cmp(T))
  * - solo permite utilizar el operator[] si T tiene constructor por defecto
+ *
+ *  **se explica con** TAD Dicc(string, T)
  */
 template<typename T>
 class string_map {
@@ -234,7 +236,7 @@ private:
     /** \name Representación
      * rep: string_map \TO bool\n
      * rep(e) \EQUIV
-     *  * 1) raíz tiene como padre a sí mismo \LAND
+     *  * 1) raíz tiene como padre a sí mismo
      *  * 2) cant_Elem es igual a la cantidad de nodos con definición en el trie
      *  * 3) Para todo nodo existe un camino formado por sus padres tal que termina en la raíz
      *  * 4) No tiene ciclos
@@ -245,15 +247,14 @@ private:
      *
      * abs: string_map \TO Dicc(string, T)\n
      * abs(e) \EQUIV d \|
-     *  \FORALL (s : string) def?(s, d) \IFF
-     *  *\LEFTRIGHTARROW
-     *  * encontrarPalabra(s, raiz) \LNOT = NULL \LAND
-     *  obtener(s, d) = (encontrarPalabra(s, raiz)->definicion) -> second
+     *  (\FORALL s : string)
+     *  * def?(s, d) \IFF encontrarPalabra(s, raiz) != NULL \LAND
+     *  * obtener(s, d) = (encontrarPalabra(s, raiz)->definicion) -> second
      *
      *
      *  encontrarPalabra: string x puntero(nodo(T)) \TO puntero(nodo(T))\n
-     *  encontrarPalabra(s,p) \EQUIV
-     *  * if(\LNOT \LEMPTY s \LOR p = NULL) then p
+     *  encontrarPalabra(s,p) \EQUIV if (\LNOT \EMPTYSET? (s) \LOR p = NULL)
+     *  * then p
      *  * else encontrarPalabra(fin(s), p->hijos[prim(s)])
      *
      *  Suponiendo que TAD string es secu(char) con char tipo enumerado.
@@ -271,7 +272,9 @@ private:
 
 public:
 
-
+    /** @brief Iterador de las claves de un diccionario
+     *  **se explica con** TAD Iterador Modificable(T)
+     *  */
     class iterator {
     public:
         using difference_type = std::ptrdiff_t;
@@ -353,6 +356,21 @@ public:
 
     private:
 
+        ///////////////////////////////////////////////////////////////////////////////////////////////////
+        /** \name Representación
+         * rep: iterator \TO bool\n
+         * rep(i) \EQUIV
+         *  CHAMUYAR COSAS DE ITERADORES
+         *
+         * abs: iterator \TO itMod(T)\n
+         * abs(i) \EQUIV i' \|
+         *  * anteriores(i) = secuencia ordenada de todas las claves menores lexicográficamente
+         *  a la clave en la que está parado el iterador (es decir la clave de nodo) \LAND
+         *  * siguientes(i) = secuencia de las claves mayores o iguales a la clave de nodo
+         */
+        //////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
         Nodo *nodo;
 
         iterator(Nodo *n) : nodo(n) {};
@@ -360,6 +378,9 @@ public:
     };
 
 
+    /** @brief Iterador Constante de las claves de un diccionario
+     *  **se explica con** TAD Iterador Unidireccional(T)
+     *  */
     class const_iterator {
     public:
         using difference_type = std::ptrdiff_t;
@@ -440,6 +461,21 @@ public:
         friend class string_map;
 
     private:
+
+        ///////////////////////////////////////////////////////////////////////////////////////////////////
+        /** \name Representación
+         * rep: dato \TO bool\n
+         * rep(d) \EQUIV
+         *  * _esNat \IMPLIES _valorStr = "" \LOR \LNOT _esNat \IMPLIES _valorNat = 0
+         *
+         * abs: dato \TO Dato\n
+         * abs(d) \EQUIV d' \|
+         *  * Nat?(d') = d._esNat \LAND
+         *  * Nat?(d') \IMPLIES valorNat(d) = d._valorNat \LAND
+         *  * \NEG Nat?(d') \IMPLIES valorStr(d) = d._valorStr
+         */
+        //////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
         Nodo *nodo;
 
