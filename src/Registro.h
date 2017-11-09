@@ -22,8 +22,6 @@ class Registro {
 
 public:
 
-    //PARA QUE QUEREMOS ESTA FUNCION?????????
-    string_map<Dato> datos() const;
 
     /**
      * @brief Genera un nuevo registro con los campos y valores designados.
