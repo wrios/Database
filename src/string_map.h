@@ -78,10 +78,16 @@ public:
      */
     size_type count(const key_type &key) const;
 
-    /** @brief Devuelve cantidad de claves definidas */
+    /** @brief Devuelve cantidad de claves definidas
+     *
+     * \complexity{\O(1)}
+     */
     size_t size() const;
 
-    /** @brief devuelve true si size() == 0 */
+    /** @brief devuelve true si size() == 0
+     *
+     * \complexity{\O(1)}
+     */
     bool empty() const;
 
 
@@ -112,7 +118,10 @@ public:
      */
     const mapped_type &at(const key_type &key) const;
 
-    /** @brief Vacia el mapa */
+    /** @brief Vacia el mapa
+     *
+     * \complexity{\O(S * sn)}
+     */
     void clear();
 
     // Accesos con iteradores
@@ -126,7 +135,7 @@ public:
 
     /**  @brief iterador al fin de la coleccion
      *
-     *  \complexity{\O(S)}
+     *  \complexity{\O(1)}
      */
     iterator end();
 
@@ -188,7 +197,7 @@ public:
     /** @brief claves del diccionario
      *  @returns conjunto con las claves del diccionario
      *
-     *  \complexity{\O(S)}
+     *  \complexity{\O(S * sn)}
      */
     linear_set<string> claves() const;
 
@@ -197,7 +206,7 @@ public:
     /** @brief Significados del diccionario
      *  @returns conjunto con la union de todos los significados del diccionario
      *
-     *  \complexity{\O(S)}
+     *  \complexity{\O(S * sn)}
      */
     linear_set<T> significados() const;
 
@@ -220,15 +229,31 @@ private:
             cant_hijos = 0;
         }
 
+      /** @brief actualiza la cantidad de hijos que tiene un nodo
+       * en una cierta rama
+       *
+       * \complexity{\O(S)}
+       */
         void restaBlecerCantHijos(bool sr);
 
-        //QUE ONDA QUE NO ESTA IMPLEMENTADA??
-        Nodo *primPadreCon1Hijo();
-
+      /** @brief devuelve el nodo con clave mayor
+       * , si no existe, devuelve el nodo con el que fue llamado
+       *
+       * \complexity{\O(S)}
+       */
         Nodo *dameMayor();
 
+      /** @brief devuelve el nodo con la menor clave
+       *
+       * \complexity{\O(S)}
+       */
         Nodo *minimo();
 
+      /** @brief devuelve el nodo que esta en la misma lista,
+       * que tiene mayor clave que el.
+       *
+       * \complexity{\O(1)}
+       */
         Nodo *hermanoMayor(int key_i);
     };
 
@@ -265,8 +290,20 @@ private:
     size_type cantElem;
     Nodo *raiz;
 
+    /**@brief si el nodo tiene hijos, elimina su definicion,
+     * sino, elimina los ancestros que tienen un solo
+     * descendiente (el)
+     *
+     * \complexity{\O(S)}
+     */
     void restablecerCadena(Nodo *n, key_type key, int posicion);
 
+    /**@brief borrado recursivo, borra los hijos del nodo
+     * y los hijos de sus hijos.
+     * el nodo con el que fue llamado no se elimina
+     *
+     * complexity{\O(S * sn)}
+     */
     void eliminarRec(Nodo *n);
 
 
@@ -336,7 +373,7 @@ public:
         * \pre El iterador no debe estar en la posición pasando-el-último.
         * \post El valor resultado es una referencia al valor apuntado.
         *
-        * \complexity{\O(1)}
+        * \complexity{\O(S)}
         */
         value_type &operator*();
 
@@ -442,7 +479,7 @@ public:
         * \pre El iterador no debe estar en la posición pasando-el-último.
         * \post El valor resultado es una referencia constante al valor apuntado.
         *
-         * \complexity{\O(1)}
+         * \complexity{\O(S)}
          */
         value_type &operator*();
 
