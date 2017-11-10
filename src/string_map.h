@@ -233,7 +233,7 @@ private:
        * en una cierta rama
        *
        * \complexity{\O(S)}
-       */
+      */
         void restaBlecerCantHijos(bool sr);
 
       /** @brief devuelve el nodo con clave mayor
@@ -296,7 +296,9 @@ private:
      *
      * \complexity{\O(S)}
      */
+
     void restablecerCadena(Nodo *n, key_type key, int posicion);
+
 
     /**@brief borrado recursivo, borra los hijos del nodo
      * y los hijos de sus hijos.
@@ -361,7 +363,7 @@ public:
          * \post \P{res} es una referencia a \P{this}. \P{this} apunta a la posición
          * siguiente.
          *
-         * \complexity{\O(1)}
+         * \complexity{\O(S)}
          */
         iterator operator++();
 
@@ -467,7 +469,7 @@ public:
          * \post \P{res} es una referencia a \P{this}. \P{this} apunta a la posición
          * siguiente.
          *
-         * \complexity{\O(1)}
+         * \complexity{\O(S)}
          */
         const_iterator operator++();
 
@@ -479,7 +481,7 @@ public:
         * \pre El iterador no debe estar en la posición pasando-el-último.
         * \post El valor resultado es una referencia constante al valor apuntado.
         *
-         * \complexity{\O(S)}
+         * \complexity{\O(1)}
          */
         value_type &operator*();
 

@@ -515,3 +515,4 @@ void string_map<T>::restablecerCadena(typename string_map<T>::Nodo* n, string_ma
         posicion--;
     }
 }
+
