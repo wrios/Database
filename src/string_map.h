@@ -262,13 +262,36 @@ private:
      * rep: string_map \TO bool\n
      * rep(e) \EQUIV
      *  * 1) raíz tiene como padre a sí mismo
+     *   * raiz->padre = raiz
      *  * 2) cant_Elem es igual a la cantidad de nodos con definición en el trie
+     *   * cantElem = contarNodosConDefinicion(raiz)
+     *   *
+     *   * contarNodosConDefinicion: puntero(nodo(T)) \TO nat\n
+     *   * contarNodosConDefinicion(r) \EQUIV if (r->definicion = NULL)
+     *    * then 0
+     *    * else 1 + \sum_{i=0}^{255}contarNodosConDefinicion(r->hijos[i])
      *  * 3) Para todo nodo existe un camino formado por sus padres tal que termina en la raíz
+     *   * (\FORALL n : nodo(T)) existeCaminoALaRaiz(n, raiz)
+     *   *
+     *   * existeCaminoALaRaiz: nodo(T) x puntero(nodo(T)) \TO bool\n
+     *   * existeCaminoALaRaiz(n,r) \EQUIV if (n.padre = NULL)
+     *    * then false
+     *    * else
+     *     * if (n.padre = raiz)
+     *      * then true
+     *      * else existeCaminoALaRaiz(n.padre, r)
      *  * 4) No tiene ciclos
      *  * 5) No tiene diamantes
      *  * 6) Hay un único camino para llegar a una clave (definicion != NULL)
      *  * 7) Para todo nodo, cant_hijos es igual a la cantidad de claves definidas a partir de él
      *  (si él tiene una definicion != NULL NO se cuenta en cant_hijos)
+     *   * (\FORALL n : nodo(T)) existeCaminoALaRaiz(n, r) \IMPLIES n.cant_hijos = hijosDefinidos(n)
+     *   *
+     *   * hijosDefinidos: nodo(T) \TO nat\n
+     *   * hijosDefinidos(n) \EQUIV if (n.definicion = NULL)
+     *    * then contarNodosConDef(n, raiz)
+     *    * else contarNodosConDef(n, raiz) - 1
+     *
      *
      * abs: string_map \TO Dicc(string, T)\n
      * abs(e) \EQUIV d \|
