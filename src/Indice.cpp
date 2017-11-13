@@ -1,54 +1,50 @@
 #include "Indice.h"
-
-Indice::Indice() {
-
-}
-
-Indice::Indice(Tabla tab, string campo, bool esString) {
+Indice::Indice(const Tabla &tab, const string &campo, bool esString) {
     _campo = campo;
     _esString = esString;
-    for (auto elem: tab.registros()){
-        agregarRegistro(elem);
+    const_it_reg begin = tab.registros_begin();
+    const_it_reg end = tab.registros_end();
+    while (begin != end){
+        this->agregarRegistro(begin);
+        ++begin;
     }
 }
 
-
-string Indice::dameCampo() const {
-    return _campo;
-}
-
-linear_set<const Registro*> Indice::dameRegistros(const Dato &d) {
-    if (_esString){
-        return _indicesStr[d.valorStr()];
-    } else {
-        return _indicesNat[d.valorNat()];
-    }
-}
-
-Indice::~Indice() {
-    if (_esString){
-        _indicesStr.~string_map();
-    } else{
-        _indicesNat.~map();
-    }
-    //_campo.~string();
-}
-bool Indice::esVacio() {
+const_it_regInd Indice::dameRegistros_begin(const Dato &d) const{
     if (_esString)
-        return _indicesStr.empty();
+        return _indicesStr.at(d.valorStr()).begin();
     else
-        return _indicesNat.empty();
+        return _indicesNat.at(d.valorNat()).begin();
 }
 
-void Indice::agregarRegistro(const Registro &r) {
-    if (_esString){
-        string valorCampo = r.dato(_campo).valorStr();
-        //chequear caso no definido
-        _indicesStr[valorCampo].insert(&r);
-    }else{
-        int valorCampo = r.dato(_campo).valorNat();
+const_it_regInd Indice::dameRegistros_end(const Dato &d) const {
+    if (_esString)
+        return _indicesStr.at(d.valorStr()).end();
+    else
+        return _indicesNat.at(d.valorNat()).end();
 
-        _indicesNat[valorCampo].insert(&r);
+}
+
+bool Indice::noTieneRegistros(const Dato &d) const {
+    if (_esString){
+        bool noTieneRegistros = _indicesStr.end() == _indicesStr.find(d.valorStr());
+        if (!noTieneRegistros)
+            noTieneRegistros = _indicesStr.at(d.valorStr()).empty();
+        return noTieneRegistros;
+    } else {
+        bool noTieneRegistros = _indicesNat.end() == _indicesNat.find(d.valorNat());
+        if (!noTieneRegistros)
+            noTieneRegistros = _indicesNat.at(d.valorNat()).empty();
+        return noTieneRegistros;
     }
 }
 
+void Indice::agregarRegistro(const_it_reg &r) {
+    if (_esString){
+        string valorCampo = r->dato(_campo).valorStr();
+        _indicesStr[valorCampo].insert(r);
+    }else{
+        int valorCampo = r->dato(_campo).valorNat();
+        _indicesNat[valorCampo].insert(r);
+    }
+}

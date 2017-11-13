@@ -59,5 +59,5 @@ endif (DOXYGEN_FOUND)
 
 # Target para correr Valgrind
 add_custom_target(correrValgrind
-        valgrind --leak-check=full -v ./correrTests 2>&1
-        DEPENDS correrTests)
+        valgrind --leak-check=full -v ./correrTests_sol 2>&1
+        DEPENDS correrTests_sol)

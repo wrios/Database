@@ -17,38 +17,23 @@ using namespace std;
  *
  *  **se explica con** TAD Diccionario(Dato, Conjunto(puntero a Registro))
  */
+
+typedef Tabla::const_iterador_registros const_it_reg;
+typedef linear_set<const_it_reg>::const_iterator const_it_regInd;
+
 class Indice {
 
 public:
 
-    Indice();
-    Indice(const Tabla tab,const string campo, bool esString);
-    //constructor de indice
+    Indice(){}
+    Indice(const Tabla &tab,const string &campo, bool esString);
 
-//    Indice(const Tabla tab,const string campo, const string& valorStr);
-    //el constructor de indice se crea con un string map
+    ~Indice(){}
 
-//    Indice(const Tabla tab,const string campo, const int valorNat);
-    //el constructor de indice se crea con un ABBV(arbol binario de busqueda balanceado)
-
-    ~Indice();
-
-
-//    Indice& operator=(const Indice &);
-//
-//
-//    bool operator==(const Indice& otro) const;
-//
-//
-//    bool operator!=(const Indice& otro) const {return !(*this == otro);}
-
-    void agregarRegistro(const Registro &r);
-    bool esVacio();
-
-    string dameCampo() const;
-    //el indice tiene mas de un campo, "s"
-    linear_set<const Registro*> dameRegistros(const Dato &d);
-
+    const_it_regInd dameRegistros_begin(const Dato &d) const;
+    const_it_regInd dameRegistros_end(const Dato &d) const;
+    void agregarRegistro(const_it_reg &r);
+    bool noTieneRegistros(const Dato &d) const;
 private:
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -97,9 +82,9 @@ private:
     /** @brief Nombre del campo. */
     string _campo;
     /** @brief Diccionario si el campo es nat. */
-    map<int, linear_set<const Registro*> > _indicesNat;
+    map<int, linear_set<const_it_reg> > _indicesNat;
     /** @brief Diccionario si el campo es string. */
-    string_map<linear_set<const Registro*> > _indicesStr;
+    string_map<linear_set<const_it_reg> > _indicesStr;
 
     /** @} */
 };

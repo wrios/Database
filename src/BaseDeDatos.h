@@ -25,6 +25,10 @@ using namespace std;
  *
  * **se explica con** TAD BaseDeDatos
  */
+
+typedef Tabla::const_iterador_registros const_it_reg;
+typedef linear_set<const_it_reg>::const_iterator const_it_regInd;
+
 class BaseDeDatos {
 
 public:
@@ -168,7 +172,10 @@ public:
 
     void crearIndice(const string &nombre, const string &campo);
 
+    const Indice* dameIndice(const string& tabla, const string& campo) const;
+
     join_iterator join(const string &tabla1, const string &tabla2, const string &campo) const;
+    join_iterator join_end() const;
 
 private:
 	  ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -279,37 +286,41 @@ private:
 public:
     class join_iterator{
     public:
-//        typedef T value_type;
+        join_iterator(const BaseDeDatos &bd,
+                      const string &tablaSinIndice,
+                      const string &tablaConIndice,
+                      const string &campoIndice,
+                      bool tabla1TieneI,
+                      const_it_reg &endT,
+                      const_it_regInd &endI
+        );
 
-        join_iterator(const join_iterator& otro);
-
-//        join_iterator& operator=(const join_iterator & otro);
+        join_iterator(const_it_reg &endT,
+                      const_it_regInd &endI,
+                      bool t);
+        join_iterator(const BaseDeDatos::join_iterator& otro);
 
         bool operator==(const join_iterator & otro) const;
 
         bool operator!=(const join_iterator & otro) const;
 
         join_iterator operator++();
+        join_iterator operator++(int a);
 
         Registro operator*();
 
-        Registro *operator->();
-
-        friend class BaseDeDatos;
+        void setearItIndices(const Dato &d);
 
     private:
 
-        //TODO: esto puede no existir
-        join_iterator(const linear_set<Registro>::iterator);
-
-        bool prioridadDeIndice; //tabla1 tiene ind
-        linear_set<Registro>::iterator it;
-        linear_set<Registro*>::iterator it2;
-        linear_set<Registro>::iterator endIt;
-        linear_set<Registro*>::iterator endIt2;
-        Registro* preg;
+        bool tabla1TieneIndice;
+        bool finaliza;
+        const_it_reg itTabla;
+        const_it_regInd itIndice;
+        const_it_reg endTabla;
+        const_it_regInd endIndice;
         string campo;
-        string tablaConIndice;
+        const Indice* indice;
     };
 
 };
