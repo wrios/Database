@@ -4,6 +4,7 @@ Indice::Indice(const Tabla &tab, const string &campo, bool esString) {
     _esString = esString;
     const_it_reg begin = tab.registros_begin();
     const_it_reg end = tab.registros_end();
+    // recorro todos los registros en la tabla y agrego el iterador apuntando a cada registro a la lista del indice
     while (begin != end){
         this->agregarRegistro(begin);
         ++begin;

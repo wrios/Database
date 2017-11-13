@@ -181,10 +181,13 @@ BaseDeDatos::join_iterator::join_iterator(const BaseDeDatos &bd,
     endTabla = bd.dameTabla(tablaSinIndice).registros_end();
     if (itTabla != endTabla){
         Dato d = itTabla->dato(campo);
+        // busco que haya registros en indice que coincidan con el valor que estoy iterando en itTabla
         while(itTabla != endTabla and indice->noTieneRegistros(d)){
             d = itTabla->dato(campo);
             ++itTabla;
         }
+        // hay 2 posibilidades acá, que haya llegado al endTabla o que haya encontrado registros que coinciden con
+        // el valor que estoy iterando en itTabla (me importa este ultimo)
         if (itTabla != endTabla)
             setearItIndices(itTabla->dato(campo));
     }
@@ -208,17 +211,23 @@ bool BaseDeDatos::join_iterator::operator!=(const BaseDeDatos::join_iterator & o
 }
 
 BaseDeDatos::join_iterator BaseDeDatos::join_iterator::operator++(){
+    // avanzo al siguiente registro que coindice el valor de itTabla en el indice
     ++itIndice;
     if (itIndice == endIndice){
+        // llegue al final de los registros en indice que coinciden con el valor de itTabla
         ++itTabla;
         if (itTabla == endTabla){
+            // llegue al final de los registros en tabla por lo tanto terminé de recorrer el join
             finaliza = true;
         }else{
             Dato d = itTabla->dato(campo);
+            //me fijo el valor de itTabla y busco registros que coincidan con ese valor
             while(itTabla != endTabla and indice->noTieneRegistros(d)){
                 d = itTabla->dato(campo);
                 ++itTabla;
             }
+            // hay 2 casos: o llegué al final de los registros en tabla o encontre el siguiente registro de la tabla
+            // que tiene registros que coinciden el valor en el indice
             if (itTabla == endTabla)
                 finaliza = true;
             else
@@ -234,6 +243,8 @@ BaseDeDatos::join_iterator BaseDeDatos::join_iterator::operator++(int a){
     return njoin;
 }
 
+// Armo un nuevo registro a partir de los campos y datos de dos registros,
+// teniendo el primer registro prioridad ante campos repetidos frente al r2
 Registro combinarRegistros(const Registro &r1, const Registro &r2){
     vector<string> campos;
     vector<Dato> datos;
@@ -252,6 +263,8 @@ Registro combinarRegistros(const Registro &r1, const Registro &r2){
 }
 
 Registro BaseDeDatos::join_iterator::operator*(){
+    // pregunto si la primera tabla que mande como parametro al join es la que tiene indice ya que esta tiene prioridad
+    // frente a campos repetidos en registros
     if (tabla1TieneIndice)
         return combinarRegistros(**itIndice, *itTabla);
     else
@@ -260,7 +273,10 @@ Registro BaseDeDatos::join_iterator::operator*(){
 
 BaseDeDatos::join_iterator BaseDeDatos::join(const string &tabla1, const string &tabla2, const string &campo) const {
     bool tabla1TieneIndice = _indices.end() != _indices.find(tabla1);
-    if (tabla1TieneIndice) tabla1TieneIndice = _indices.at(tabla1).end() != _indices.at(tabla1).find(campo);
+    if (tabla1TieneIndice)
+        tabla1TieneIndice = _indices.at(tabla1).end() != _indices.at(tabla1).find(campo);
+    // armo 2 iteradores para pasar al constructor y no tener que llamar a los
+    // constructores por defecto a la hora de usar el constructor del join
     const_it_reg endIt = this->dameTabla(tabla1).registros_end();
     const_it_regInd endI = linear_set<const_it_reg>().end();
     if (tabla1TieneIndice)
@@ -270,6 +286,8 @@ BaseDeDatos::join_iterator BaseDeDatos::join(const string &tabla1, const string 
 }
 
 BaseDeDatos::join_iterator BaseDeDatos::join_end() const {
+    // armo 2 iteradores para pasar al constructor y no tener que llamar a los constructores
+    // por defecto a la hora de usar el constructor del join
     Tabla t = Tabla(linear_set<string>(),
                     vector<string>(),
                     vector<Dato>());
