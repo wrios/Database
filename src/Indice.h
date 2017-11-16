@@ -100,7 +100,7 @@ public:
      * @brief Indica verdadero si el dato no tiene registros asociados
      *
      * \pre true
-     * \post 
+     * \post
      *
      * \complexity{\O(1)}
      */
