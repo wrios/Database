@@ -25,15 +25,87 @@ class Indice {
 
 public:
 
-    Indice(){}
-    Indice(const Tabla &tab,const string &campo, bool esString);
+    /**
+     * @brief Inicializa un índice vacío
+     *
+     * \pre true
+     * \post \P{this} = nuevoInd
+     *
+     * \complexity{\O(1)}
+     */
+    Indice() {}
 
-    ~Indice(){}
 
+    /**
+     * @brief Inicializa un índice en la tabla y el campo pasados como parametros
+     *
+     * \pre campo \IN campos(tab)
+     * \post
+     *
+     * \complexity{\O(1)}
+     */
+    Indice(const Tabla &tab, const string &campo, bool esString);
+
+
+    /**
+     * @brief Destructor de índice
+     *
+     * \pre true
+     * \post
+     *
+     * \complexity{\O(1)}
+     */
+    ~Indice() {}
+
+
+
+    /**
+     * @brief Devuelve un iterador apuntando al primer elemento del conjunto de iteradores de Registro donde esos registros tienen dato d
+     *
+     * \pre true
+     * \post
+     *
+     * \complexity{\O(1)}
+     */
     const_it_regInd dameRegistros_begin(const Dato &d) const;
+
+
+
+    /**
+     * @brief Devuelve un iterador apuntando al final del conjunto de iteradores de Registro donde esos registros tienen dato d
+     *
+     * \pre true
+     * \post
+     *
+     * \complexity{\O(1)}
+     */
     const_it_regInd dameRegistros_end(const Dato &d) const;
+
+
+
+    //ESTA FUNCION NO DEBERIA SER PRIVADA??
+    /**
+     * @brief Agrega el registro al indice
+     *
+     * \pre true
+     * \post
+     *
+     * \complexity{\O(1)}
+     */
     void agregarRegistro(const_it_reg &r);
+
+
+
+    /**
+     * @brief Indica verdadero si el dato no tiene registros asociados
+     *
+     * \pre true
+     * \post 
+     *
+     * \complexity{\O(1)}
+     */
     bool noTieneRegistros(const Dato &d) const;
+
 private:
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -47,7 +119,7 @@ private:
      *  (\FORALL s : string) def?(s, _indicesStr) \IMPLIES
      *   *
      *   (\FORALL p : puntero(Registro)) p \IN obtener(s, _indicesStr) \IMPLIES
-     *   _campo \IN campos(*p)
+     *   _campo \IN campos(*p) \LAND valor(_campo, *p) = datoString(s)
      *
      * * _esString = false \IMPLIES
      *  *
@@ -56,7 +128,7 @@ private:
      *  (\FORALL n : nat) def?(n, _indicesNat) \IMPLIES
      *   *
      *   (\FORALL p : puntero(Registro)) p \IN obtener(n, _indicesNat) \IMPLIES
-     *   _campo \IN campos(*p)
+     *   _campo \IN campos(*p) \LAND valor(_campo, *p) = datoNat(n)
      *
      *
      *
