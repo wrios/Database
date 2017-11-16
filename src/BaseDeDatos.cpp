@@ -248,15 +248,13 @@ BaseDeDatos::join_iterator BaseDeDatos::join_iterator::operator++(int a){
 Registro combinarRegistros(const Registro &r1, const Registro &r2){
     vector<string> campos;
     vector<Dato> datos;
+    for (const string &campo: r2.campos()) {
+        campos.push_back(campo);
+        datos.push_back(r2.dato(campo));
+    }
     for (const string &campo: r1.campos()) {
         campos.push_back(campo);
         datos.push_back(r1.dato(campo));
-    }
-    for (const string &campo: r2.campos()) {
-        if (not(pertenece(campo, campos))){
-            campos.push_back(campo);
-            datos.push_back(r2.dato(campo));
-        }
     }
     Registro registroCombinado = Registro(campos, datos);
     return registroCombinado;
