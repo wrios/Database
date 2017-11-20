@@ -41,7 +41,7 @@ public:
      * \pre campo \in campos(\P{this})
      * \post \P{res} = valor(campo, \P{this})
      * 
-     * \complexity{\O(long(campos(\P{this})) * cmp(campo))}
+     * \complexity{\O(1)}
      */
     const Dato& dato(const string& campo) const;
 

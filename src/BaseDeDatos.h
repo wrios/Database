@@ -34,151 +34,193 @@ class BaseDeDatos {
 public:
 
     class join_iterator;
+
     friend class join_iterator;
-  /** @brief Criterio de búsqueda para una base de datos */
-  typedef linear_set<Restriccion> Criterio;
 
-  /**
-   * @brief Inicializa una base de datos sin tablas.
+    /** @brief Criterio de búsqueda para una base de datos */
+    typedef linear_set<Restriccion> Criterio;
+
+    /**
+     * @brief Inicializa una base de datos sin tablas.
+     *
+     * \pre true
+     * \post \P{this} = nuevaDB
+     *
+     * \complexity{\O(1)}
+     */
+    BaseDeDatos();
+
+    /**
+     * @brief Crea una nueva tabla en la base de datos.
+     *
+     * @param nombre Nombre identificador de la tabla
+     * @param claves Claves de la tabla a crear
+     * @param campos Campos de la tabla a crear
+     * @param tipos  Tipos para los campos de la tabla a crear
+     *
+     * \pre db = \P{this} \LAND
+     *      \LNOT (nombre \IN tablas(\P{this})) \LAND
+     *      \LAND \LNOT \EMPTYSET?(claves) \LAND
+     *      \FORALL (c: campo) c \IN claves \IMPLICA c \IN campos \LAND
+     *      long(campos) = long(tipos) \LAND sinRepetidos(campos)
+     * \post \P{this} = agregarTabla(nuevaTabla(claves, nuevoRegistro(campos, tipos)), db)
+     *
+     * \complexity{\O(C)}
+     */
+    void crearTabla(const string &nombre, const linear_set<string> &claves,
+                    const vector<string> &campos, const vector<Dato> &tipos);
+
+    /**
+     * @brief Agrega un registro a la tabla parámetro
+     *
+     * @param r Registro a agregar
+     * @param nombre Nombre de la tabla donde se agrega el registro
+     *
+     * \pre db = \P{this} \LAND nombre \IN tablas(\P{this}) \LAND
+     *      puedoInsertar?(r, dameTabla(\P{this}))
+     * \post \P{this} = insertarEntrada(r, nombre, db)
+     *
+     * \complexity{\O(copy(Registro)) si la tabla en la que se inserta no tiene índices, \O([L + log(m)]  C + copy(Registro)) sino.}
+     */
+    void agregarRegistro(const Registro &r, const string &nombre);
+
+    /**
+     * @brief Devuelve el conjunto de tablas existentes en la base.
+     *
+     * El conjunto de nombres se devuelve por referencia no-modificable.
+     *
+     * \pre true
+     * \post \P{res} = tablas(\P{this})
+     *
+     * \complexity{\O(1)}
+     */
+    const linear_set<string> tablas() const;
+
+    /**
+     * @brief Devuelve la tabla asociada al nombre.
+     *
+     * La tabla se devuelve por referencia no modificable.
+     *
+     * @param nombre Nombre de la tabla buscada.
+     *
+     * \pre nombre \IN tablas(\P{this})
+     * \post \P{res} = dameTabla(nombre, \P{this})
+     *
+     * \complexity{O(T)}
+     */
+    const Tabla &dameTabla(const string &nombre) const;
+
+    /**
+     * @brief Devuelve la cantidad de usos que tiene un criterio
+     *
+     * @param criterio Criterio por el cual se consulta.
+     *
+     * \pre nombre \IN tablas(\P{this})
+     * \post \P{res} = usoCriterio(criterio, \P{this})
+     *
+     * \complexity{\O(#cs * cmp(Criterio))}
+     */
+    int uso_criterio(const Criterio &criterio) const;
+
+    /**
+     * @brief Evalúa si un registro puede ingresarse en la tabla parámetro.
+     *
+     * @param r Registro a ingresar en la tabla.
+     * @param nombre Nombre de la tabla.
+     *
+     * \pre nombre \IN tablas(\P{this})
+     * \post \P{res} = puedoInsertar?(r, dameTabla(nombre, \P{this}))
+     *
+     * \complexity{\O(C + (c  n  L))}
+     */
+    bool registroValido(const Registro &r, const string &nombre) const;
+
+    /**
+     * @brief Evalúa si un criterio puede aplicarse en la tabla parámetro.
+     *
+     * @param c Criterio a utilizar.
+     * @param nombre Nombre de la tabla.
+     *
+     * \pre tabla \IN tablas(\P{this})
+     * \post \P{res} = criterioValido(c, nombre, \P{this})
+     *
+     * \complexity{\O(cr)}
+     */
+    bool criterioValido(const Criterio &c, const string &nombre) const;
+
+    /**
+     * @brief Devuelve el resultado de buscar en una tabla con un criterio.
+     *
+     * @param c Criterio de búsqueda utilizado.
+     * @param nombre Nombre de la tabla.
+     *
+     * \pre nombre \IN tablas(\P{this}) \LAND criterioValido(c, nombre, \P{this})
+     * \post \P{res} = buscar(c, nombre, \P{this})
+     *
+     * \complexity{\O(T + cs * cmp(Criterio) + cr * n * (C + L + copy(reg)))}
+     */
+    Tabla busqueda(const Criterio &c, const string &nombre);
+
+    /**
+     * @brief Devuelve los criterios de máximo uso.
+     *
+     * \pre true
+     * \post \FORALL (c : Criterio) [c \IN \P{res} \IFF
+     *       \FORALL (c' : Criterio) usoCriterio(c, db) >= usoCriterio(c', db)]
+     *
+     * \complexity{\O(cs * copy(Criterio))}
+     */
+    linear_set<Criterio> top_criterios() const;
+
+    /**
+   * @brief Crea un índice en el campo de la tabla pasados como parámetros.
    *
-   * \pre true
-   * \post \P{this} = nuevaDB
+   * @param nombre Nombre de la tabla donde quiero crear el índice.
+   * @param campo Campo de la tabla donde quiero crear el índice.
    *
-   * \complexity{\O(1)}
+   * \pre tabla \IN tablas(\P{this}) \LAND campo \IN campos(tabla)
+   * \post
+   *
+   * \complexity{\O(m  [L + log(m)])}
    */
-  BaseDeDatos();
-
-  /**
-   * @brief Crea una nueva tabla en la base de datos.
-   *
-   * @param nombre Nombre identificador de la tabla
-   * @param claves Claves de la tabla a crear
-   * @param campos Campos de la tabla a crear
-   * @param tipos  Tipos para los campos de la tabla a crear
-   *
-   * \pre db = \P{this} \LAND
-   *      \LNOT (nombre \IN tablas(\P{this})) \LAND 
-   *      \LAND \LNOT \EMPTYSET?(claves) \LAND
-   *      \FORALL (c: campo) c \IN claves \IMPLICA c \IN campos \LAND 
-   *      long(campos) = long(tipos) \LAND sinRepetidos(campos)
-   * \post \P{this} = agregarTabla(nuevaTabla(claves, nuevoRegistro(campos, tipos)), db)
-   *
-   * \complexity{\O(C)}
-   */
-  void crearTabla(const string &nombre, const linear_set<string> &claves,
-                  const vector<string> &campos, const vector<Dato> &tipos);
-
-  /**
-   * @brief Agrega un registro a la tabla parámetro
-   *
-   * @param r Registro a agregar
-   * @param nombre Nombre de la tabla donde se agrega el registro
-   *
-   * \pre db = \P{this} \LAND nombre \IN tablas(\P{this}) \LAND 
-   *      puedoInsertar?(r, dameTabla(\P{this}))
-   * \post \P{this} = insertarEntrada(r, nombre, db)
-   *
-   * \complexity{\O(T + copy(reg))}
-   */
-  void agregarRegistro(const Registro &r, const string &nombre);
-
-  /**
-   * @brief Devuelve el conjunto de tablas existentes en la base.
-   *
-   * El conjunto de nombres se devuelve por referencia no-modificable.
-   *
-   * \pre true
-   * \post \P{res} = tablas(\P{this})
-   *
-   * \complexity{\O(1)}
-   */
-  const linear_set<string> tablas() const;
-
-  /**
-   * @brief Devuelve la tabla asociada al nombre.
-   *
-   * La tabla se devuelve por referencia no modificable.
-   *
-   * @param nombre Nombre de la tabla buscada.
-   *
-   * \pre nombre \IN tablas(\P{this})
-   * \post \P{res} = dameTabla(nombre, \P{this})
-   *
-   * \complexity{O(T)}
-   */
-  const Tabla &dameTabla(const string &nombre) const;
-
-  /**
-   * @brief Devuelve la cantidad de usos que tiene un criterio
-   *
-   * @param criterio Criterio por el cual se consulta.
-   *
-   * \pre nombre \IN tablas(\P{this})
-   * \post \P{res} = usoCriterio(criterio, \P{this})
-   *
-   * \complexity{\O(#cs * cmp(Criterio))}
-   */
-  int uso_criterio(const Criterio &criterio) const;
-
-  /**
-   * @brief Evalúa si un registro puede ingresarse en la tabla parámetro.
-   *
-   * @param r Registro a ingresar en la tabla.
-   * @param nombre Nombre de la tabla.
-   *
-   * \pre nombre \IN tablas(\P{this})
-   * \post \P{res} = puedoInsertar?(r, dameTabla(nombre, \P{this}))
-   *
-   * \complexity{\O(T + C^2 + (c * C + c * n * (C + L)))}
-   */
-  bool registroValido(const Registro &r, const string &nombre) const;
-
-  /**
-   * @brief Evalúa si un criterio puede aplicarse en la tabla parámetro.
-   *
-   * @param c Criterio a utilizar.
-   * @param nombre Nombre de la tabla.
-   *
-   * \pre tabla \IN tablas(\P{this})
-   * \post \P{res} = criterioValido(c, nombre, \P{this})
-   * 
-   * \complexity{\O(T + cr * C)}
-   */
-  bool criterioValido(const Criterio &c, const string &nombre) const;
-
-  /**
-   * @brief Devuelve el resultado de buscar en una tabla con un criterio.
-   *
-   * @param c Criterio de búsqueda utilizado.
-   * @param nombre Nombre de la tabla.
-   *
-   * \pre nombre \IN tablas(\P{this}) \LAND criterioValido(c, nombre, \P{this}) 
-   * \post \P{res} = buscar(c, nombre, \P{this})
-   *
-   * \complexity{\O(T + cs * cmp(Criterio) + cr * n * (C + L + copy(reg)))}
-   */
-  Tabla busqueda(const Criterio &c, const string &nombre);
-
-  /**
-   * @brief Devuelve los criterios de máximo uso.
-   *
-   * \pre true
-   * \post \FORALL (c : Criterio) [c \IN \P{res} \IFF 
-   *       \FORALL (c' : Criterio) usoCriterio(c, db) >= usoCriterio(c', db)]
-   *
-   * \complexity{\O(cs * copy(Criterio))}
-   */
-  linear_set<Criterio> top_criterios() const;
-
     void crearIndice(const string &nombre, const string &campo);
 
-    const Indice* dameIndice(const string& tabla, const string& campo) const;
+    /**
+   * @brief Devuelve el índice de la tabla en el campo pasados como parámetros.
+   *
+   * @param nombre Nombre de la tabla de donde quiero obtener el índice.
+   * @param campo Campo de la tabla de donde quiero obtener el índice.
+   *
+   * \pre tabla \IN tablas(\P{this}) \LAND campo \IN campos(tabla) \LAND tieneIndice?(tabla, campo, \P{this})
+   * \post
+   *
+   * \complexity{\O(1)}
+   */
+    const Indice *dameIndice(const string &tabla, const string &campo) const;
 
+    /**
+   * @brief Join entre dos tablas de la base de datos por un campo.
+   *
+   * \pre tabla1 \IN tablas(\P{this}) \LAND tabla2 \IN tablas(\P{this}) \LAND campo \IN campos(tabla1)
+   * \LAND \LAND campo \IN campos(tabla2) \LAND (tieneIndice?(tabla1, campo, \P{this}) \LOR tieneIndice?(tabla2, campo, \P{this}))
+   * \post
+   *
+   * \complexity{\O(n * [L + log(m)])}
+   */
     join_iterator join(const string &tabla1, const string &tabla2, const string &campo) const;
+
+    /**
+   * @brief Iterador al final del conjunto resultante de hacer el Join.
+   *
+   * \pre true
+   * \post
+   *
+   * \complexity{\O(1)}
+   */
     join_iterator join_end() const;
 
 private:
-	  ///////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////
     /** \name Representación
      * rep: basededatos \TO bool\n
      * rep(bd) \EQUIV 
@@ -192,9 +234,7 @@ private:
      *  *\FORALL (t : string) def?(t, _indices) \IMPLIES
      *    * (
      *      * \FORALL (c : Campo) def?(c, obtener(t, _indices)) \IMPLIES
-     *        * (
-     *          * c \IN campos(t)
-     *          * ) )
+     *        * (c \IN campos(t) ) )
      *
      * abs: basededatos \TO BaseDeDatos\n
      * abs(bd) \EQUIV bd' \|
@@ -214,8 +254,14 @@ private:
     //////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /** @{ */
+
+    /** @brief Diccionario con los nombres y las tablas de la base de datos. */
     string_map<Tabla> _nombresYtablas;
+
+    /** @brief Diccionario con los criterios de búsqueda y sus cantidades de usos. */
     linear_map<Criterio, int> _criteriosYusos;
+
+    /** @brief Diccionario con las tablas y los campos donde tienen índice. */
     string_map<string_map<Indice> > _indices;
     /** @} */
 
@@ -253,8 +299,8 @@ private:
      *       nueva(campo, valor, igualdad), registros)
      */
     list<Registro> &_filtrar_registros(const string &campo, const Dato &valor,
-                                      list<Registro> &registros,
-                                      bool igualdad) const;
+                                       list<Registro> &registros,
+                                       bool igualdad) const;
 
     /**
      * @brief Filtra la lista de registros parametro según el criterio.
@@ -284,8 +330,18 @@ private:
 
 
 public:
-    class join_iterator{
+
+    /** @brief Iterador Constante de los registros resultantes de hacer Join entre dos tablas.
+     *  **se explica con** TAD Iterador Unidireccional(Registro)
+     *  */
+    class join_iterator {
     public:
+
+        /**
+         * @brief Constructor por parametros del iterador.
+         *
+         * \complexity{\O(1)}
+         */
         join_iterator(const BaseDeDatos &bd,
                       const string &tablaSinIndice,
                       const string &tablaConIndice,
@@ -295,32 +351,129 @@ public:
                       const_it_regInd &endI
         );
 
+        /**
+         * @brief Constructor por parametros del iterador.
+         *
+         * \complexity{\O(1)}
+         */
         join_iterator(const_it_reg &endT,
                       const_it_regInd &endI,
                       bool t);
-        join_iterator(const BaseDeDatos::join_iterator& otro);
 
-        bool operator==(const join_iterator & otro) const;
+        /**
+         * @brief Constructor por copia del iterador.
+         *
+         * \complexity{\O(1)}
+         */
+        join_iterator(const BaseDeDatos::join_iterator &otro);
 
-        bool operator!=(const join_iterator & otro) const;
+        /**
+         * @brief Comparación entre iteradores
+         *
+         * \pre ambos iteradores refieren a la misma colección
+         * \post true sii los iteradores apuntan al mismo elemento
+         *
+         * \complexity{\O(1)}
+         */
+        bool operator==(const join_iterator &otro) const;
 
+        /**
+         * @brief Comparación entre iteradores
+         *
+         * \pre ambos iteradores refieren a la misma colección
+         * \post true sii los iteradores no apuntan al mismo elemento
+         *
+         * \complexity{\O(1)}
+         */
+        bool operator!=(const join_iterator &otro) const;
+
+        /**
+         * @brief Avanza el iterador una posición.
+         *
+         * \pre El iterador no debe estar en la posición pasando-el-último.
+         * \post \P{res} es una referencia a \P{this}. \P{this} apunta a la posición
+         * siguiente.
+         *
+         * \complexity{\O(n  [L + log(m)])}
+         */
         join_iterator operator++();
+
+        //ACA HAY QUE CHEQUEARLOOOOOO!!!!!!
+        /**
+         * @brief Avanza el iterador una posición.
+         *
+         * \pre El iterador no debe estar en la posición pasando-el-último.
+         * \post \P{res} es una referencia a \P{this}. \P{this} apunta a la posición
+         * siguiente.
+         *
+         * \complexity{\O(n  [L + log(m)])}
+         */
         join_iterator operator++(int a);
 
+        /**
+        * @brief Desreferencia el puntero
+        *
+        * El valor devuelto tiene aliasing dentro de la colección.
+        *
+        * \pre El iterador no debe estar en la posición pasando-el-último.
+        * \post El valor resultado es una referencia constante al valor apuntado.
+        *
+        * \complexity{\O(copy(Registro))}
+        */
         Registro operator*();
 
+        //FALTA COMPLETAR!!!!!!!
+        /**
+        * @brief Setea índices
+        *
+        * \pre
+        * \post
+        *
+        * \complexity{\O()}
+        */
         void setearItIndices(const Dato &d);
 
     private:
 
+        //HAY QUE COMPLETARLOOOOOOO!!!!!!!
+        ///////////////////////////////////////////////////////////////////////////////////////////////////
+        /** \name Representación
+         * rep: iterator \TO bool\n
+         * rep(i) \EQUIV
+         *  CHAMUYAR COSAS DE ITERADORES CONST DEL JOIN
+         *
+         * abs: iterator \TO itUni(T)\n
+         * abs(i) \EQUIV i' \|
+         *  * siguientes(i') = secuencia de
+         */
+        //////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+        /** @{ */
+        /** @brief Indica si la tabla1 pasada como parametro en el join tiene indice. */
         bool tabla1TieneIndice;
+
+        /** @brief Indica si el join terminó. */
         bool finaliza;
+
+        /** @brief Iterador a la posición actual del conjunto de los registros de la tabla sin índice. */
         const_it_reg itTabla;
+
+        /** @brief Iterador a la posición actual del conjunto de los registros de la tabla con índice. */
         const_it_regInd itIndice;
+
+        /** @brief Iterador al final del conjunto de los registros de la tabla sin índice. */
         const_it_reg endTabla;
+
+        /** @brief Iterador al final del conjunto de los registros de la tabla con índice. */
         const_it_regInd endIndice;
+
+        /** @brief Campo donde se va a producir el Join. */
         string campo;
-        const Indice* indice;
+
+        /** @brief Puntero al índice de la tabla con índice. */
+        const Indice *indice;
+        /** @} */
     };
 
 };

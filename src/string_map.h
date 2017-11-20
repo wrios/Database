@@ -530,7 +530,7 @@ public:
          * rep(i) \EQUIV
          *  CHAMUYAR COSAS DE ITERADORES CONST
          *
-         * abs: iterator \TO itMod(T)\n
+         * abs: iterator \TO itUni(T)\n
          * abs(i) \EQUIV i' \|
          *  * siguientes(i') = secuencia de las claves mayores o iguales a la clave de nodo
          */
