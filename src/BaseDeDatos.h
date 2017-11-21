@@ -395,7 +395,7 @@ public:
          * \post \P{res} es una referencia a \P{this}. \P{this} apunta a la posición
          * siguiente.
          *
-         * \complexity{\O(n  [L + log(m)])}
+         * \complexity{\O(n * [L + log(m)])}
          */
         join_iterator operator++();
 
@@ -407,7 +407,7 @@ public:
          * \post \P{res} es una referencia a \P{this}. \P{this} apunta a la posición
          * siguiente.
          *
-         * \complexity{\O(n  [L + log(m)])}
+         * \complexity{\O(n * [L + log(m)])}
          */
         join_iterator operator++(int a);
 
