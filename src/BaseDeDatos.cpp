@@ -36,7 +36,7 @@ int BaseDeDatos::uso_criterio(const BaseDeDatos::Criterio &criterio) const {
   }
 }
 
-//CHEQUEAR COMPLEJIDAD
+
 bool BaseDeDatos::registroValido(const Registro &r, const string &nombre) const {
   const Tabla &t = _nombresYtablas.at(nombre);
 

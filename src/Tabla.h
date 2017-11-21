@@ -71,7 +71,7 @@ public:
    * \pre true
    * \post \P{res} = campos(\P{this})
    *
-   * \complexity{\O(1)}
+   * \complexity{\O(C)}
    */
   const linear_set<string> campos() const;
 
@@ -84,7 +84,7 @@ public:
    * \pre campo \IN campos(\P{this})
    * \post tipoCampo(campo, \P{this})
    *
-   * \complexity{\O(#(campos(\P{this})) * cmp(campo)}
+   * \complexity{\O(1)}
    */
   const Dato &tipoCampo(const string &campo) const;
 
@@ -96,12 +96,33 @@ public:
    * \pre true
    * \post \P{res} = claves(\P{this})
    *
-   * \complexity{\O(1)}
+   * \complexity{\O(c)}
    */
   const linear_set<string> claves() const;
 
+  /**
+   * @brief Los registros de la tabla
+   *
+   * Se devuelve por referencia no-modificable.
+   *
+   * \pre true
+   * \post \P{res} = Registros(\P{this})
+   *
+   * \complexity{\O(1)}
+   */
   const linear_set<Registro>& registros() const;
 
+
+  /**
+   * @brief Cantidad de registros de la tabla
+   *
+   * Se devuelve por referencia no-modificable.
+   *
+   * \pre true
+   * \post \P{res} = #Registros(\P{this})
+   *
+   * \complexity{\O(1)}
+   */
   int cant_registros() const;
 
   /**

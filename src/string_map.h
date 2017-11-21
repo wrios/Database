@@ -193,7 +193,6 @@ public:
     iterator erase(iterator pos);
 
 
-    //FALTA CHEQUEAR COMPLEJIDAD
     /** @brief claves del diccionario
      *  @returns conjunto con las claves del diccionario
      *
@@ -202,7 +201,6 @@ public:
     linear_set<string> claves() const;
 
 
-    //FALTA CHEQUEAR COMPLEJIDAD
     /** @brief Significados del diccionario
      *  @returns conjunto con la union de todos los significados del diccionario
      *
@@ -280,10 +278,12 @@ private:
      *     * if (n.padre = raiz)
      *      * then true
      *      * else existeCaminoALaRaiz(n.padre, r)
-     *  * 4) No tiene ciclos
-     *  * 5) No tiene diamantes
-     *  * 6) Hay un único camino para llegar a una clave (definicion != NULL)
-     *  * 7) Para todo nodo, cant_hijos es igual a la cantidad de claves definidas a partir de él
+     *  * 4) No tiene ciclos, es decir que dado un nodo, no existe camino tal que al avanzar
+     *      no puedo regresar a el(donde avanzar nos referimos a posicionarnos en uno de los hijos 
+     *      del nodo en el que estoy)
+     *  * 5) No tiene diamantes, es decir no existen 2 caminos distintos tal que parten del mismo nodo 
+     *      y en algun momento llegan al mismo nodo o se cruzan en el mismo nodo
+     *  * 6) Para todo nodo, cant_hijos es igual a la cantidad de claves definidas a partir de él
      *  (si él tiene una definicion != NULL NO se cuenta en cant_hijos)
      *   * (\FORALL n : nodo(T)) existeCaminoALaRaiz(n, r) \IMPLIES n.cant_hijos = hijosDefinidos(n)
      *   *
@@ -348,7 +348,6 @@ public:
          */
         iterator(const iterator &otro);
 
-        //FALTA CHEQUEAR QUE ESTE BIEN!!!!!
         /**
         * @brief Operador de asignación
         *
@@ -398,7 +397,7 @@ public:
         * \pre El iterador no debe estar en la posición pasando-el-último.
         * \post El valor resultado es una referencia al valor apuntado.
         *
-        * \complexity{\O(S)}
+        * \complexity{\O(1)}
         */
         value_type &operator*();
 
@@ -422,7 +421,13 @@ public:
         /** \name Representación
          * rep: iterator \TO bool\n
          * rep(i) \EQUIV
-         *  CHAMUYAR COSAS DE ITERADORES
+         * 1) Permite recorrer los elementos de la estructura, avanzando continuamente 
+         *  es decir, va recorriendo las claves del diccionario en orden lexicografico 
+         *  (los nodos con definicion distinto de null)
+         *
+         *  2) Permite realizar algunas operaciones de modificacion sobre los elementos 
+         *  de la estructura recorrida 
+         *
          *
          * abs: iterator \TO itMod(T)\n
          * abs(i) \EQUIV i' \|
@@ -454,7 +459,6 @@ public:
          */
         const_iterator(const const_iterator &);
 
-        //FALTA CHEQUEAR QUE ESTE BIEN!!!!!
         /**
         * @brief Operador de asignación
         *
@@ -528,7 +532,12 @@ public:
         /** \name Representación
          * rep: iterator \TO bool\n
          * rep(i) \EQUIV
-         *  CHAMUYAR COSAS DE ITERADORES CONST
+         *
+         * 1) Permite recorrer los elementos de la estructura, avanzando continuamente 
+         *  es decir, va recorriendo las claves del diccionario en orden lexicografico 
+         *  (los nodos con definicion distinto de null)
+         * 2) A diferencia del iterador, el const iterator no permite modificar los elementos
+         *  de la estructura
          *
          * abs: iterator \TO itUni(T)\n
          * abs(i) \EQUIV i' \|

@@ -80,7 +80,8 @@ public:
      *      puedoInsertar?(r, dameTabla(\P{this}))
      * \post \P{this} = insertarEntrada(r, nombre, db)
      *
-     * \complexity{\O(copy(Registro)) si la tabla en la que se inserta no tiene índices, \O([L + log(m)]  C + copy(Registro)) sino.}
+     * \complexity{\O(copy(Registro)) si la tabla en la que se inserta no tiene índices,
+     * \O([L + log(m)]  C + copy(Registro)) sino.}
      */
     void agregarRegistro(const Registro &r, const string &nombre);
 
@@ -92,7 +93,7 @@ public:
      * \pre true
      * \post \P{res} = tablas(\P{this})
      *
-     * \complexity{\O(1)}
+     * \complexity{\O(T)}
      */
     const linear_set<string> tablas() const;
 
@@ -106,7 +107,7 @@ public:
      * \pre nombre \IN tablas(\P{this})
      * \post \P{res} = dameTabla(nombre, \P{this})
      *
-     * \complexity{O(T)}
+     * \complexity{O(1)}
      */
     const Tabla &dameTabla(const string &nombre) const;
 
@@ -131,7 +132,7 @@ public:
      * \pre nombre \IN tablas(\P{this})
      * \post \P{res} = puedoInsertar?(r, dameTabla(nombre, \P{this}))
      *
-     * \complexity{\O(C + (c  n  L))}
+     * \complexity{\O(C + (c * n * L))}
      */
     bool registroValido(const Registro &r, const string &nombre) const;
 
@@ -181,7 +182,7 @@ public:
    * \pre tabla \IN tablas(\P{this}) \LAND campo \IN campos(tabla)
    * \post
    *
-   * \complexity{\O(m  [L + log(m)])}
+   * \complexity{\O(m * [L + log(m)])}
    */
     void crearIndice(const string &nombre, const string &campo);
 
