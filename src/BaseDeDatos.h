@@ -334,6 +334,11 @@ public:
 
     /** @brief Iterador Constante de los registros resultantes de hacer Join entre dos tablas.
      *  **se explica con** TAD Iterador Unidireccional(Registro)
+     *
+     * El join_iterator permite recorrer los registros pertenecientes al conjunto de registros que se
+     * obtiene haciendo Join entre dos tablas por un campo. Para éso va a pasar una única vez por cada registro de
+     * la tabla resultante. El resultado se mantiene constante, es decir, no se permite modificar
+     * los elementos de la estructura.
      *  */
     class join_iterator {
     public:
@@ -389,7 +394,11 @@ public:
         bool operator!=(const join_iterator &otro) const;
 
         /**
-         * @brief Avanza el iterador una posición.
+         * @brief Avanza el iterador del join pasado como parametro y lo devuelve.
+         * Si estaba en el último registro del join devuelve join_end().
+         * Sino, al avanzar el join va a avanzar primero el iterador de la tabla indexada recorriendo el conjunto de
+         * los registros y una vez que no queden mas registros por recorrer en ese conjunto busca los proximos
+         * registros que sean parte del join desde la posicion actual.
          *
          * \pre El iterador no debe estar en la posición pasando-el-último.
          * \post \P{res} es una referencia a \P{this}. \P{this} apunta a la posición
@@ -399,9 +408,9 @@ public:
          */
         join_iterator operator++();
 
-        //ACA HAY QUE CHEQUEARLOOOOOO!!!!!!
+
         /**
-         * @brief Avanza el iterador una posición.
+         * @brief Primero devuelve el iterador y luego lo avanza.
          *
          * \pre El iterador no debe estar en la posición pasando-el-último.
          * \post \P{res} es una referencia a \P{this}. \P{this} apunta a la posición
@@ -412,7 +421,8 @@ public:
         join_iterator operator++(int a);
 
         /**
-        * @brief Desreferencia el puntero
+        * @brief Desreferencia el join combinando los registros actuales
+        * (o sea los registros de los iteradores internos del join) de la tabla indexada y de la tabla no indexada.
         *
         * El valor devuelto tiene aliasing dentro de la colección.
         *
@@ -423,31 +433,15 @@ public:
         */
         Registro operator*();
 
-        //FALTA COMPLETAR!!!!!!!
+
         /**
-        * @brief Setea índices
+        * @brief Setea el begin y end de los iteradores de indice en el join con un dato como parametro
         *
-        * \pre
-        * \post
-        *
-        * \complexity{\O()}
+        * \complexity{\O(1)}
         */
         void setearItIndices(const Dato &d);
 
     private:
-
-        //HAY QUE COMPLETARLOOOOOOO!!!!!!!
-        ///////////////////////////////////////////////////////////////////////////////////////////////////
-        /** \name Representación
-         * rep: iterator \TO bool\n
-         * rep(i) \EQUIV
-         *  CHAMUYAR COSAS DE ITERADORES CONST DEL JOIN
-         *
-         * abs: iterator \TO itUni(T)\n
-         * abs(i) \EQUIV i' \|
-         *  * siguientes(i') = secuencia de
-         */
-        //////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
         /** @{ */
