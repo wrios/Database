@@ -40,7 +40,6 @@ public:
      * @brief Inicializa un índice en la tabla y el campo pasados como parametros
      *
      * \pre campo \IN campos(tab)
-     * \post
      *
      * \complexity{\O(1)}
      */
@@ -50,10 +49,7 @@ public:
     /**
      * @brief Destructor de índice
      *
-     * \pre true
-     * \post
-     *
-     * \complexity{\O(1)}
+     * \complexity{\O(S * sn)}
      */
     ~Indice() {}
 
@@ -62,35 +58,27 @@ public:
     /**
      * @brief Devuelve un iterador apuntando al primer elemento del conjunto de iteradores de Registro donde esos registros tienen dato d
      *
-     * \pre true
-     * \post
+     * \pre d \IN claves(\P{this})
      *
      * \complexity{\O(1)}
      */
     const_it_regInd dameRegistros_begin(const Dato &d) const;
 
 
-
     /**
      * @brief Devuelve un iterador apuntando al final del conjunto de iteradores de Registro donde esos registros tienen dato d
      *
-     * \pre true
-     * \post
+     * \pre d \IN claves(\P{this})
      *
      * \complexity{\O(1)}
      */
     const_it_regInd dameRegistros_end(const Dato &d) const;
 
 
-
-    //ESTA FUNCION NO DEBERIA SER PRIVADA??
     /**
      * @brief Agrega el registro al indice
      *
-     * \pre true
-     * \post
-     *
-     * \complexity{\O(1)}
+     * \complexity{\O(S)}
      */
     void agregarRegistro(const_it_reg &r);
 
@@ -99,10 +87,9 @@ public:
     /**
      * @brief Indica verdadero si el dato no tiene registros asociados
      *
-     * \pre true
-     * \post
+     * \pre d \IN claves(\P{this})
      *
-     * \complexity{\O(1)}
+     * \complexity{\O(S)}
      */
     bool noTieneRegistros(const Dato &d) const;
 
